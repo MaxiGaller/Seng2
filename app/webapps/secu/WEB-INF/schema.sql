@@ -6,7 +6,7 @@ CREATE TABLE M_ADMIN (ID NUMERIC PRIMARY KEY, mpwd VARCHAR(255) UNIQUE);
 -- We know that all the passwords and userdata are in this file
 -- But THIS file IS NOT part of the lesson
 
--- Usingthe following passwords is like cheating in a game.....
+-- Using the following passwords is like cheating in a game.....
 --
 
 /***

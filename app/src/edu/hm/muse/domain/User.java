@@ -51,13 +51,19 @@ public class User {
 
     private String upwd;
 
+    private String new_uname;
+
+    private String new_upwd;
+    
     public User() {
     }
 
-    public User(int id, String uname, String upwd) {
+    public User(int id, String uname, String upwd, String new_uname, String new_upwd) {
         this.id = id;
         this.uname = uname;
         this.upwd = upwd;
+        this.new_uname = new_uname;
+        this.new_upwd = new_upwd;
     }
 
     public int getId() {
@@ -67,20 +73,37 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
-
+    
     public String getUname() {
         return uname;
+    }
+    
+    public String getNew_Uname() {
+        return new_uname;
     }
 
     public void setUname(String uname) {
         this.uname = uname;
     }
 
+    public void setNew_Uname(String new_uname) {
+        this.new_uname = new_uname;
+    }
+    
     public String getUpwd() {
         return upwd;
     }
 
     public void setUpwd(String upwd) {
         this.upwd = upwd;
+    }
+    
+    
+    public String getNew_Upwd() {
+        return new_upwd;
+    }
+
+    public void setNew_Upwd(String new_upwd) {
+        this.new_upwd = new_upwd;
     }
 }
