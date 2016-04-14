@@ -94,13 +94,18 @@ public class RegisterController {
         }
 
         //This is the sql statement
-        String sql = String.format("INSERT INTO `M_USER` (`ID`, `muname`, `mpwd`) VALUES ('1', '%s', '%s')", new_uname, new_mpwd);
+    	String sql_select = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
+        int lastId = jdbcTemplate.queryForInt(sql_select);
+    	
+        String insertSql = String.format("INSERT INTO `M_USER` (`ID`, `muname`, `mpwd`) VALUES ('%s', '%s', '%s')", lastId, new_uname, new_mpwd);
+        
+        jdbcTemplate.update(insertSql);
 
         int res = 0;
         try {
-            res = jdbcTemplate.queryForInt(sql);
+            res = jdbcTemplate.queryForInt(insertSql);
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %s is a bad grammar or has following problem %s", sql, e.getMessage()));
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %s is a bad grammar or has following problem %s", insertSql, e.getMessage()));
         }
 
         //If there are any results, than the username and password is correct
