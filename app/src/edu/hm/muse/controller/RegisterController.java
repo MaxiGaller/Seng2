@@ -93,19 +93,19 @@ public class RegisterController {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam new_uname or new_mpwd is empty or null or something like this");
         }
 
-        //This is the sql statement
-    	String sql_select = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
-        int lastId = jdbcTemplate.queryForInt(sql_select);
-    	
-        String insertSql = String.format("INSERT INTO `M_USER` (`ID`, `muname`, `mpwd`) VALUES ('%s', '%s', '%s')", lastId, new_uname, new_mpwd);
+        //This is the SQL statement
+    	String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
+        int lastId = jdbcTemplate.queryForInt(sqlSelect);
+    
+        String sqlInsert = String.format("INSERT INTO M_USER (ID, muname, mpwd) VALUES (%s, %s, %s)", lastId, new_uname, new_mpwd);
         
-        jdbcTemplate.update(insertSql);
+        jdbcTemplate.update(sqlInsert);
 
         int res = 0;
         try {
-            res = jdbcTemplate.queryForInt(insertSql);
+            res = jdbcTemplate.queryForInt(sqlInsert);
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %s is a bad grammar or has following problem %s", insertSql, e.getMessage()));
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %s is a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
         }
 
         //If there are any results, than the username and password is correct
