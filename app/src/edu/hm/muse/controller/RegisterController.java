@@ -96,8 +96,9 @@ public class RegisterController {
         //This is the SQL statement
     	String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
         int lastId = jdbcTemplate.queryForInt(sqlSelect);
+        lastId++;
     
-        String sqlInsert = String.format("INSERT INTO M_USER (ID, muname, mpwd) VALUES (%s, %s, %s)", lastId, new_uname, new_mpwd);
+        String sqlInsert = String.format("insert into M_USER (ID,muname,mpwd) values (%s,'%s','%s')", lastId, new_uname, new_mpwd);
         
         jdbcTemplate.update(sqlInsert);
 

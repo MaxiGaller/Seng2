@@ -3,7 +3,6 @@
 <h1>Login</h1>
 <h2><c:out value="${msg}"/></h2>
 
-
 <form action="login.secu" method="post">
     <input type="text" name="mname" id="mname">
     <label for="mname" >User Name</label>
