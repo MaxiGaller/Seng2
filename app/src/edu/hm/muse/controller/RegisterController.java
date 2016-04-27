@@ -83,6 +83,7 @@ public class RegisterController {
     @RequestMapping(value = "/register.secu", method = RequestMethod.GET)
     public ModelAndView showLoginScreen() {
         ModelAndView mv = new ModelAndView("register");
+        //Show the Msg
         mv.addObject("msg", "Neuen Benutzer anlegen. Bitte Usernamen und Passwort eintragen.");
         return mv;
     }
@@ -93,23 +94,27 @@ public class RegisterController {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam new_uname or new_mpwd is empty or null or something like this");
         }
 
-        //This is the SQL statement
+        //Select the Last ID from the Table
     	String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
         int lastId = jdbcTemplate.queryForInt(sqlSelect);
+        //Increment the last ID
         lastId++;
-    
+        
+        //Build the query with the new User and Passwd
         String sqlInsert = String.format("insert into M_USER (ID,muname,mpwd) values (%s,'%s','%s')", lastId, new_uname, new_mpwd);
 
         int res = 0;
         try {
+        	//execute the query and check exceptions
             res = jdbcTemplate.update(sqlInsert);
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
         }
 
         //Register Ok
+        //Do Autologin
         if (res > 0) {
-            if (res > 0) {           
+            if (res > 0) {
                 session.setAttribute("login", true);
                 session.setAttribute("user", new_uname);
                 return new ModelAndView("redirect:intern.secu");

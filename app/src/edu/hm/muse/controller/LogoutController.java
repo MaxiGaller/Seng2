@@ -10,16 +10,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LogoutController {
-
+	
+	
+	// Proceed the Loggout
 	@RequestMapping(value = "/logout.secu", method = RequestMethod.POST)
-	public ModelAndView logoutAnUserByButton(
-			@RequestParam(value = "logout", required = false) String logout, 
-			HttpSession session) {
+	public ModelAndView logoutAnUserByButton(@RequestParam(value = "logout", required = false) String logout, HttpSession session) {
 
+		//paranoid check, just because java can
 		if (!logout.isEmpty()) {
+			//do the logout, destroy the session
             session.setAttribute("login", false);
         }
 		
+		//Go back to Intern - should show the Login
 		return new ModelAndView("redirect:intern.secu");
 	}
 	
