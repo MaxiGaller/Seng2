@@ -7,7 +7,7 @@
     <label for="new_mname" >Neuer Username</label>
     <input type="text" name="new_uname" id="new_uname">
     <label for="new_mpwd">Neues Password</label>
-    <input type="text" name="new_mpwd" id="new_mpwd">
+    <input type="password" name="new_mpwd" id="new_mpwd">
     <input type="submit" value="Register">
 </form>
 

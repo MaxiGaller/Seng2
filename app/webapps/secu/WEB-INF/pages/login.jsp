@@ -6,7 +6,7 @@
 <form action="login.secu" method="post">
     <input type="text" name="mname" id="mname">
     <label for="mname" >User Name</label>
-    <input type="text" name="mpwd" id="mpwd">
+    <input type="password" name="mpwd" id="mpwd">
     <label for="mpwd">Password</label>
     <input type="submit" value="Login">
 </form>
