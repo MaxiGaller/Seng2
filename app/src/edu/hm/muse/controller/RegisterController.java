@@ -99,21 +99,23 @@ public class RegisterController {
         lastId++;
     
         String sqlInsert = String.format("insert into M_USER (ID,muname,mpwd) values (%s,'%s','%s')", lastId, new_uname, new_mpwd);
-        
-        jdbcTemplate.update(sqlInsert);
 
         int res = 0;
         try {
-            res = jdbcTemplate.queryForInt(sqlInsert);
+            res = jdbcTemplate.update(sqlInsert);
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %s is a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
         }
 
-        //If there are any results, than the username and password is correct
+        //Register Ok
         if (res > 0) {
-            return new ModelAndView("redirect:login.secu");
+            if (res > 0) {           
+                session.setAttribute("login", true);
+                session.setAttribute("user", new_uname);
+                return new ModelAndView("redirect:intern.secu");
+            }
         }
-        //Ohhhhh not correct try again
+        //Error
         ModelAndView mv = returnToRegister(session);
         return mv;
     }

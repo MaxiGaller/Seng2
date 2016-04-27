@@ -8,7 +8,7 @@
     Is there a XSS-flaw or possibly an SQL-Injection possibility?<br/>
     Perhaps there is a problem with the session?
     <p>
-        Then look at the Controller (LoginController)
+        Then look at the Controller (RegisterController)
     </p>
     Now fix the problem...perhaps there are some code documentation artifacts which will help?
 

@@ -18,11 +18,13 @@
 
 <ul id="navigation">
     <img src="img/logo.png" width="100%"/>
+    <c:out value="${message}"/>
     <li><a href="/secu/">Start / Main</a></li>
     <li><a href="search.secu">search the web</a></li>
     <li><a href="picturegallery.secu">watch beautiful pictures</a></li>
     <li><a href="login.secu">login into area42 </a></li>
     <li><a href="register.secu">Register</a></li>
+    <li><a href="intern.secu">Userbereich</a></li>
     <li><a href="mailing.secu">mailinglist</a></li>
     <li><a href="newsletter.secu">newsletter</a></li>
     <li><a href="help.secu">FAQ / Helptopics</a> </li>

@@ -21,6 +21,11 @@ ID: <c:out value="${userDomain.id}"/>
 </div>
 <p></p>
 
+<form action="logout.secu" method="post">
+    <input type="hidden" value="true" name="logout" id="logout">
+    <input type="submit" value="Logout" alt"Hau halt ab">
+</form>
+
 
 <a href="internchange.secu">Change AccountSettings</a>
 
