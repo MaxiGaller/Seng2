@@ -98,6 +98,13 @@ public class Logincontroller {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
 
+
+        if (isLoginNameTaken(mname)) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "duuuh! please try another login name!");
+            return mv;
+        }
+
         String hpwd = hashen256(mpwd);
 
         //This is the sql statement
@@ -122,8 +129,7 @@ public class Logincontroller {
             return new ModelAndView("redirect:intern.secu");
         }
         //Ohhhhh not correct try again
-        ModelAndView mv = returnToLogin(session);
-        return mv;
+        return returnToLogin(session);
     }
 
     @RequestMapping(value = "/adminlogin.secu", method = RequestMethod.POST)
@@ -227,11 +233,22 @@ public class Logincontroller {
     }
 
     private boolean isUserInputValid(String mname) {
-        if (!(mname.matches("[A-Za-z0-9]+"))) {
-            return false;
-        }
-        return true;
+        return mname.matches("[A-Za-z0-9]+");
     }
 
+
+    private boolean isLoginNameTaken(String mname) {
+        String sql = String.format("select count(*) from M_USER where muname = '%s'", mname);
+        int res=0;
+        try {
+            res = jdbcTemplate.queryForInt(sql);
+            if (res > 0) {
+                return true;
+            }
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
+        }
+        return false;
+    }
 
 }
