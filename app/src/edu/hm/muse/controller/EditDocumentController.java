@@ -107,8 +107,11 @@ public class EditDocumentController {
 		int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
         
 		//Select the Last ID from the Table
-    	String sqlSelect = "SELECT id FROM LatexSniped WHERE project_id = ? ORDER BY id DESC LIMIT 1";
-        int lastId = jdbcTemplate.queryForInt(sqlSelect, projectId);
+    	String sqlSelect = "SELECT MAX(project_id) from LatexSniped";
+
+                //"SELECT id FROM LatexSniped WHERE project_id = ? ORDER BY id DESC LIMIT 1";
+        //int lastId = jdbcTemplate.queryForInt(sqlSelect, projectId);
+        int lastId = jdbcTemplate.queryForInt(sqlSelect);
 
         //Increment the last ID
 

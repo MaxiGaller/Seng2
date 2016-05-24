@@ -1,26 +1,19 @@
 package edu.hm.muse.controller;
 
-import java.security.MessageDigest;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
-
+import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.hm.muse.domain.User;
-import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProjectsController {
@@ -72,8 +65,11 @@ public class ProjectsController {
 	int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
     
 	//Select the Last ID from the Table
-	String sqlSelectForDocumentID = "SELECT id FROM LatexDocuments ORDER BY id DESC LIMIT 1";
-    int ProjectId = jdbcTemplate.queryForInt(sqlSelectForDocumentID);
+
+        //TODO: Wurde gefixed
+	String sqlSelectForDocumentID = "SELECT MAX(id) from LatexDocuments";
+            //"SELECT id FROM LatexDocuments ORDER BY id DESC LIMIT 1";
+       int ProjectId = jdbcTemplate.queryForInt(sqlSelectForDocumentID);
     //Increment the last ID
     int nextProjectId = ProjectId++;
         
