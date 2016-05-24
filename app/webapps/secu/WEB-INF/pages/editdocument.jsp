@@ -38,6 +38,7 @@
 		<tr>  
 			<td>
 				<textarea rows="4" cols="50" name="snipedContent" id="snipedContent"></textarea>
+				<input type="hidden" value="${documentname}" name="documentname" id="documentname">
 				<input type="hidden" value="${projectId}" name="projectId" id="projectId">
 			    <input type="submit" value="Anlegen">
 			    <select name="content_type">	

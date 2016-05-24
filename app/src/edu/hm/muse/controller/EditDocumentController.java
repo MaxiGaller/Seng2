@@ -94,6 +94,7 @@ public class EditDocumentController {
 	@RequestMapping(value = "/newsniped.secu", method = RequestMethod.GET)
 	public ModelAndView saveNewSniped(
 			@RequestParam(value = "projectId", required = true) int projectId,
+			@RequestParam(value = "documentname", required = true) String documentname,
 			@RequestParam(value = "content_type", required = true) int content_type,
 			@RequestParam(value = "snipedContent", required = true) String snipedContent,
 			HttpSession session){
@@ -124,7 +125,11 @@ public class EditDocumentController {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
         }
         
-        return new ModelAndView("redirect:editdocument.secu");
+        ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
+        mv.addObject("projectId", projectId);
+        mv.addObject("documentname", documentname);
+        
+        return mv;
         
 	}
 	

@@ -12,7 +12,6 @@ WHERE LatexProjects.id LIKE LatexDocument.project_id
 AND LatexType.id LIKE LatexDocument.content_type
 AND LatexProjects.muser_id LIKE M_USER.id
 */
- 
 
 INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (1, 1, 'Test Doc');
 INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (2, 1, 'BLA BLA BLA');

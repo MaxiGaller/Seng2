@@ -116,7 +116,7 @@ public class Logincontroller {
         if (res > 0) {
             session.setAttribute("user", mname);
             session.setAttribute("login", true);
-            return new ModelAndView("redirect:intern.secu");
+            return new ModelAndView("redirect:projects.secu");
         }
         //Ohhhhh not correct try again
         ModelAndView mv = returnToLogin(session);
