@@ -2,9 +2,9 @@ CREATE TABLE M_USER (ID NUMERIC PRIMARY KEY, muname VARCHAR(255) UNIQUE, mpwd VA
 CREATE TABLE NEWSLETTER (id NUMERIC PRIMARY KEY, text VARCHAR(1000));
 CREATE TABLE M_ADMIN (ID NUMERIC PRIMARY KEY, mpwd VARCHAR(255) UNIQUE);
 
-CREATE TABLE LatexSniped (id NUMERIC, muser_id NUMERIC, project_id NUMERIC, content VARCHAR(1000), content_type NUMERIC);
+CREATE TABLE LatexSniped (id NUMERIC, muser_id NUMERIC, project_id NUMERIC, content VARCHAR(1000000), content_type NUMERIC);
 CREATE TABLE LatexDocuments (id NUMERIC, muser_id NUMERIC, documentname VARCHAR(255));
-CREATE TABLE LatexType (id NUMERIC, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255));
+CREATE TABLE LatexType (id NUMERIC, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), accessable NUMERIC);
 
 /**
 SELECT M_USER.muname,projectname,type_opening_tag,content,type_closeing_tag FROM LatexProjects JOIN LatexType, LatexDocument, M_USER
@@ -13,23 +13,29 @@ AND LatexType.id LIKE LatexDocument.content_type
 AND LatexProjects.muser_id LIKE M_USER.id
 */
 
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (1, 1, 'Test Doc');
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (2, 1, 'BLA BLA BLA');
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (3, 1, 'LULULULULUL');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (1, 2, 'Test Doc');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (2, 2, 'BLA BLA BLA');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (3, 2, 'LULULULULUL');
 
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (1, 1, 1, 'Bla Bla Blub! Überschrift', 1);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (2, 1, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (3, 1, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (4, 1, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (5, 1, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 3);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (6, 1, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (1, 2, 1, 'Bla Bla Blub! Überschrift', 1);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (2, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (3, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (4, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (5, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 3);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (6, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (7, 2, 2, 'JODEL DODL DIDL DODL IDIOTIO', 1);
 
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag) VALUES (1, 'section', '<section>', '</section>');
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag) VALUES (2, 'subsection', '<subsection>', '</subsection>');
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag) VALUES (3, 'subsubsection', '<subsubsection>', '</subsubsection>');
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag) VALUES (4, 'text', '<text>', '</text>');
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (1, 'section', '\section{', '}', 1);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (2, 'subsection', '\subsection{', '}', 1);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (3, 'subsubsection', '\subsubsection{', '}', 1);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (4, 'text', '<text>', '}', 1);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (5, 'Titel', '\titel{', '}', 0);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (6, 'Author', '\author{', '}', 0);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (7, 'Beginn', '\begin{', '}', 0);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (8, 'Ende', '\end{', '}', 0);
 
-insert into M_USER (ID,muname,mpwd) values (1,'a','a');
+
+insert into M_USER (ID,muname,mpwd) values (1,'never','login');
 
 insert into NEWSLETTER (id,text) values (1,'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.');
 insert into NEWSLETTER (id,text) values (2,'Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zufälligen Umständen, in denen Mühen und Schmerz ihm große Freude bereiten können. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender körperlicher Betätigung, außer um Vorteile daraus zu ziehen? Aber wer hat irgend ein Recht, einen Menschen zu tadeln, der die Entscheidung trifft, eine Freude zu genießen, die keine unangenehmen Folgen hat, oder einen, der Schmerz vermeidet, welcher keine daraus resultierende Freude nach sich zieht? Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zufälligen Umständen, in denen Mühen und Schmerz ihm große Freude bereiten können. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender körperlicher Betätigung, außer um Vorteile daraus zu ziehen?');

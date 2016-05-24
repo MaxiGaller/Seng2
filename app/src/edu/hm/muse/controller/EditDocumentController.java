@@ -44,7 +44,7 @@ public class EditDocumentController {
         }
         
 //        String sql = "SELECT * FROM LatexSniped JOIN LatexType WHERE LatexSniped.project_id = ? AND LatexSniped.content_type LIKE LatexType.id";
-        String sql = "SELECT * FROM LatexSniped WHERE project_id = ?";
+        String sql = "SELECT * FROM LatexSniped WHERE project_id = ? ORDER BY id ASC";
         List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, projectId);
         
         String sqlTypes = "SELECT * FROM LatexType";
@@ -66,24 +66,29 @@ public class EditDocumentController {
 	public ModelAndView editSnipedBySnipedID(
 			@RequestParam(value = "projectId", required = true) int projectId,
 			@RequestParam(value = "documentname", required = true) String documentname,
+			@RequestParam(value = "snipedId", required = true) int snipedId,
+			@RequestParam(value = "content_type", required = true) int content_type,
+			@RequestParam(value = "snipedContent", required = true) String snipedContent,
 			HttpSession session){
 		
         if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
             return new ModelAndView("redirect:login.secu");
         }
         
-//        String sql = "SELECT * FROM LatexSniped JOIN LatexType WHERE LatexSniped.project_id = ? AND LatexSniped.content_type LIKE LatexType.id";
-        String sql = "SELECT * FROM LatexSniped WHERE project_id = ?";
-        List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, projectId);
+        //Update the DB
+        String sqlUpdate = String.format("UPDATE LatexSniped SET content = '%s', content_type = %s WHERE id = %s", snipedContent, content_type, snipedId);
+
+        int res = 0;
+        try {
+        	//execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate);
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+        }
         
-        String sqlTypes = "SELECT * FROM LatexType";
-        List<Map<String,Object>> projectTypes = jdbcTemplate.queryForList(sqlTypes);
-        
-        ModelAndView mv = new ModelAndView("editdocument");
-        
+        ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
+        mv.addObject("projectId", projectId);
         mv.addObject("documentname", documentname);
-        mv.addObject("TypesForView", projectTypes);
-        mv.addObject("SnipedsForView", projectSnipeds);
         
         return mv;
         
@@ -126,12 +131,13 @@ public class EditDocumentController {
         }
         
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
+
         mv.addObject("projectId", projectId);
         mv.addObject("documentname", documentname);
         
         return mv;
         
 	}
-	
-	
+
 }
+

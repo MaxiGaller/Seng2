@@ -27,5 +27,17 @@
 	</c:forEach>
 </table>
 
+<form action="newdocument.secu" method="get">
+	<table>
+		<tr>  
+			<td>
+				<input type="text" value="" name="documentname" id="documentname">
+				<input type="hidden" value="${projectId}" name="projectId" id="projectId">
+			    <input type="submit" value="Neues Projekt anlegen">
+			</td>
+		</tr>
+	</table>
+</form>
+
 <jsp:include page="../help/acc_help.jsp"/>
 <jsp:include page="../../foot.jsp"/>

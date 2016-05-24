@@ -13,7 +13,8 @@
 				<form action="editsniped.secu" method="get">
 					<textarea rows="4" cols="50" name="snipedContent" id="snipedContent">${SnipedsForView.content}</textarea>
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId" id="snipedId">
-					<input type="hidden" value="<c:out value="${SnipedsForView.content_type}"/>" name="snipedContentTypeID" id="snipedContentTypeID">
+					<input type="hidden" value="<c:out value="${SnipedsForView.project_id}"/>" name="projectId" id="projectId">
+					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
 			</td>
 	        <td>
 				    <input type="submit" value="Speichern">
@@ -40,7 +41,7 @@
 				<textarea rows="4" cols="50" name="snipedContent" id="snipedContent"></textarea>
 				<input type="hidden" value="${documentname}" name="documentname" id="documentname">
 				<input type="hidden" value="${projectId}" name="projectId" id="projectId">
-			    <input type="submit" value="Anlegen">
+			    <input type="submit" value="Neu Anlegen">
 			    <select name="content_type">	
 				    <c:forEach items="${TypesForView}" var="TypesForView">
 						<option value="${TypesForView.id}">${TypesForView.type}</option>
