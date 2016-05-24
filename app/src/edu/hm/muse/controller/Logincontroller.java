@@ -203,7 +203,6 @@ public class Logincontroller {
     }
 
 
-
     private String hashen256(String mpwd) {
         String hpwd = null;
 
@@ -239,6 +238,4 @@ public class Logincontroller {
         }
         return false;
     }
-
-//>>>>>>> 3f12bd0375dfdd7bfc73f48b7698a8801337dec3
 }
