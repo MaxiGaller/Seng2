@@ -114,7 +114,7 @@ public class EditDocumentController {
         lastId++;
         
         //Insert the Content to DB
-        String sqlInsert = String.format("INSERT INTO `LatexSniped` (`id`, `muser_id`, `project_id`, `content`, `content_type`) VALUES ('%s', '%s', '%s', '%s', '%s')", lastId, UserIDFromSessionOverDatabase, projectId, snipedContent, content_type);
+        String sqlInsert = String.format("INSERT INTO LatexSniped (id, muser_id, project_id, content, content_type) VALUES (%s, %s, %s, '%s', %s)", lastId, UserIDFromSessionOverDatabase, projectId, snipedContent, content_type);
 
         int res = 0;
         try {
