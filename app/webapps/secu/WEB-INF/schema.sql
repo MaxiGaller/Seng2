@@ -14,7 +14,7 @@ AND LatexProjects.muser_id LIKE M_USER.id
 */
 
 INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (1, 2, 'Test Doc');
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (2, 2, 'BLA BLA BLA');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (2, 2, 'Ernsthaftes Test Dokument');
 INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (3, 2, 'LULULULULUL');
 
 insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (1, 2, 1, 'Bla Bla Blub! Überschrift', 1);
@@ -23,7 +23,11 @@ insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES
 insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (4, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
 insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (5, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 3);
 insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (6, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (7, 2, 2, 'JODEL DODL DIDL DODL IDIOTIO', 1);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (7, 2, 2, 'H1 H1 H1 H1 H1', 1);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (8, 2, 2, 'TEXT TEXT TEXT', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (9, 2, 2, 'H2 H2 H2 H2 H2', 2);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (10, 2, 2, 'TEXT TEXT TEXT', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (11, 2, 2, 'H3 H3 H3 H3 H3', 3);
 
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (1, 'section', '\section{', '}', 1);
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (2, 'subsection', '\subsection{', '}', 1);

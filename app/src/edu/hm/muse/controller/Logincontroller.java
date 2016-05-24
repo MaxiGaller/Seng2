@@ -56,6 +56,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
 
@@ -211,10 +212,6 @@ public class Logincontroller {
         return output;
     }
 
-<<<<<<< HEAD
-=======
-
-
     private String hashen256(String mpwd) {
         String hpwd = null;
 
@@ -251,5 +248,4 @@ public class Logincontroller {
         return false;
     }
 
->>>>>>> 3f12bd0375dfdd7bfc73f48b7698a8801337dec3
 }
