@@ -48,7 +48,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Types;
 
 
@@ -121,16 +123,20 @@ public class WatchAccountController extends functions {
 
     @RequestMapping(value = "/change.secu", method = RequestMethod.POST)
     public ModelAndView changeAccount(HttpSession session, @RequestParam(value = "uid", required = true) String uid, @RequestParam(value = "uname", required = true) String uname, @RequestParam(value = "upwd", required = true) String upwd) {
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
-        String sql = "update M_USER set " +
-                "muname = ?, " +
-                "mpwd = ? " +
+
+        String hpwd = hashen256(upwd);
+
+        String sql = "update M_USER set muname = ?, mpwd = ? " +
                 "where " +
                 "ID = "+uid;
 
-        jdbcTemplate.update(sql, new Object[]{uname, upwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
+        //Die Fragezeichen sind für des jdbcTemplate Zeile in dem Object Array
+        //String sql = String.format("update M_USER set muname = '%s', mpwd = '%s' where ID = "+uid, uname, hpwd);
+
+        jdbcTemplate.update(sql, new Object[]{uname, hpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
         session.setAttribute("user", uname);
         return new ModelAndView("redirect:intern.secu");
     }
@@ -139,5 +145,23 @@ public class WatchAccountController extends functions {
     public String showHelp() {
         return "howto";
     }
+
+    private String hashen256(String mpwd) {
+        String hpwd = null;
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            digest.update(mpwd.getBytes(), 0, mpwd.length());
+
+            hpwd = new BigInteger(1, digest.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
+        return hpwd;
+    }
+
 
 }

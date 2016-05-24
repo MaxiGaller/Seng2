@@ -77,6 +77,12 @@ public class RegisterController {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam new_uname or new_mpwd is empty or null or something like this");
         }
 
+        if (isLoginNameTaken(new_uname)) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "duuuh! please try another login name!!");
+            return mv;
+        }
+
         //Select the Last ID from the Table
     	String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
         int lastId = jdbcTemplate.queryForInt(sqlSelect);
@@ -106,14 +112,12 @@ public class RegisterController {
             }
         }
         //Error
-        ModelAndView mv = returnToRegister(session);
-        return mv;
+        return returnToRegister(session);
     }
 
     private ModelAndView returnToRegister(HttpSession session) {
         //Ohhhhh not correct try again
-        ModelAndView mv = returnToRegister(session);
-        return mv;
+        return new ModelAndView("redirect:register.secu");
     }
 
     private String hashen256(String mpwd) {
@@ -134,12 +138,21 @@ public class RegisterController {
     }
 
     private boolean isUserInputValid(String mname) {
-        if (!(mname.matches("[A-Za-z0-9]+"))) {
-            return false;
-        }
-        return true;
+        return mname.matches("[A-Za-z0-9]+");
     }
 
-
+    private boolean isLoginNameTaken(String mname) {
+        String sql = String.format("select count(*) from M_USER where muname = '%s'", mname);
+        int res=0;
+        try {
+            res = jdbcTemplate.queryForInt(sql);
+            if (res > 0) {
+                return true;
+            }
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
+        }
+        return false;
+    }
 
 }

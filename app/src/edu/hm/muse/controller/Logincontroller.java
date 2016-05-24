@@ -97,6 +97,14 @@ public class Logincontroller {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
 
+        if (isLoginNameTaken(mname)) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "duuuh! please try another login name!");
+            return mv;
+        }
+
+        String hpwd = hashen256(mpwd);
+
         //This is the sql statement
         String sql = String.format("select count(*) from M_USER where muname = '%s' and mpwd = '%s'", mname, mpwd);
 
@@ -119,8 +127,7 @@ public class Logincontroller {
             return new ModelAndView("redirect:projects.secu");
         }
         //Ohhhhh not correct try again
-        ModelAndView mv = returnToLogin(session);
-        return mv;
+        return returnToLogin(session);
     }
 
     @RequestMapping(value = "/adminlogin.secu", method = RequestMethod.POST)
@@ -204,4 +211,45 @@ public class Logincontroller {
         return output;
     }
 
+<<<<<<< HEAD
+=======
+
+
+    private String hashen256(String mpwd) {
+        String hpwd = null;
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            digest.update(mpwd.getBytes(), 0, mpwd.length());
+
+            hpwd = new BigInteger(1, digest.digest()).toString(16);
+        }
+        catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return hpwd;
+    }
+
+    private boolean isUserInputValid(String mname) {
+        return mname.matches("[A-Za-z0-9]+");
+    }
+
+
+    private boolean isLoginNameTaken(String mname) {
+        String sql = String.format("select count(*) from M_USER where muname = '%s'", mname);
+        int res=0;
+        try {
+            res = jdbcTemplate.queryForInt(sql);
+            if (res > 0) {
+                return true;
+            }
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
+        }
+        return false;
+    }
+
+>>>>>>> 3f12bd0375dfdd7bfc73f48b7698a8801337dec3
 }
