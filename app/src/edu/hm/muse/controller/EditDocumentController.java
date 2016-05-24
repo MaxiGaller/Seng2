@@ -1,26 +1,19 @@
 package edu.hm.muse.controller;
 
-import java.security.MessageDigest;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
-
+import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.hm.muse.domain.User;
-import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EditDocumentController {
@@ -116,8 +109,9 @@ public class EditDocumentController {
 		//Select the Last ID from the Table
     	String sqlSelect = "SELECT id FROM LatexSniped WHERE project_id = ? ORDER BY id DESC LIMIT 1";
         int lastId = jdbcTemplate.queryForInt(sqlSelect, projectId);
+
         //Increment the last ID
-        lastId++;
+
         
         //Insert the Content to DB
         String sqlInsert = String.format("INSERT INTO LatexSniped (id, muser_id, project_id, content, content_type) VALUES (%s, %s, %s, '%s', %s)", lastId, UserIDFromSessionOverDatabase, projectId, snipedContent, content_type);

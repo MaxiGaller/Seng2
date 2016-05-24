@@ -56,6 +56,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
 
@@ -97,24 +98,13 @@ public class Logincontroller {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
 
-        if (isLoginNameTaken(mname)) {
-            ModelAndView mv = new ModelAndView("register");
-            mv.addObject("msg", "duuuh! please try another login name!");
-            return mv;
-        }
-
         String hpwd = hashen256(mpwd);
 
         //This is the sql statement
-        String sql = String.format("select count(*) from M_USER where muname = '%s' and mpwd = '%s'", mname, mpwd);
+        String sql = String.format("select count(*) from M_USER where muname = '%s' and mpwd = '%s'", mname, hpwd);
 
         int res = 0;
         try {
-            //Here is the sql magic
-            //TODO:Possibly this is unsecure, but I am only a low paid code scripter...perhaps there is a option to bring prepared
-            //statements into this sql-query.
-            //But I found a possible solution here http://static.springsource.org/spring/docs/3.0.x/reference/html/jdbc.html#jdbc-JdbcTemplate-idioms
-            //I think the easiest way is to build the sql statements with ? instead of concatenation
             res = jdbcTemplate.queryForInt(sql);
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
@@ -124,10 +114,11 @@ public class Logincontroller {
         if (res > 0) {
             session.setAttribute("user", mname);
             session.setAttribute("login", true);
-            return new ModelAndView("redirect:projects.secu");
+            return new ModelAndView("redirect:intern.secu");
         }
         //Ohhhhh not correct try again
-        return returnToLogin(session);
+        ModelAndView mv = returnToLogin(session);
+        return mv;
     }
 
     @RequestMapping(value = "/adminlogin.secu", method = RequestMethod.POST)
@@ -187,7 +178,7 @@ public class Logincontroller {
         //Ohhhhh not correct try again
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("msg", "Sorry try again");
-        session.setAttribute("login", false);
+        session.invalidate();
         return mv;
     }
 
@@ -211,8 +202,6 @@ public class Logincontroller {
         return output;
     }
 
-<<<<<<< HEAD
-=======
 
 
     private String hashen256(String mpwd) {
@@ -251,5 +240,5 @@ public class Logincontroller {
         return false;
     }
 
->>>>>>> 3f12bd0375dfdd7bfc73f48b7698a8801337dec3
+//>>>>>>> 3f12bd0375dfdd7bfc73f48b7698a8801337dec3
 }
