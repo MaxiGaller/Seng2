@@ -2,139 +2,35 @@ CREATE TABLE M_USER (ID NUMERIC PRIMARY KEY, muname VARCHAR(255) UNIQUE, mpwd VA
 CREATE TABLE NEWSLETTER (id NUMERIC PRIMARY KEY, text VARCHAR(1000));
 CREATE TABLE M_ADMIN (ID NUMERIC PRIMARY KEY, mpwd VARCHAR(255) UNIQUE);
 
--- OK we need this table for the SecLab
--- We know that all the passwords and userdata are in this file
--- But THIS file IS NOT part of the lesson
-
--- Using the following passwords is like cheating in a game.....
---
-
-/***
- *                                        __          ____                                     __
- *     /'\_/`\                 __        /\ \        /\  _`\                                __/\ \__
- *    /\      \  __  __   ___ /\_\    ___\ \ \___    \ \,\L\_\     __    ___  __  __  _ __ /\_\ \ ,_\  __  __
- *    \ \ \__\ \/\ \/\ \/' _ `\/\ \  /'___\ \  _ `\   \/_\__ \   /'__`\ /'___\\ \/\ \/\`'__\/\ \ \ \/ /\ \/\ \
- *     \ \ \_/\ \ \ \_\ \\ \/\ \ \ \/\ \__/\ \ \ \ \    /\ \L\ \/\  __//\ \__/ \ \_\ \ \ \/ \ \ \ \ \_\ \ \_\ \
- *      \ \_\\ \_\ \____/ \_\ \_\ \_\ \____\\ \_\ \_\   \ `\____\ \____\ \____\ \____/\ \_\  \ \_\ \__\\/`____ \
- *       \/_/ \/_/\/___/ \/_/\/_/\/_/\/____/ \/_/\/_/    \/_____/\/____/\/____/\/___/  \/_/   \/_/\/__/ `/___/> \
- *                                                                                                         /\___/
- *                                                                                                         \/__/
- *
- *     ____                                               __          ____
- *    /\  _`\                                            /\ \        /\  _`\
- *    \ \ \L\ \     __    ____    __     __     _ __  ___\ \ \___    \ \ \L\_\  _ __  ___   __  __  _____
- *     \ \ ,  /   /'__`\ /',__\ /'__`\ /'__`\  /\`'__\'___\ \  _ `\   \ \ \L_L /\`'__\ __`\/\ \/\ \/\ '__`\
- *      \ \ \\ \ /\  __//\__, `\\  __//\ \L\.\_\ \ \/\ \__/\ \ \ \ \   \ \ \/, \ \ \/\ \L\ \ \ \_\ \ \ \L\ \
- *       \ \_\ \_\ \____\/\____/ \____\ \__/.\_\\ \_\ \____\\ \_\ \_\   \ \____/\ \_\ \____/\ \____/\ \ ,__/
- *        \/_/\/ /\/____/\/___/ \/____/\/__/\/_/ \/_/\/____/ \/_/\/_/    \/___/  \/_/\/___/  \/___/  \ \ \/
- *                                                                                                    \ \_\
- *                                                                                                     \/_/
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***
- *     ____     __                       __
- *    /\  _`\  /\ \                     /\ \__
- *    \ \ \/\_\\ \ \___      __     __  \ \ ,_\    __  _ __
- *     \ \ \/_/_\ \  _ `\  /'__`\ /'__`\ \ \ \/  /'__`\\`'__\
- *      \ \ \L\ \\ \ \ \ \/\  __//\ \L\.\_\ \ \_/\  __/ \ \/__ __ __
- *       \ \____/ \ \_\ \_\ \____\ \__/.\_\\ \__\ \____\ \_\\_\\_\\_\
- *        \/___/   \/_/\/_/\/____/\/__/\/_/ \/__/\/____/\/_//_//_//_/
- *
- *
- *
- *     ____                        __      __    __                  __
- *    /\  _`\                     /\ \    /\ \__/\ \                /\ \__                 __
- *    \ \ \L\ \     __     __     \_\ \   \ \ ,_\ \ \___      __    \ \ ,_\   ___   _____ /\_\    ___
- *     \ \ ,  /   /'__`\ /'__`\   /'_` \   \ \ \/\ \  _ `\  /'__`\   \ \ \/  / __`\/\ '__`\/\ \  /'___\
- *      \ \ \\ \ /\  __//\ \L\.\_/\ \L\ \   \ \ \_\ \ \ \ \/\  __/    \ \ \_/\ \L\ \ \ \L\ \ \ \/\ \__/
- *       \ \_\ \_\ \____\ \__/.\_\ \___,_\   \ \__\\ \_\ \_\ \____\    \ \__\ \____/\ \ ,__/\ \_\ \____\
- *        \/_/\/ /\/____/\/__/\/_/\/__,_ /    \/__/ \/_/\/_/\/____/     \/__/\/___/  \ \ \/  \/_/\/____/
- *                                                                                    \ \_\
- *                                                                                     \/_/
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-insert into M_USER (ID,muname,mpwd) values (1,'alan','pwd1');
-insert into M_USER (ID,muname,mpwd) values (2,'ada','pwd2');
-insert into M_USER (ID,muname,mpwd) values (3,'bob','pwd3');
-insert into M_USER (ID,muname,mpwd) values (4,'eve','pwd4');
-insert into M_USER (ID,muname,mpwd) values (5,'alice','pwd5');
-insert into M_USER (ID,muname,mpwd) values (6,'fasdfasdf','asdfasdf')
+CREATE TABLE LatexSniped (id NUMERIC, muser_id NUMERIC, project_id NUMERIC, content VARCHAR(1000), content_type NUMERIC);
+CREATE TABLE LatexDocuments (id NUMERIC, muser_id NUMERIC, documentname VARCHAR(255));
+CREATE TABLE LatexType (id NUMERIC, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255));
+
+/**
+SELECT M_USER.muname,projectname,type_opening_tag,content,type_closeing_tag FROM LatexProjects JOIN LatexType, LatexDocument, M_USER
+WHERE LatexProjects.id LIKE LatexDocument.project_id
+AND LatexType.id LIKE LatexDocument.content_type
+AND LatexProjects.muser_id LIKE M_USER.id
+*/
+ 
+
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (1, 1, 'Test Doc');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (2, 1, 'BLA BLA BLA');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (3, 1, 'LULULULULUL');
+
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (1, 1, 1, 'Bla Bla Blub! Überschrift', 1);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (2, 1, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (3, 1, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (4, 1, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (5, 1, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 3);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (6, 1, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag) VALUES (1, 'section', '<section>', '</section>');
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag) VALUES (2, 'subsection', '<subsection>', '</subsection>');
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag) VALUES (3, 'subsubsection', '<subsubsection>', '</subsubsection>');
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag) VALUES (4, 'text', '<text>', '</text>');
+
+insert into M_USER (ID,muname,mpwd) values (1,'a','a');
 
 insert into NEWSLETTER (id,text) values (1,'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.');
 insert into NEWSLETTER (id,text) values (2,'Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zufälligen Umständen, in denen Mühen und Schmerz ihm große Freude bereiten können. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender körperlicher Betätigung, außer um Vorteile daraus zu ziehen? Aber wer hat irgend ein Recht, einen Menschen zu tadeln, der die Entscheidung trifft, eine Freude zu genießen, die keine unangenehmen Folgen hat, oder einen, der Schmerz vermeidet, welcher keine daraus resultierende Freude nach sich zieht? Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zufälligen Umständen, in denen Mühen und Schmerz ihm große Freude bereiten können. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender körperlicher Betätigung, außer um Vorteile daraus zu ziehen?');

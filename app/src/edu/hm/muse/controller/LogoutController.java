@@ -14,7 +14,9 @@ public class LogoutController {
 	
 	// Proceed the Loggout
 	@RequestMapping(value = "/logout.secu", method = RequestMethod.POST)
-	public ModelAndView logoutAnUserByButton(@RequestParam(value = "logout", required = false) String logout, HttpSession session) {
+	public ModelAndView logoutAnUserByButton(
+			@RequestParam(value = "logout", required = false) String logout, 
+			HttpSession session) {
 
 		//paranoid check, just because java can
 		if (!logout.isEmpty()) {

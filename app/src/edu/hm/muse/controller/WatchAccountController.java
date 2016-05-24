@@ -53,10 +53,9 @@ import java.sql.Types;
 
 
 @Controller
-public class WatchAccountController {
+public class WatchAccountController extends functions {
 
     private JdbcTemplate jdbcTemplate;
-
 
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
@@ -113,13 +112,12 @@ public class WatchAccountController {
             //This is a frog not a bug...perhaps your system do not want this.....
             pwd = "7c6a180b36896a0a8c02787eeafb0e4c"; //With this you can try it.....
         }
-
-
-
-
-        mv.addObject("md5pwd", pwd);//Ok you tried to find the password in sourcecode....try another way :-)
+        
+        mv.addObject("md5pwd", pwd);
+        
         return mv;
     }
+    
 
     @RequestMapping(value = "/change.secu", method = RequestMethod.POST)
     public ModelAndView changeAccount(HttpSession session, @RequestParam(value = "uid", required = true) String uid, @RequestParam(value = "uname", required = true) String uname, @RequestParam(value = "upwd", required = true) String upwd) {

@@ -7,7 +7,7 @@
 
 <h2><c:out value="${message}"/></h2>
 
-<form action="example.secu" method="get">
+<form action="example.secu" method="post">
     <input type="text" name="einname" id="eineid">
 </form>
 
