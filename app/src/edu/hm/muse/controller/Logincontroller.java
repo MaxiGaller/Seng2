@@ -56,6 +56,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
 
@@ -97,8 +98,10 @@ public class Logincontroller {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
 
+        String hpwd = hashen256(mpwd);
+
         //This is the sql statement
-        String sql = String.format("select count(*) from M_USER where muname = '%s' and mpwd = '%s'", mname, mpwd);
+        String sql = String.format("select count(*) from M_USER where muname = '%s' and mpwd = '%s'", mname, hpwd);
 
         int res = 0;
         try {
@@ -203,5 +206,32 @@ public class Logincontroller {
         }
         return output;
     }
+
+
+
+    private String hashen256(String mpwd) {
+        String hpwd = null;
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            digest.update(mpwd.getBytes(), 0, mpwd.length());
+
+            hpwd = new BigInteger(1, digest.digest()).toString(16);
+        }
+        catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return hpwd;
+    }
+
+    private boolean isUserInputValid(String mname) {
+        if (!(mname.matches("[A-Za-z0-9]+"))) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

@@ -47,28 +47,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.SecureRandom;
-import java.sql.Types;import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class RegisterController {
@@ -99,9 +82,11 @@ public class RegisterController {
         int lastId = jdbcTemplate.queryForInt(sqlSelect);
         //Increment the last ID
         lastId++;
-        
+
+        String hpwd = hashen256(new_mpwd);
+
         //Build the query with the new User and Passwd
-        String sqlInsert = String.format("insert into M_USER (ID,muname,mpwd) values (%s,'%s','%s')", lastId, new_uname, new_mpwd);
+        String sqlInsert = String.format("insert into M_USER (ID,muname,mpwd) values (%s,'%s','%s')", lastId, new_uname, hpwd);
 
         int res = 0;
         try {
@@ -130,5 +115,31 @@ public class RegisterController {
         ModelAndView mv = returnToRegister(session);
         return mv;
     }
+
+    private String hashen256(String mpwd) {
+        String hpwd = null;
+
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            digest.update(mpwd.getBytes(), 0, mpwd.length());
+
+            hpwd = new BigInteger(1, digest.digest()).toString(16);
+        }
+        catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return hpwd;
+    }
+
+    private boolean isUserInputValid(String mname) {
+        if (!(mname.matches("[A-Za-z0-9]+"))) {
+            return false;
+        }
+        return true;
+    }
+
+
 
 }
