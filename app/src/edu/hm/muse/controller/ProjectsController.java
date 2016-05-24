@@ -39,9 +39,11 @@ public class ProjectsController {
             return new ModelAndView("redirect:login.secu");
         }
 
+      //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
         String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
 		int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
+		
         String sql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ?";
         List<Map<String,Object>> projectnames = jdbcTemplate.queryForList(sql, UserIDFromSessionOverDatabase);
         

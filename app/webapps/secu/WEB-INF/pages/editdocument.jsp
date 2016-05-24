@@ -10,11 +10,10 @@
 		</tr>
 	    <tr>      
 	        <td>
-				<form action="editdocument.secu" method="get">
+				<form action="editsniped.secu" method="get">
 					<textarea rows="4" cols="50" name="snipedContent" id="snipedContent">${SnipedsForView.content}</textarea>
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId" id="snipedId">
 					<input type="hidden" value="<c:out value="${SnipedsForView.content_type}"/>" name="snipedContentTypeID" id="snipedContentTypeID">
-					<input type="hidden" value="true" name="gespeichert" id="gespeichert">
 			</td>
 	        <td>
 				    <input type="submit" value="Speichern">
@@ -34,14 +33,13 @@
 	</c:forEach>
 </table>
 							
-<form action="editdocument.secu" method="get">
+<form action="newsniped.secu" method="get">
 	<table>
 		<tr>  
 			<td>
 				<textarea rows="4" cols="50" name="snipedContent" id="snipedContent"></textarea>
-				<input type="hidden" value="false" name="gespeichert" id="gespeichert">
+				<input type="hidden" value="${projectId}" name="projectId" id="projectId">
 			    <input type="submit" value="Anlegen">
-			    
 			    <select name="content_type">	
 				    <c:forEach items="${TypesForView}" var="TypesForView">
 						<option value="${TypesForView.id}">${TypesForView.type}</option>
