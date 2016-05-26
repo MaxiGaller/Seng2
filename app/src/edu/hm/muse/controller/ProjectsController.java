@@ -66,41 +66,52 @@ public class ProjectsController {
 	@RequestMapping(value = "/newdocument.secu", method = RequestMethod.GET)
 	public ModelAndView saveNewProject(
 			@RequestParam(value = "documentname", required = true) String documentname,
-			HttpSession session){
+			HttpSession session, HttpServletRequest request){
 	
-    if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
-        return new ModelAndView("redirect:login.secu");
-    }
+        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.form");
+        }
     
-    //ToDo Auslagern
-    String uname = (String) session.getAttribute("user");
-    String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
-	int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
+        //ToDo Auslagern
+        String uname = (String) session.getAttribute("user");
+        String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
+	    int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
     
-	//Select the Last ID from the Table
+	    //Select the Last ID from the Table
+
+
+        Cookie cookie = getCookie(request, "loggedIn");
+
 
         //TODO: Wurde gefixed
-	String sqlSelectForDocumentID = "SELECT MAX(id) from LatexDocuments";
+	    String sqlSelectForDocumentID = "SELECT MAX(id) from LatexDocuments";
             //"SELECT id FROM LatexDocuments ORDER BY id DESC LIMIT 1";
-       int ProjectId = jdbcTemplate.queryForInt(sqlSelectForDocumentID);
-    //Increment the last ID
-    int nextProjectId = ProjectId++;
+        int ProjectId = jdbcTemplate.queryForInt(sqlSelectForDocumentID);
+        //Increment the last ID
+        int nextProjectId = ProjectId++;
         
-    String sqlContent = String.format("INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (%s, %s, '%s');", nextProjectId, UserIDFromSessionOverDatabase, documentname);
+        String sqlContent = String.format("INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (%s, %s, '%s');", nextProjectId, UserIDFromSessionOverDatabase, documentname);
 
-    int resContent = 0;
-    try {
+
+        ModelAndView mv = new ModelAndView("project");
+        mv.addObject("id", ProjectId);
+        mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
+
+
+        int resContent = 0;
+        try {
     	//execute the query and check exceptions
     	resContent = jdbcTemplate.update(sqlContent);
-    } catch (DataAccessException e) {
-        throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s ", sqlContent, e.getMessage()));
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s ", sqlContent, e.getMessage()));
+        }
+
+        return new ModelAndView("redirect:projects.secu");
+    
     }
-    
-    ModelAndView mv = new ModelAndView("redirect:projects.secu");
-    
-    return mv;
-    
-}
 
 
     private boolean isNotLoggedIn(HttpServletRequest request, HttpSession session) {
