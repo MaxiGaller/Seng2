@@ -47,6 +47,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -58,6 +60,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
+
+import static org.springframework.web.util.WebUtils.getCookie;
 
 @Controller
 public class Logincontroller {
@@ -95,7 +99,8 @@ public class Logincontroller {
     public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname,
                                     @RequestParam(value = "csrftoken",required = false) String csrfParam,
                                     @RequestParam(value = "mpwd", required = false) String mpwd,
-                                    HttpServletResponse response, HttpSession session) {
+                                    HttpServletResponse response, HttpSession session,
+                                    HttpServletRequest request) {
         if (null == mname || null == mpwd || mname.isEmpty() || mpwd.isEmpty()) {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
@@ -116,10 +121,11 @@ public class Logincontroller {
         try {
             res = jdbcTemplate.queryForInt(sql);
 
-            /*Integer csrfTokenSess = (Integer) session.getAttribute("csrftoken");
-            if (res != 0 && csrfParam != null && !csrfParam.isEmpty() && csrfTokenSess != null) {
-                Integer csrfParamToken = Integer.parseInt(csrfParam);
-                if (csrfParamToken.intValue() == csrfTokenSess.intValue()) {
+            int csrfTokenFromSession = (int) session.getAttribute("csrfToken");
+            int csrfTolenFromCookie = Integer.parseInt(getCookie(request, "login").getValue());
+            //Integer csrfTokenSess = (Integer) session.getAttribute("csrftoken");
+            if (csrfTokenFromSession != 0 && csrfTolenFromCookie != 0) {
+                if (csrfTolenFromCookie == csrfTokenFromSession) {
                     SecureRandom random = new SecureRandom();
                     int token = random.nextInt();
                     session.setAttribute("user", mname);
@@ -127,9 +133,9 @@ public class Logincontroller {
                     session.setAttribute("token",token);
                     response.addCookie(new Cookie("token",String.valueOf(token)));
                     session.removeAttribute("csrftoken");
-                    return new ModelAndView("redirect:adminintern.secu");
+                    return new ModelAndView("redirect:intern.secu");
                 }
-            }*/
+            }
 
 
 
