@@ -38,6 +38,7 @@
 package edu.hm.muse.controller;
 
 import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -64,6 +65,9 @@ import static org.springframework.web.util.WebUtils.getCookie;
 public class Logincontroller {
 
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    CookieHelper cookieHelper;
+
 
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
@@ -73,7 +77,7 @@ public class Logincontroller {
     @RequestMapping(value = "/login.secu", method = RequestMethod.GET)
     public ModelAndView showLoginScreen(HttpServletResponse response, HttpSession session) {
         ModelAndView mv = new ModelAndView("login");
-        mv.addObject("msg", "Enter name and password");
+        mv.addObject("msg", "Enter Name and Password");
         Integer token = getNewToken();
         mv.addObject("csrfToken", token);
         Cookie loginCookie = new Cookie("login", String.valueOf(token));
@@ -81,6 +85,8 @@ public class Logincontroller {
         session.setAttribute("csrfToken", token);
         return mv;
     }
+
+
 
 
     @RequestMapping(value = "/login.secu", method = RequestMethod.POST)
@@ -114,14 +120,28 @@ public class Logincontroller {
             //Integer csrfTokenSess = (Integer) session.getAttribute("csrftoken");
             if (csrfTokenFromSession != 0 && csrfTolenFromCookie != 0) {
                 if (csrfTolenFromCookie == csrfTokenFromSession) {
-                    SecureRandom random = new SecureRandom();
+                    /*SecureRandom random = new SecureRandom();
                     int token = random.nextInt();
                     session.setAttribute("user", mname);
                     session.setAttribute("login", true);
                     session.setAttribute("token",token);
                     response.addCookie(new Cookie("token",String.valueOf(token)));
                     session.removeAttribute("csrftoken");
+                    return new ModelAndView("redirect:intern.secu");*/
+
+
+                    int token = getNewToken();
+                    session.setAttribute("user", mname);
+                    //session.setAttribute("userId", dbUser.getUserId());
+                    Cookie loginCookie = new Cookie("loggedIn", String.valueOf(token));
+                    cookieHelper.eraseCookie(request, response, "login");
+                    response.addCookie(loginCookie);
+                    session.setAttribute("usertoken", String.valueOf(token));
+                    session.setAttribute("login", true);
+                    session.removeAttribute("csrftoken");
                     return new ModelAndView("redirect:intern.secu");
+
+
                 }
             }
 

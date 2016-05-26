@@ -1,6 +1,7 @@
 package edu.hm.muse.controller;
 
 import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -10,14 +11,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.web.util.WebUtils.getCookie;
+
 @Controller
 public class ProjectsController {
-	
+
+    @Autowired
+    private LoginHelper loginHelper;
+
     private JdbcTemplate jdbcTemplate;
 
     @Resource(name = "dataSource")
@@ -27,12 +35,16 @@ public class ProjectsController {
 	
 	// Load Projects
 	@RequestMapping(value = "/projects.secu", method = RequestMethod.GET)
-	public ModelAndView getProjectsByUserId(HttpSession session){
+	public ModelAndView getProjectsByUserId(HttpSession session, HttpServletRequest request){
 		
         if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
             return new ModelAndView("redirect:login.secu");
         }
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
 
+        Cookie cookie = getCookie(request, "loggedIn");
       //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
         String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
@@ -44,6 +56,7 @@ public class ProjectsController {
         ModelAndView mv = new ModelAndView("projects");
         
         mv.addObject("ProjectsForView", projectnames);
+        mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
         
         return mv;
         
@@ -88,6 +101,18 @@ public class ProjectsController {
     return mv;
     
 }
-	
-	
+
+
+    private boolean isNotLoggedIn(HttpServletRequest request, HttpSession session) {
+        Cookie cookie = getCookie(request, "loggedIn");
+        if (cookie == null) {
+            return true;
+        }
+        if (cookie.getValue().equals(session.getAttribute("usertoken"))) {
+            return false;
+        }
+        return true;
+    }
+
+
 }
