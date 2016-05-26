@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.util.List;
@@ -66,7 +67,7 @@ public class ProjectsController {
 	@RequestMapping(value = "/newdocument.secu", method = RequestMethod.GET)
 	public ModelAndView saveNewProject(
 			@RequestParam(value = "documentname", required = true) String documentname,
-			HttpSession session, HttpServletRequest request){
+			HttpSession session, HttpServletRequest request, HttpServletResponse response){
 	
         if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
             return new ModelAndView("redirect:login.secu");
@@ -99,7 +100,7 @@ public class ProjectsController {
         ModelAndView mv = new ModelAndView("project");
         mv.addObject("id", ProjectId);
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
-
+        response.addCookie(cookie);
 
         int resContent = 0;
         try {
