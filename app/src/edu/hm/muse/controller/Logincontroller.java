@@ -47,7 +47,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -93,10 +92,20 @@ public class Logincontroller {
     }
 
     @RequestMapping(value = "/login.secu", method = RequestMethod.POST)
-    public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname, @RequestParam(value = "mpwd", required = false) String mpwd, HttpSession session) {
+    public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname,
+                                    @RequestParam(value = "csrftoken",required = false) String csrfParam,
+                                    @RequestParam(value = "mpwd", required = false) String mpwd,
+                                    HttpServletResponse response, HttpSession session) {
         if (null == mname || null == mpwd || mname.isEmpty() || mpwd.isEmpty()) {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
+
+        if (!(mname.matches("[A-Za-z0-9]+"))) {
+            ModelAndView mv = new ModelAndView("login.secu");
+            mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
+            return mv;
+        }
+
 
         String hpwd = hashen256(mpwd);
 
@@ -106,6 +115,26 @@ public class Logincontroller {
         int res = 0;
         try {
             res = jdbcTemplate.queryForInt(sql);
+
+            /*Integer csrfTokenSess = (Integer) session.getAttribute("csrftoken");
+            if (res != 0 && csrfParam != null && !csrfParam.isEmpty() && csrfTokenSess != null) {
+                Integer csrfParamToken = Integer.parseInt(csrfParam);
+                if (csrfParamToken.intValue() == csrfTokenSess.intValue()) {
+                    SecureRandom random = new SecureRandom();
+                    int token = random.nextInt();
+                    session.setAttribute("user", mname);
+                    session.setAttribute("login", true);
+                    session.setAttribute("token",token);
+                    response.addCookie(new Cookie("token",String.valueOf(token)));
+                    session.removeAttribute("csrftoken");
+                    return new ModelAndView("redirect:adminintern.secu");
+                }
+            }*/
+
+
+
+
+
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
         }
@@ -122,7 +151,9 @@ public class Logincontroller {
     }
 
     @RequestMapping(value = "/adminlogin.secu", method = RequestMethod.POST)
-    public ModelAndView doAdminLogin(@RequestParam(value = "mpwd", required = false) String mpwd,@RequestParam(value = "csrftoken",required = false) String csrfParam,HttpServletResponse response, HttpSession session) {
+    public ModelAndView doAdminLogin(@RequestParam(value = "mpwd", required = false) String mpwd,
+                                     @RequestParam(value = "csrftoken",required = false) String csrfParam,
+                                     HttpServletResponse response, HttpSession session) {
         if (null == mpwd || mpwd.isEmpty()) {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mpwd is empty or null or something like this");
         }
@@ -136,7 +167,7 @@ public class Logincontroller {
 
             res = jdbcTemplate.queryForInt(sql,new Object[]{digest},new int[]{Types.VARCHAR});
 
-            Integer csrfTokenSess = (Integer) session.getAttribute("csrftoken");
+            /*Integer csrfTokenSess = (Integer) session.getAttribute("csrftoken");
             if (res != 0 && csrfParam != null && !csrfParam.isEmpty() && csrfTokenSess != null) {
                 Integer csrfParamToken = Integer.parseInt(csrfParam);
                 if (csrfParamToken.intValue() == csrfTokenSess.intValue()) {
@@ -149,7 +180,7 @@ public class Logincontroller {
                     session.removeAttribute("csrftoken");
                     return new ModelAndView("redirect:adminintern.secu");
                 }
-            }
+            }*/
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -238,4 +269,11 @@ public class Logincontroller {
         }
         return false;
     }
+
+    private int getNewToken() {
+        SecureRandom random = new SecureRandom();
+        return random.nextInt();
+    }
+
+
 }

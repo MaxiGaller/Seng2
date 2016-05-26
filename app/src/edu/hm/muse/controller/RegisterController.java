@@ -47,11 +47,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 @Controller
 public class RegisterController {
@@ -72,10 +75,18 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register.secu", method = RequestMethod.POST)
-    public ModelAndView doSomeRegister(@RequestParam(value = "new_uname", required = false) String new_uname, @RequestParam(value = "new_mpwd", required = false) String new_mpwd, HttpSession session) {
-    	if (null == new_uname || null == new_mpwd || new_uname.isEmpty() || new_mpwd.isEmpty()) {
+    public ModelAndView doSomeRegister(@RequestParam(value = "new_uname", required = false) String new_uname, @RequestParam(value = "new_mpwd", required = false) String new_mpwd, HttpServletResponse response, HttpSession session) {
+        if (!(new_uname.matches("[A-Za-z0-9]+"))) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
+            return mv;
+        }
+
+
+        if (null == new_uname || null == new_mpwd || new_uname.isEmpty() || new_mpwd.isEmpty()) {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam new_uname or new_mpwd is empty or null or something like this");
         }
+
 
         if (isLoginNameTaken(new_uname)) {
             ModelAndView mv = new ModelAndView("register");
@@ -104,13 +115,20 @@ public class RegisterController {
 
         //Register Ok
         //Do Autologin
-        if (res > 0) {
+
             if (res > 0) {
-                session.setAttribute("login", true);
+                ModelAndView mv = new ModelAndView("redirect:login.secu");
+                mv.addObject("msg", "You've been successfully registered, please login:");
+                Integer token = getNewToken();
+                mv.addObject("csrfToken", token);
+                Cookie loginCookie = new Cookie("login", String.valueOf(token));
+                response.addCookie(loginCookie);
+                session.setAttribute("csrfToken", token);
+                return mv;
+                /*session.setAttribute("login", true);
                 session.setAttribute("user", new_uname);
-                return new ModelAndView("redirect:intern.secu");
+                return new ModelAndView("redirect:intern.secu");*/
             }
-        }
         //Error
         return returnToRegister(session);
     }
@@ -154,5 +172,12 @@ public class RegisterController {
         }
         return false;
     }
+
+
+    private int getNewToken() { //FIXME: Duplicate Code, see LoginController getNewToken()
+        SecureRandom random = new SecureRandom();
+        return random.nextInt();
+    }
+
 
 }
