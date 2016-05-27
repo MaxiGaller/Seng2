@@ -89,7 +89,7 @@ public class RegisterController {
         }
 
 
-        if (null == new_uname || null == new_mpwd || new_uname.isEmpty() || new_mpwd.isEmpty()) {
+        if (null == new_mpwd || new_uname.isEmpty() || new_mpwd.isEmpty()) {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam new_uname or new_mpwd is empty or null or something like this");
         }
 
@@ -105,8 +105,6 @@ public class RegisterController {
         int lastId = jdbcTemplate.queryForInt(sqlSelect);
         //Increment the last ID
         lastId++;*/
-
-
 
         //Build the query with the new User and Passwd
 
@@ -142,9 +140,7 @@ public class RegisterController {
                 response.addCookie(loginCookie);
                 session.setAttribute("csrfToken", token);
                 return mv;
-                /*session.setAttribute("login", true);
-                session.setAttribute("user", new_uname);
-                return new ModelAndView("redirect:intern.secu");*/
+
             }
         //Error
         return returnToRegister(session);
@@ -185,7 +181,10 @@ public class RegisterController {
                 return true;
             }
         } catch (DataAccessException e) {
+            //returnToRegister(session);
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
+            //return new ModelAndView("redirect:register.secu");
+
         }
         return false;
     }
@@ -195,6 +194,5 @@ public class RegisterController {
         SecureRandom random = new SecureRandom();
         return random.nextInt();
     }
-
 
 }
