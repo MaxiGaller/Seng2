@@ -3,6 +3,11 @@
 <jsp:include page="../../head.jsp"/>
 <h1>Document: <c:out value="${documentname}"/></h1>
 
+Dokumentnamen ändern in
+<form action="editsniped.secu" method="get">
+	<input type="text" value="" name="documentname" id="documentname">
+</form>
+
 <table>
 	<c:forEach items="${SnipedsForView}" var="SnipedsForView">
 		<tr>

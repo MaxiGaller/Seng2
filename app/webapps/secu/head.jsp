@@ -17,8 +17,6 @@
 <!-- Links für das Menü auf der linken Seite -->
 
 <ul id="navigation">
-    <img src="img/logo.png" width="100%"/>
-    <li><a href="login.secu">login into area42 </a></li>
     <li><a href="register.secu">Register</a></li>
     <li><a href="intern.secu">Userbereich</a></li>
     <li><a href="projects.secu">LaTeX Editor</a></li>
