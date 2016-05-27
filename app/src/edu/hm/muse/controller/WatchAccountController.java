@@ -38,6 +38,7 @@
 package edu.hm.muse.controller;
 
 import edu.hm.muse.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,12 +53,16 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Types;
+import java.util.Arrays;
 
 
 @Controller
 public class WatchAccountController extends functions {
 
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    SaltErstellen saltErstellen;
 
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
@@ -127,16 +132,26 @@ public class WatchAccountController extends functions {
             return new ModelAndView("redirect:login.secu");
         }
 
-        String hpwd = hashen256(upwd);
 
-        String sql = "update M_USER set muname = ?, mpwd = ? " +
+        StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
+        //saltErstellen = saltErstellen.INSTANCE;
+        byte[] salt = saltErstellen.getNextSalt();
+        saltedPw.append(Arrays.toString(salt));
+        saltedPw.append(upwd);
+
+
+        String hpwd = hashen256(saltedPw.toString());
+
+        //String hpwd = hashen256(upwd);
+
+        String sql = "update M_USER set  mpwd = ? " +
                 "where " +
                 "ID = "+uid;
 
+        //Todo: Passwort mit Salt versehen
         //Die Fragezeichen sind für des jdbcTemplate Zeile in dem Object Array
-        //String sql = String.format("update M_USER set muname = '%s', mpwd = '%s' where ID = "+uid, uname, hpwd);
 
-        jdbcTemplate.update(sql, new Object[]{uname, hpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
+        jdbcTemplate.update(sql, new Object[]{hpwd}, new int[]{Types.VARCHAR});
         session.setAttribute("user", uname);
         return new ModelAndView("redirect:intern.secu");
     }
