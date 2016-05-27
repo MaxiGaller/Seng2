@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 
@@ -78,8 +79,8 @@ public class ProjectsController {
     
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
-        String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
-	    int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
+        String sql_id = "select ID from M_USER where muname = ?";
+	    int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
     
 	    //Select the Last ID from the Table
 
@@ -94,7 +95,7 @@ public class ProjectsController {
         //Increment the last ID
         int nextProjectId = ProjectId++;
         
-        String sqlContent = String.format("INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (%s, %s, '%s');", nextProjectId, UserIDFromSessionOverDatabase, documentname);
+        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (?, ?, ?)";
 
 
         ModelAndView mv = new ModelAndView("project");
@@ -105,7 +106,7 @@ public class ProjectsController {
         int resContent = 0;
         try {
     	//execute the query and check exceptions
-    	resContent = jdbcTemplate.update(sqlContent);
+    	resContent = jdbcTemplate.update(sqlContent, new Object[] {nextProjectId, UserIDFromSessionOverDatabase, documentname}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.VARCHAR});
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s ", sqlContent, e.getMessage()));
         }
