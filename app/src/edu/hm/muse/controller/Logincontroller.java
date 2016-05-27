@@ -58,6 +58,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.Types;
 
 import static org.springframework.web.util.WebUtils.getCookie;
 
@@ -109,11 +110,11 @@ public class Logincontroller {
         String hpwd = hashen256(mpwd);
 
         //This is the sql statement
-        String sql = String.format("select count(*) from M_USER where muname = '%s' and mpwd = '%s'", mname, hpwd);
+        String sql = "select count(*) from M_USER where muname = ? and mpwd = ?";
 
         int res = 0;
         try {
-            res = jdbcTemplate.queryForInt(sql);
+            res = jdbcTemplate.queryForInt(sql,new Object[] {mname, mpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
 
             int csrfTokenFromSession = (int) session.getAttribute("csrfToken");
             int csrfTolenFromCookie = Integer.parseInt(getCookie(request, "login").getValue());

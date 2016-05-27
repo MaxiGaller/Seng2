@@ -55,6 +55,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.Types;
 
 @Controller
 public class RegisterController {
@@ -95,22 +96,24 @@ public class RegisterController {
         }
 
         //Select the Last ID from the Table
-    	String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
+    	/*String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
         int lastId = jdbcTemplate.queryForInt(sqlSelect);
         //Increment the last ID
-        lastId++;
+        lastId++;*/
 
         String hpwd = hashen256(new_mpwd);
 
         //Build the query with the new User and Passwd
-        String sqlInsert = String.format("insert into M_USER (ID,muname,mpwd) values (%s,'%s','%s')", lastId, new_uname, hpwd);
+        String sqlInsert = "insert into M_USER (muname,mpwd) values (?,?)";
+
 
         int res = 0;
         try {
         	//execute the query and check exceptions
-            res = jdbcTemplate.update(sqlInsert);
+            res = jdbcTemplate.update(sqlInsert, new Object[] {new_uname, new_mpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
+            ModelAndView mv = returnToRegister(session);
+            //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
         }
 
         //Register Ok
