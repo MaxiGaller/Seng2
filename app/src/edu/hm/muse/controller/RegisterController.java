@@ -124,7 +124,7 @@ public class RegisterController {
         int res = 0;
         try {
         	//execute the query and check exceptions
-            res = jdbcTemplate.update(sqlInsert, new Object[] {new_uname, new_mpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
+            res = jdbcTemplate.update(sqlInsert, new Object[] {new_uname, hpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
             ModelAndView mv = returnToRegister(session);
             //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));

@@ -128,7 +128,7 @@ public class Logincontroller {
 
         int res = 0;
         try {
-            res = jdbcTemplate.queryForInt(sql,new Object[] {mname, mpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
+            res = jdbcTemplate.queryForInt(sql,new Object[] {mname, hpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
 
             int csrfTokenFromSession = (int) session.getAttribute("csrfToken");
             int csrfTolenFromCookie = Integer.parseInt(getCookie(request, "login").getValue());
