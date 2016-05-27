@@ -38,6 +38,7 @@
 package edu.hm.muse.controller;
 
 import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -56,11 +57,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
+import java.util.Arrays;
 
 @Controller
 public class RegisterController {
 
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    SaltErstellen saltErstellen;
 
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
@@ -101,12 +106,21 @@ public class RegisterController {
         //Increment the last ID
         lastId++;*/
 
-        String hpwd = hashen256(new_mpwd);
+
 
         //Build the query with the new User and Passwd
+
+
+        StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
+        //saltErstellen = saltErstellen.INSTANCE;
+        byte[] salt = saltErstellen.getNextSalt();
+        saltedPw.append(Arrays.toString(salt));
+        saltedPw.append(new_mpwd);
+
+
+        String hpwd = hashen256(saltedPw.toString());
+
         String sqlInsert = "insert into M_USER (muname,mpwd) values (?,?)";
-
-
         int res = 0;
         try {
         	//execute the query and check exceptions

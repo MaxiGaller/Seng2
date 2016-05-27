@@ -69,6 +69,9 @@ public class Logincontroller {
     @Autowired
     CookieHelper cookieHelper;
 
+    @Autowired
+    SaltErstellen saltErstellen;
+
 
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
@@ -106,11 +109,22 @@ public class Logincontroller {
             return mv;
         }
 
+        String getSalt = String.format("select salt from M_USER where muname = '%s'", mname);
+        String salt = jdbcTemplate.queryForObject(getSalt, String.class);
 
-        String hpwd = hashen256(mpwd);
+        StringBuilder saltedPw = new StringBuilder();
+        saltedPw.append(salt);
+        saltedPw.append(mpwd);
+
+
+        String hpwd = hashen256(saltedPw.toString());
 
         //This is the sql statement
         String sql = "select count(*) from M_USER where muname = ? and mpwd = ?";
+
+
+        //StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
+
 
         int res = 0;
         try {
@@ -118,22 +132,10 @@ public class Logincontroller {
 
             int csrfTokenFromSession = (int) session.getAttribute("csrfToken");
             int csrfTolenFromCookie = Integer.parseInt(getCookie(request, "login").getValue());
-            //Integer csrfTokenSess = (Integer) session.getAttribute("csrftoken");
             if (csrfTokenFromSession != 0 && csrfTolenFromCookie != 0) {
                 if (csrfTolenFromCookie == csrfTokenFromSession) {
-                    /*SecureRandom random = new SecureRandom();
-                    int token = random.nextInt();
-                    session.setAttribute("user", mname);
-                    session.setAttribute("login", true);
-                    session.setAttribute("token",token);
-                    response.addCookie(new Cookie("token",String.valueOf(token)));
-                    session.removeAttribute("csrftoken");
-                    return new ModelAndView("redirect:intern.secu");*/
-
-
                     int token = getNewToken();
                     session.setAttribute("user", mname);
-                    //session.setAttribute("userId", dbUser.getUserId());
                     Cookie loginCookie = new Cookie("loggedIn", String.valueOf(token));
                     cookieHelper.eraseCookie(request, response, "login");
                     response.addCookie(loginCookie);
@@ -141,18 +143,13 @@ public class Logincontroller {
                     session.setAttribute("login", true);
                     session.removeAttribute("csrftoken");
                     return new ModelAndView("redirect:intern.secu");
-
-
                 }
             }
-
-
-
-
 
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
         }
+
 
         //If there are any results, than the username and password is correct
         if (res > 0) {
@@ -160,6 +157,7 @@ public class Logincontroller {
             session.setAttribute("login", true);
             return new ModelAndView("redirect:intern.secu");
         }
+
         //Ohhhhh not correct try again
         ModelAndView mv = returnToLogin(session);
         return mv;
