@@ -3,7 +3,7 @@
 
 <span style="font-size:3em"><font color="FF9900"><b>Login</b></font></span>
 
-<form action="register.secu" method="post">
+<form action="login.secu" method="post">
     <br><br>
     <label for="mname"></label>
     <input type="text" name="mname" id="mname" placeholder="Benutzername" style="margin-left: 5px;">
