@@ -33,7 +33,9 @@ public class LogoutController {
 
         cookieHelper.eraseCookies(request, response);
         session.invalidate();
-        return new ModelAndView("redirect:login.secu");
+
+        ModelAndView mv = new ModelAndView("redirect:login.secu");
+        return mv;
     }
 
 }
