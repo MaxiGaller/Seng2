@@ -108,6 +108,9 @@ public class Logincontroller {
             mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
             return mv;
         }
+        if (!isLoginNameTaken(mname)) {
+            return new ModelAndView("redirect:login.secu");
+        }
 
         String getSalt = String.format("select salt from M_USER where muname = '%s'", mname);
         String salt = jdbcTemplate.queryForObject(getSalt, String.class);
