@@ -92,7 +92,7 @@ public class ProjectsController {
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
         response.addCookie(cookie);
         
-        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, ?, ?)";
+        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, ?, ?, 0)";
 
         int resContent = 0;
         try {
@@ -187,9 +187,45 @@ public class ProjectsController {
         
 	}
 	
-	// Recycle document
+	// Move all to Attic
+	@RequestMapping(value = "/cleantrashcan.secu", method = RequestMethod.GET)
+	public ModelAndView finalDeleteTrashcanByID(
+            HttpSession session, 
+            HttpServletResponse response, 
+            HttpServletRequest request){
+		
+        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        Cookie cookie = getCookie(request, "loggedIn");
+        
+        //ToDo Auslagern
+        String uname = (String) session.getAttribute("user");
+        String sql_id = "select ID from M_USER where muname = ?";
+	    int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
+
+        //Update the DB
+        String sqlUpdate = String.format("UPDATE LatexDocuments SET muser_id = 0 WHERE trash = 1 AND muser_id = %s", UserIDFromSessionOverDatabase);
+
+        int res = 0;
+        try {
+        	//execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate);
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+        }
+        
+        return new ModelAndView("redirect:projects.secu");
+        
+	}
+	
+	// Move Document to Attic
 	@RequestMapping(value = "/finaldelete.secu", method = RequestMethod.GET)
-	public ModelAndView finalDeleteDocumentsByID(
+	public ModelAndView finalDeleteDocumentByID(
             @RequestParam(value = "documentId", required = true) int documentId,
             HttpSession session, 
             HttpServletResponse response, 

@@ -41,6 +41,11 @@
 <hr>
 
 <h2>M&uuml;lleimer</h2>
+
+<form action="cleantrashcan.secu" method="get">
+	<input type="submit" value="Papierkorb leeren">	
+</form>
+
 <table>
 	<c:forEach items="${TrashDocumentsForView}" var="TrashDocumentsForView">
 	    <tr>

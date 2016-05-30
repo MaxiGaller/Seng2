@@ -6,13 +6,6 @@ CREATE TABLE LatexSniped (id NUMERIC IDENTITY, muser_id NUMERIC, document_id NUM
 CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255), trash NUMERIC);
 CREATE TABLE LatexType (id NUMERIC IDENTITY, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), accessable NUMERIC);
 
-/**
-SELECT M_USER.muname,projectname,type_opening_tag,content,type_closeing_tag FROM LatexProjects JOIN LatexType, LatexDocument, M_USER
-WHERE LatexProjects.id LIKE LatexDocument.document_id
-AND LatexType.id LIKE LatexDocument.content_type
-AND LatexProjects.muser_id LIKE M_USER.id
-*/
-
 INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'Test Doc', 0);
 INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'Ernsthaftes Test Dokument', 0);
 INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'LULULULULUL', 1);
