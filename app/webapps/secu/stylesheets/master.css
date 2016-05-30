@@ -2,6 +2,9 @@
 /*
 Hintergrund
 */
+
+}
+
 body {
     color: #474973;
     background-color: #FFFFFF;
@@ -20,7 +23,6 @@ ul#Navigation {
     width: 22em;
     margin: 0;
     padding: 0;
-    border: 1px #2b17c0;
     margin-left: 10px;
 }
 
@@ -40,6 +42,7 @@ ul#Navigation a {
     display: block;
     padding: 0.2em;
     font-weight: bold;
+    font-family: Arial;
 }
 
 /*
@@ -81,7 +84,6 @@ ul#Navigation a:active {
 div#Inhalt {
     margin-left: 22em;
     padding: 0 1em;
-    border: 1px dashed silver;
     min-width: 16em;
 }
 
@@ -113,7 +115,6 @@ div#Inhalt p {
     top: 0;
     left: 0;
     background: #9c0000;
-    border: 1px solid #ededed;
     z-index: 1;
 }
 
@@ -124,7 +125,6 @@ div#Inhalt p {
     height: 384px;
     width: 408px;
     background: #FFFFFF;
-    border: 2px solid #ededed;
     z-index: 2;
     padding: 12px;
     font-size: 13px;
@@ -135,7 +135,6 @@ div#Inhalt p {
     color: #9c0000;
     font-size: 22px;
     font-weight: 700;
-    border-bottom: 1px dotted #ededed;
     padding-bottom: 2px;
     margin-bottom: 20px;
 }
@@ -158,5 +157,4 @@ div#Inhalt p {
     padding: 0.1em;
     text-align: center;
     background-color: #ededed;
-    border: 1px solid #9c0000;
 }*/

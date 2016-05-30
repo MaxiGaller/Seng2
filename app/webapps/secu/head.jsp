@@ -32,4 +32,3 @@
 </ul>
 
 <div id="Inhalt">
-    </div>
