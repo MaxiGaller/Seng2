@@ -1,11 +1,13 @@
 <%--@elvariable id="userDomain" type="edu.hm.muse.domain.User"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../../head.jsp"/>
-<h1>Document: <c:out value="${documentname}"/></h1>
+<h1><c:out value="${documentname}"/> - Bearbeiten</h1>
 
-Dokumentnamen ändern in
+Dokumentnamen &auml;ndern in
 <form action="renamedocument.secu" method="get">
-	<input type="text" value="" name="documentname" id="documentname">
+	<input type="hidden" value="<c:out value="${documentId}"/>" name="documentId" id="documentId">
+	<input type="text" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
+	<input type="submit" value="&Auml;ndern">
 </form>
 
 <table>

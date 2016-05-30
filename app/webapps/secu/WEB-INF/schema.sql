@@ -17,17 +17,17 @@ INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'Test D
 INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'Ernsthaftes Test Dokument');
 INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'LULULULULUL');
 
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'Bla Bla Blub! Überschrift', 1);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 3);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 2, 'H1 H1 H1 H1 H1', 1);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 2, 'TEXT TEXT TEXT', 4);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 2, 'H2 H2 H2 H2 H2', 2);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 2, 'TEXT TEXT TEXT', 4);
-insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 2, 'H3 H3 H3 H3 H3', 3);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 0, 'Bla Bla Blub! Überschrift', 0);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 0, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 0, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 1);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 0, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 0, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 0, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'H1 H1 H1 H1 H1', 0);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'TEXT TEXT TEXT', 3);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'H2 H2 H2 H2 H2', 1);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'TEXT TEXT TEXT', 3);
+insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 1, 'H3 H3 H3 H3 H3', 2);
 
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'section', '\section{', '}', 1);
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'subsection', '\subsection{', '}', 1);

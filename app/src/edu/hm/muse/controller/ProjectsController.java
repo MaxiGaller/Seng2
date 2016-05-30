@@ -105,12 +105,11 @@ public class ProjectsController {
     
     }
 	
-	// Edit Sniped
+	// rename document
 	@RequestMapping(value = "/renamedocument.secu", method = RequestMethod.GET)
-	public ModelAndView editSnipedBySnipedID(
+	public ModelAndView renameDocumentById(
             @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
-            @RequestParam(value = "documentId", required = true) int documentId,
             HttpSession session, 
             HttpServletResponse response, 
             HttpServletRequest request){
