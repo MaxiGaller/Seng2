@@ -3,7 +3,7 @@ CREATE TABLE NEWSLETTER (id NUMERIC PRIMARY KEY, text VARCHAR(1000));
 CREATE TABLE M_ADMIN (ID NUMERIC PRIMARY KEY, mpwd VARCHAR(255) UNIQUE);
 
 CREATE TABLE LatexSniped (id NUMERIC IDENTITY, muser_id NUMERIC, document_id NUMERIC, content VARCHAR(1000000), content_type NUMERIC);
-CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255));
+CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255), trash NUMERIC);
 CREATE TABLE LatexType (id NUMERIC IDENTITY, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), accessable NUMERIC);
 
 /**
@@ -13,9 +13,9 @@ AND LatexType.id LIKE LatexDocument.content_type
 AND LatexProjects.muser_id LIKE M_USER.id
 */
 
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'Test Doc');
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'Ernsthaftes Test Dokument');
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'LULULULULUL');
+INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'Test Doc', 0);
+INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'Ernsthaftes Test Dokument', 0);
+INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'LULULULULUL', 1);
 
 insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 0, 'Bla Bla Blub! Überschrift', 0);
 insert into LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, 2, 0, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3);

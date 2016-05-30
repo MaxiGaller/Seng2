@@ -52,12 +52,16 @@ public class ProjectsController {
         String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
 		int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
 		
-        String sql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ?";
+        String sql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ? AND trash = 0";
         List<Map<String,Object>> projectnames = jdbcTemplate.queryForList(sql, UserIDFromSessionOverDatabase);
+        
+        String trashsql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ? AND trash = 1";
+        List<Map<String,Object>> trashprojectnames = jdbcTemplate.queryForList(trashsql, UserIDFromSessionOverDatabase);
         
         ModelAndView mv = new ModelAndView("projects");
         
         mv.addObject("ProjectsForView", projectnames);
+        mv.addObject("TrashDocumentsForView", trashprojectnames);
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
         
         return mv;
@@ -81,17 +85,14 @@ public class ProjectsController {
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
 	    int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
-    
-	    //Select the Last ID from the Table
-
 
         Cookie cookie = getCookie(request, "loggedIn");
-        
-        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, ?, ?)";
 
         ModelAndView mv = new ModelAndView("project");
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
         response.addCookie(cookie);
+        
+        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, ?, ?)";
 
         int resContent = 0;
         try {
@@ -140,6 +141,81 @@ public class ProjectsController {
         response.addCookie(cookie);
 
         return mv;
+        
+	}
+	
+	// Recycle document
+	@RequestMapping(value = "/recycledocuments.secu", method = RequestMethod.GET)
+	public ModelAndView recycleDocumentsByID(
+            @RequestParam(value = "documentId", required = true) int documentId,
+            HttpSession session, 
+            HttpServletResponse response, 
+            HttpServletRequest request){
+		
+        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        Cookie cookie = getCookie(request, "loggedIn");
+        		
+		String sql_id = String.format("SELECT trash FROM LatexDocuments WHERE id = '%s'", documentId);
+		int CheckTrashState = jdbcTemplate.queryForInt(sql_id);
+		
+		int trashmark;
+		
+		if (CheckTrashState == 1) {
+			trashmark = 0;
+		} else {
+			trashmark = 1;
+		}
+
+        //Update the DB
+        String sqlUpdate = String.format("UPDATE LatexDocuments SET trash = '%s' WHERE id = %s", trashmark, documentId);
+
+        int res = 0;
+        try {
+        	//execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate);
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+        }
+        
+        return new ModelAndView("redirect:projects.secu");
+        
+	}
+	
+	// Recycle document
+	@RequestMapping(value = "/finaldelete.secu", method = RequestMethod.GET)
+	public ModelAndView finalDeleteDocumentsByID(
+            @RequestParam(value = "documentId", required = true) int documentId,
+            HttpSession session, 
+            HttpServletResponse response, 
+            HttpServletRequest request){
+		
+        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        Cookie cookie = getCookie(request, "loggedIn");
+
+        //Update the DB
+        String sqlUpdate = String.format("UPDATE LatexDocuments SET muser_id = 0 WHERE id = %s", documentId);
+
+        int res = 0;
+        try {
+        	//execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate);
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+        }
+        
+        return new ModelAndView("redirect:projects.secu");
         
 	}
 
