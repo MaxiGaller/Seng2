@@ -71,7 +71,9 @@ public class EditDocumentController {
             @RequestParam(value = "snipedId", required = true) int snipedId,
             @RequestParam(value = "content_type", required = true) int content_type,
             @RequestParam(value = "snipedContent", required = true) String snipedContent,
-            HttpSession session, HttpServletResponse response, HttpServletRequest request){
+            HttpSession session, 
+            HttpServletResponse response, 
+            HttpServletRequest request){
 		
         if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
             return new ModelAndView("redirect:login.secu");
@@ -110,7 +112,9 @@ public class EditDocumentController {
 			@RequestParam(value = "documentname", required = true) String documentname,
 			@RequestParam(value = "content_type", required = true) int content_type,
 			@RequestParam(value = "snipedContent", required = true) String snipedContent,
-			HttpSession session, HttpServletRequest request, HttpServletResponse response){
+			HttpSession session, 
+			HttpServletRequest request, 
+			HttpServletResponse response){
 		
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
@@ -121,18 +125,13 @@ public class EditDocumentController {
 
         Cookie cookie = getCookie(request, "loggedIn");
 
-
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
         String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
 		int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
         
-		//Select the Last ID from the Table
-    	String sqlSelect = "SELECT id FROM LatexSniped WHERE project_id = ? ORDER BY id DESC LIMIT 1";
-        int lastId = jdbcTemplate.queryForInt(sqlSelect, projectId);
-        
         //Insert the Content to DB
-        String sqlInsert = String.format("INSERT INTO LatexSniped (id, muser_id, project_id, content, content_type) VALUES (%s, %s, %s, '%s', %s)", lastId, UserIDFromSessionOverDatabase, projectId, snipedContent, content_type);
+        String sqlInsert = String.format("INSERT INTO LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, %s, %s, '%s', %s)", UserIDFromSessionOverDatabase, projectId, snipedContent, content_type);
 
         int res = 0;
         try {

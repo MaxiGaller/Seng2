@@ -2,9 +2,9 @@ CREATE TABLE M_USER (ID INTEGER IDENTITY, muname VARCHAR(255) UNIQUE, mpwd VARCH
 CREATE TABLE NEWSLETTER (id NUMERIC PRIMARY KEY, text VARCHAR(1000));
 CREATE TABLE M_ADMIN (ID NUMERIC PRIMARY KEY, mpwd VARCHAR(255) UNIQUE);
 
-CREATE TABLE LatexSniped (id NUMERIC, muser_id NUMERIC, project_id NUMERIC, content VARCHAR(1000000), content_type NUMERIC);
-CREATE TABLE LatexDocuments (id NUMERIC, muser_id NUMERIC, documentname VARCHAR(255));
-CREATE TABLE LatexType (id NUMERIC, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), accessable NUMERIC);
+CREATE TABLE LatexSniped (id NUMERIC IDENTITY, muser_id NUMERIC, project_id NUMERIC, content VARCHAR(1000000), content_type NUMERIC);
+CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255));
+CREATE TABLE LatexType (id NUMERIC IDENTITY, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), accessable NUMERIC);
 
 /**
 SELECT M_USER.muname,projectname,type_opening_tag,content,type_closeing_tag FROM LatexProjects JOIN LatexType, LatexDocument, M_USER
@@ -13,30 +13,30 @@ AND LatexType.id LIKE LatexDocument.content_type
 AND LatexProjects.muser_id LIKE M_USER.id
 */
 
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (1, 2, 'Test Doc');
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (2, 2, 'Ernsthaftes Test Dokument');
-INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (3, 2, 'LULULULULUL');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'Test Doc');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'Ernsthaftes Test Dokument');
+INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, 2, 'LULULULULUL');
 
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (1, 2, 1, 'Bla Bla Blub! Überschrift', 1);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (2, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (3, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (4, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (5, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 3);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (6, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (7, 2, 2, 'H1 H1 H1 H1 H1', 1);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (8, 2, 2, 'TEXT TEXT TEXT', 4);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (9, 2, 2, 'H2 H2 H2 H2 H2', 2);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (10, 2, 2, 'TEXT TEXT TEXT', 4);
-insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (11, 2, 2, 'H3 H3 H3 H3 H3', 3);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 1, 'Bla Bla Blub! Überschrift', 1);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 1, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 3);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 2, 'H1 H1 H1 H1 H1', 1);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 2, 'TEXT TEXT TEXT', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 2, 'H2 H2 H2 H2 H2', 2);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 2, 'TEXT TEXT TEXT', 4);
+insert into LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, 2, 2, 'H3 H3 H3 H3 H3', 3);
 
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (1, 'section', '\section{', '}', 1);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (2, 'subsection', '\subsection{', '}', 1);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (3, 'subsubsection', '\subsubsection{', '}', 1);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (4, 'text', '<text>', '}', 1);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (5, 'Titel', '\titel{', '}', 0);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (6, 'Author', '\author{', '}', 0);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (7, 'Beginn', '\begin{', '}', 0);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (8, 'Ende', '\end{', '}', 0);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'section', '\section{', '}', 1);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'subsection', '\subsection{', '}', 1);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'subsubsection', '\subsubsection{', '}', 1);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'text', '<text>', '}', 1);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'Titel', '\titel{', '}', 0);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'Author', '\author{', '}', 0);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'Beginn', '\begin{', '}', 0);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, accessable) VALUES (NULL, 'Ende', '\end{', '}', 0);
 
 
 insert into M_USER (ID,muname,mpwd) values (1,'never','login');

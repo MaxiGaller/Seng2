@@ -142,7 +142,7 @@ public class Logincontroller {
                     session.setAttribute("usertoken", String.valueOf(token));
                     session.setAttribute("login", true);
                     session.removeAttribute("csrftoken");
-                    return new ModelAndView("redirect:intern.secu");
+                    return new ModelAndView("redirect:projects.secu");
                 }
             }
 
@@ -155,7 +155,7 @@ public class Logincontroller {
         if (res > 0) {
             session.setAttribute("user", mname);
             session.setAttribute("login", true);
-            return new ModelAndView("redirect:intern.secu");
+            return new ModelAndView("redirect:projects.secu");
         }
 
         //Ohhhhh not correct try again

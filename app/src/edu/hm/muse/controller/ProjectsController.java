@@ -70,40 +70,6 @@ public class ProjectsController {
 			@RequestParam(value = "documentname", required = true) String documentname,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response){
 	
-<<<<<<< HEAD
-	    if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
-	        return new ModelAndView("redirect:login.secu");
-	    }
-	    
-	    //ToDo Auslagern
-	    String uname = (String) session.getAttribute("user");
-	    String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
-		int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
-	    
-		//Select the Last ID from the Table
-		String sqlSelectForDocumentID = "SELECT id FROM LatexDocuments ORDER BY id DESC LIMIT 1";
-	    int ProjectId = jdbcTemplate.queryForInt(sqlSelectForDocumentID);
-	    //Increment the last ID
-	    int nextProjectId = ProjectId++;
-	        
-	    String sqlContent = String.format("INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (%s, %s, '%s');", nextProjectId, UserIDFromSessionOverDatabase, documentname);
-	
-	    int resContent = 0;
-	    try {
-	    	//execute the query and check exceptions
-	    	resContent = jdbcTemplate.update(sqlContent);
-	    } catch (DataAccessException e) {
-	        throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s ", sqlContent, e.getMessage()));
-	    }
-	    
-	    ModelAndView mv = new ModelAndView("redirect:projects.secu");
-	    
-	    return mv;
-    
-	}
-	
-	
-=======
         if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
             return new ModelAndView("redirect:login.secu");
         }
@@ -120,29 +86,19 @@ public class ProjectsController {
 
 
         Cookie cookie = getCookie(request, "loggedIn");
-
-
-        //TODO: Wurde gefixed
-	    String sqlSelectForDocumentID = "SELECT MAX(id) from LatexDocuments";
-            //"SELECT id FROM LatexDocuments ORDER BY id DESC LIMIT 1";
-        int ProjectId = jdbcTemplate.queryForInt(sqlSelectForDocumentID);
-        //Increment the last ID
-        int nextProjectId = ProjectId++;
         
-        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (?, ?, ?)";
-
+        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname) VALUES (NULL, ?, ?)";
 
         ModelAndView mv = new ModelAndView("project");
-        mv.addObject("id", ProjectId);
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
         response.addCookie(cookie);
 
         int resContent = 0;
         try {
     	//execute the query and check exceptions
-    	resContent = jdbcTemplate.update(sqlContent, new Object[] {nextProjectId, UserIDFromSessionOverDatabase, documentname}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.VARCHAR});
+    	resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, documentname}, new int[]{Types.NUMERIC, Types.VARCHAR});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s ", sqlContent, e.getMessage()));
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %s is a bad grammar or has following problem %s ", sqlContent, e.getMessage()));
         }
 
         return new ModelAndView("redirect:projects.secu");
@@ -161,6 +117,4 @@ public class ProjectsController {
         return true;
     }
 
-
->>>>>>> 0b202bc9e306cb7543bad65797b04b4f5bf40a02
 }
