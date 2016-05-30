@@ -23,7 +23,7 @@ ID: <c:out value="${userDomain.id}"/>
 
 <form action="logout.secu" method="post">
     <input type="hidden" value="true" name="logout" id="logout">
-    <input type="submit" value="Logout" alt"Hau halt ab">
+    <input type="submit" value="Logout" alt>"Hau halt ab">
 </form>
 
 

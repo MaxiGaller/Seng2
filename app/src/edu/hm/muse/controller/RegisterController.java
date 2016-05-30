@@ -38,6 +38,7 @@
 package edu.hm.muse.controller;
 
 import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -47,16 +48,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.sql.Types;
+import java.util.Arrays;
 
 @Controller
 public class RegisterController {
 
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    SaltErstellen saltErstellen;
 
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
@@ -72,10 +81,18 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register.secu", method = RequestMethod.POST)
-    public ModelAndView doSomeRegister(@RequestParam(value = "new_uname", required = false) String new_uname, @RequestParam(value = "new_mpwd", required = false) String new_mpwd, HttpSession session) {
-    	if (null == new_uname || null == new_mpwd || new_uname.isEmpty() || new_mpwd.isEmpty()) {
+    public ModelAndView doSomeRegister(@RequestParam(value = "new_uname", required = false) String new_uname, @RequestParam(value = "new_mpwd", required = false) String new_mpwd, HttpServletResponse response, HttpSession session) {
+        if (!(new_uname.matches("[A-Za-z0-9]+"))) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
+            return mv;
+        }
+
+
+        if (null == new_mpwd || new_uname.isEmpty() || new_mpwd.isEmpty()) {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam new_uname or new_mpwd is empty or null or something like this");
         }
+
 
         if (isLoginNameTaken(new_uname)) {
             ModelAndView mv = new ModelAndView("register");
@@ -84,33 +101,47 @@ public class RegisterController {
         }
 
         //Select the Last ID from the Table
-    	String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
+    	/*String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
         int lastId = jdbcTemplate.queryForInt(sqlSelect);
         //Increment the last ID
-        lastId++;
-
-        String hpwd = hashen256(new_mpwd);
+        lastId++;*/
 
         //Build the query with the new User and Passwd
-        String sqlInsert = String.format("insert into M_USER (ID,muname,mpwd) values (%s,'%s','%s')", lastId, new_uname, hpwd);
 
+
+        StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
+        //saltErstellen = saltErstellen.INSTANCE;
+        byte[] salt = saltErstellen.getNextSalt();
+        saltedPw.append(Arrays.toString(salt));
+        saltedPw.append(new_mpwd);
+
+
+        String hpwd = hashen256(saltedPw.toString());
+
+        String sqlInsert = "insert into M_USER (muname,mpwd) values (?,?)";
         int res = 0;
         try {
         	//execute the query and check exceptions
-            res = jdbcTemplate.update(sqlInsert);
+            res = jdbcTemplate.update(sqlInsert, new Object[] {new_uname, hpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
+            ModelAndView mv = returnToRegister(session);
+            //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
         }
 
         //Register Ok
         //Do Autologin
-        if (res > 0) {
+
             if (res > 0) {
-                session.setAttribute("login", true);
-                session.setAttribute("user", new_uname);
-                return new ModelAndView("redirect:intern.secu");
+                ModelAndView mv = new ModelAndView("redirect:login.secu");
+                mv.addObject("msg", "You've been successfully registered, please login:");
+                Integer token = getNewToken();
+                mv.addObject("csrfToken", token);
+                Cookie loginCookie = new Cookie("login", String.valueOf(token));
+                response.addCookie(loginCookie);
+                session.setAttribute("csrfToken", token);
+                return mv;
+
             }
-        }
         //Error
         return returnToRegister(session);
     }
@@ -150,9 +181,18 @@ public class RegisterController {
                 return true;
             }
         } catch (DataAccessException e) {
+            //returnToRegister(session);
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
+            //return new ModelAndView("redirect:register.secu");
+
         }
         return false;
+    }
+
+
+    private int getNewToken() { //FIXME: Duplicate Code, see LoginController getNewToken()
+        SecureRandom random = new SecureRandom();
+        return random.nextInt();
     }
 
 }

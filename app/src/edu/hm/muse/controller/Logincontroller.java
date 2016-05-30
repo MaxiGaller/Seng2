@@ -38,6 +38,7 @@
 package edu.hm.muse.controller;
 
 import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -48,22 +49,29 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
 
+import static org.springframework.web.util.WebUtils.getCookie;
+
 @Controller
 public class Logincontroller {
 
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    CookieHelper cookieHelper;
+
+    @Autowired
+    SaltErstellen saltErstellen;
+
 
     @Resource(name = "dataSource")
     public void setDataSource(DataSource dataSource) {
@@ -71,44 +79,77 @@ public class Logincontroller {
     }
 
     @RequestMapping(value = "/login.secu", method = RequestMethod.GET)
-    public ModelAndView showLoginScreen() {
+    public ModelAndView showLoginScreen(HttpServletResponse response, HttpSession session) {
         ModelAndView mv = new ModelAndView("login");
-        mv.addObject("msg", "Enter name and password");
+        mv.addObject("msg", "Enter Name and Password");
+        Integer token = getNewToken();
+        mv.addObject("csrfToken", token);
+        Cookie loginCookie = new Cookie("login", String.valueOf(token));
+        response.addCookie(loginCookie);
+        session.setAttribute("csrfToken", token);
         return mv;
     }
 
-    @RequestMapping(value = "/adminlogin.secu", method = RequestMethod.GET)
-    public ModelAndView showAdminLoginScreen(HttpSession session) {
-        ModelAndView mv = new ModelAndView("adminlogin");
-        mv.addObject("msg", "Enter password");
 
-        SecureRandom random = new SecureRandom();
 
-        int token = random.nextInt();
-
-        mv.addObject("csrftoken",token);
-        session.setAttribute("csrftoken",token);
-
-        return mv;
-    }
 
     @RequestMapping(value = "/login.secu", method = RequestMethod.POST)
-    public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname, @RequestParam(value = "mpwd", required = false) String mpwd, HttpSession session) {
+    public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname,
+                                    @RequestParam(value = "csrftoken",required = false) String csrfParam,
+                                    @RequestParam(value = "mpwd", required = false) String mpwd,
+                                    HttpServletResponse response, HttpSession session,
+                                    HttpServletRequest request) {
         if (null == mname || null == mpwd || mname.isEmpty() || mpwd.isEmpty()) {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
 
-        String hpwd = hashen256(mpwd);
+        if (!(mname.matches("[A-Za-z0-9]+"))) {
+            ModelAndView mv = new ModelAndView("login.secu");
+            mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
+            return mv;
+        }
+
+        String getSalt = String.format("select salt from M_USER where muname = '%s'", mname);
+        String salt = jdbcTemplate.queryForObject(getSalt, String.class);
+
+        StringBuilder saltedPw = new StringBuilder();
+        saltedPw.append(salt);
+        saltedPw.append(mpwd);
+
+
+        String hpwd = hashen256(saltedPw.toString());
 
         //This is the sql statement
-        String sql = String.format("select count(*) from M_USER where muname = '%s' and mpwd = '%s'", mname, hpwd);
+        String sql = "select count(*) from M_USER where muname = ? and mpwd = ?";
+
+
+        //StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
+
 
         int res = 0;
         try {
-            res = jdbcTemplate.queryForInt(sql);
+            res = jdbcTemplate.queryForInt(sql,new Object[] {mname, hpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
+
+            int csrfTokenFromSession = (int) session.getAttribute("csrfToken");
+            int csrfTolenFromCookie = Integer.parseInt(getCookie(request, "login").getValue());
+            if (csrfTokenFromSession != 0 && csrfTolenFromCookie != 0) {
+                if (csrfTolenFromCookie == csrfTokenFromSession) {
+                    int token = getNewToken();
+                    session.setAttribute("user", mname);
+                    Cookie loginCookie = new Cookie("loggedIn", String.valueOf(token));
+                    cookieHelper.eraseCookie(request, response, "login");
+                    response.addCookie(loginCookie);
+                    session.setAttribute("usertoken", String.valueOf(token));
+                    session.setAttribute("login", true);
+                    session.removeAttribute("csrftoken");
+                    return new ModelAndView("redirect:intern.secu");
+                }
+            }
+
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
         }
+
 
         //If there are any results, than the username and password is correct
         if (res > 0) {
@@ -116,55 +157,12 @@ public class Logincontroller {
             session.setAttribute("login", true);
             return new ModelAndView("redirect:intern.secu");
         }
+
         //Ohhhhh not correct try again
         ModelAndView mv = returnToLogin(session);
         return mv;
     }
 
-    @RequestMapping(value = "/adminlogin.secu", method = RequestMethod.POST)
-    public ModelAndView doAdminLogin(@RequestParam(value = "mpwd", required = false) String mpwd,@RequestParam(value = "csrftoken",required = false) String csrfParam,HttpServletResponse response, HttpSession session) {
-        if (null == mpwd || mpwd.isEmpty()) {
-            throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mpwd is empty or null or something like this");
-        }
-
-        String sql = "select count (*) from M_ADMIN where mpwd = ?";
-
-        try {
-            String digest = calculateSHA256(new ByteArrayInputStream(mpwd.getBytes("UTF8")));
-
-            int res = 0;
-
-            res = jdbcTemplate.queryForInt(sql,new Object[]{digest},new int[]{Types.VARCHAR});
-
-            Integer csrfTokenSess = (Integer) session.getAttribute("csrftoken");
-            if (res != 0 && csrfParam != null && !csrfParam.isEmpty() && csrfTokenSess != null) {
-                Integer csrfParamToken = Integer.parseInt(csrfParam);
-                if (csrfParamToken.intValue() == csrfTokenSess.intValue()) {
-                    SecureRandom random = new SecureRandom();
-                    int token = random.nextInt();
-                    session.setAttribute("user", "admin");
-                    session.setAttribute("login", true);
-                    session.setAttribute("admintoken",token);
-                    response.addCookie(new Cookie("admintoken",String.valueOf(token)));
-                    session.removeAttribute("csrftoken");
-                    return new ModelAndView("redirect:adminintern.secu");
-                }
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        catch (ClassCastException ccastEx){
-           ccastEx.printStackTrace();
-        }
-        catch (NumberFormatException nfoEx){
-            nfoEx.printStackTrace();
-        }
-        catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
-        }
-        ModelAndView mv = returnToAdminLogin(session);
-        return mv;
-    }
 
     private ModelAndView returnToAdminLogin(HttpSession session) {
         //Ohhhhh not correct try again
@@ -238,4 +236,11 @@ public class Logincontroller {
         }
         return false;
     }
+
+    private int getNewToken() {
+        SecureRandom random = new SecureRandom();
+        return random.nextInt();
+    }
+
+
 }

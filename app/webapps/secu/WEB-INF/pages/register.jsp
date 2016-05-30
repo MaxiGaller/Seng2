@@ -4,7 +4,7 @@
 <h2><c:out value="${msg}"/></h2>
 
 <form action="register.secu" method="post">
-    <label for="new_mname" >Neuer Username</label>
+    <label for="new_uname">Neuer Benutzername</label>
     <input type="text" name="new_uname" id="new_uname">
     <label for="new_mpwd">Neues Password</label>
     <input type="password" name="new_mpwd" id="new_mpwd">
