@@ -1,18 +1,7 @@
 <jsp:include page="head.jsp"/>
 
-<h2>This supersafe, high performant and well designed page is brought to you by Munich Security Research Group</h2>
+<span style="font-size:3em"><font color="FF9900"><b>Startseite</b></font></span>
 
-<p>
-    Never ever there are any XSS problems,possible Sql-Injections or other security leaks....
-</p>
-
-
-    <div style="font-size: 3em"><b><a href="help.secu">First lesson....follow this link (README)</a></b></div>
-    <h3>What is the second lesson and third......and n`th lesson?</h3>
-    Just find security leaks on this page and his subpages... <br/>
-
-    <img src="img/back.png" alt="" width="400px">
-
-
-<jsp:include page="WEB-INF/help/index_help.jsp"/>
-<jsp:include page="foot.jsp"/>
+<%--<div style="font-size: 3em"><b><a href="help.secu">Login</a></b></div>--%>
+<br/><br><br><br><br>
+<a href="http://4.bp.blogspot.com/_c3odGms2BMk/TTRwQMR2KLI/AAAAAAAAALc/NkGTuZYx3ZQ/s1600/h.PNG"><img src="img/Einhorn.jpg" alt="Bild" width="400px" /></a>

@@ -1,34 +1,17 @@
 <%--@elvariable id="userDomain" type="edu.hm.muse.domain.User"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../../head.jsp"/>
-<h1>Area 42</h1>
 
-<b>Here you can see your accountdetails</b>
+<span style="font-size:3em"><font color="FF9900"><b>Benutzerkonto</b></font></span>
 
-<div id="id">
-ID: <c:out value="${userDomain.id}"/>
-</div>
+<%--<div id="id">
+    Deine ID lautet: <c:out value="${userDomain.id}"/>
+</div>--%>
 
-<div id="uname">
-    Username: <c:out value="${userDomain.uname}"/>
-</div>
-
-<div>
-    Password secured with md5: <c:out value="${md5pwd}"/>
-    <br/>
-    <small>What was the original password (it is not the same like in database....this would be too easy :-))<br/>
-    try another way.....</small>
-</div>
-<p></p>
-
-<form action="logout.secu" method="post">
-    <input type="hidden" value="true" name="logout" id="logout">
-    <input type="submit" value="Logout" alt="Auslogen">
-</form>
-
-
-<a href="internchange.secu">Change AccountSettings</a>
-
-
-<jsp:include page="../help/acc_help.jsp"/>
-<jsp:include page="../../foot.jsp"/>
+<%--<div id="uname">
+    Dein Benutzername lautet: <c:out value="${userDomain.uname}"/>
+</div>--%>
+<br><br>
+Hallo <b><c:out value="${userDomain.uname}"/></b>
+<br><br>
+<a href="internchange.secu">Passwort &aumlndern</a>

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>A real safe and high performant portal</title>
+    <title>Galler du stinkst</title>
 
     <link rel="stylesheet" href="stylesheets/master.css" type="text/css">
 
@@ -17,9 +17,18 @@
 <!-- Links für das Menü auf der linken Seite -->
 
 <ul id="navigation">
-    <li><a href="register.secu">Register</a></li>
-    <li><a href="intern.secu">Userbereich</a></li>
+    <a href="http://localhost:8081/secu/"><img src="img/HMLogo.png" alt="Bild" width="80%" /></a>
+    <br>
+    <% if ((session.getAttribute("login") == null) ) { %>
+    <li><a href="login.secu">Login</a></li>
+    <li><a href="register.secu">Registrieren</a> </li>
+    <% } %>
+
+    <% if ((session.getAttribute("login") != null) ) { %>
+    <li><a href="intern.secu">Benutzerkonto</a></li>
     <li><a href="projects.secu">LaTeX Editor</a></li>
+    <li><a href="logout.secu">Logout</a></li>
+    <% } %>
 </ul>
 
 <div id="Inhalt">
