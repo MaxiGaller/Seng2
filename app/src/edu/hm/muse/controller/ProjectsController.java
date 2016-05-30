@@ -104,6 +104,45 @@ public class ProjectsController {
         return new ModelAndView("redirect:projects.secu");
     
     }
+	
+	// Edit Sniped
+	@RequestMapping(value = "/renamedocument.secu", method = RequestMethod.GET)
+	public ModelAndView editSnipedBySnipedID(
+            @RequestParam(value = "documentId", required = true) int documentId,
+            @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "documentId", required = true) int documentId,
+            HttpSession session, 
+            HttpServletResponse response, 
+            HttpServletRequest request){
+		
+        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        Cookie cookie = getCookie(request, "loggedIn");
+
+        //Update the DB
+        String sqlUpdate = String.format("UPDATE LatexDocuments SET documentname = '%s' WHERE id = %s", documentname, documentId);
+
+        int res = 0;
+        try {
+        	//execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate);
+        } catch (DataAccessException e) {
+            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+        }
+        
+        ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
+        mv.addObject("documentId", documentId);
+        mv.addObject("documentname", documentname);
+        response.addCookie(cookie);
+
+        return mv;
+        
+	}
 
 
     private boolean isNotLoggedIn(HttpServletRequest request, HttpSession session) {

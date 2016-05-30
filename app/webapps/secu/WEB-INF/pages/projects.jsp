@@ -6,23 +6,21 @@
 <table>
 	<c:forEach items="${ProjectsForView}" var="ProjectsForView">
 	    <tr>
-	        <td>${ProjectsForView.documentname} --> ID: ${ProjectsForView.id}</td>
+	        <td>${ProjectsForView.documentname}</td>
 	        <td>
 				<form action="editdocument.secu" method="get">
-					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="projectId" id="projectId">
+					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${ProjectsForView.documentname}"/>" name="documentname" id="documentname">
 				    <input type="submit" value="Bearbeiten">	
 				</form>
 			</td>
-			<!--
 	        <td>
 				<form action="delete.secu" method="get">
-					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="projectId" id="projectId">
+					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${ProjectsForView.documentname}"/>" name="documentname" id="documentname">
-				    <input type="submit" value="Löschen">	
+				    <input type="submit" value="Papierkorb">	
 				</form>
 			</td>
-			-->
 	    </tr>
 	</c:forEach>
 </table>
@@ -32,7 +30,7 @@
 		<tr>  
 			<td>
 				<input type="text" value="" name="documentname" id="documentname">
-				<input type="hidden" value="${projectId}" name="projectId" id="projectId">
+				<input type="hidden" value="${documentId}" name="documentId" id="documentId">
 			    <input type="submit" value="Neues Projekt anlegen">
 			</td>
 		</tr>

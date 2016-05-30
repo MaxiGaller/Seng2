@@ -36,8 +36,8 @@ public class EditDocumentController {
 	
 	// Load Document
 	@RequestMapping(value = "/editdocument.secu", method = RequestMethod.GET)
-	public ModelAndView getSnipedsByProjectID(
-			@RequestParam(value = "projectId", required = true) int projectId,
+	public ModelAndView getSnipedsByDocumentID(
+			@RequestParam(value = "documentId", required = true) int documentId,
 			@RequestParam(value = "documentname", required = true) String documentname,
 			HttpSession session){
 		
@@ -45,16 +45,16 @@ public class EditDocumentController {
             return new ModelAndView("redirect:login.secu");
         }
         
-//        String sql = "SELECT * FROM LatexSniped JOIN LatexType WHERE LatexSniped.project_id = ? AND LatexSniped.content_type LIKE LatexType.id";
-        String sql = "SELECT * FROM LatexSniped WHERE project_id = ? ORDER BY id ASC";
-        List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, projectId);
+//        String sql = "SELECT * FROM LatexSniped JOIN LatexType WHERE LatexSniped.document_id = ? AND LatexSniped.content_type LIKE LatexType.id";
+        String sql = "SELECT * FROM LatexSniped WHERE document_id = ? ORDER BY id ASC";
+        List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, documentId);
         
-        String sqlTypes = "SELECT * FROM LatexType";
+        String sqlTypes = "SELECT * FROM LatexType WHERE accessable = 1";
         List<Map<String,Object>> projectTypes = jdbcTemplate.queryForList(sqlTypes);
         
         ModelAndView mv = new ModelAndView("editdocument");
         
-        mv.addObject("projectId", projectId);
+        mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
         mv.addObject("TypesForView", projectTypes);
         mv.addObject("SnipedsForView", projectSnipeds);
@@ -66,7 +66,7 @@ public class EditDocumentController {
 	// Edit Sniped
 	@RequestMapping(value = "/editsniped.secu", method = RequestMethod.GET)
 	public ModelAndView editSnipedBySnipedID(
-            @RequestParam(value = "projectId", required = true) int projectId,
+            @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
             @RequestParam(value = "snipedId", required = true) int snipedId,
             @RequestParam(value = "content_type", required = true) int content_type,
@@ -96,7 +96,7 @@ public class EditDocumentController {
         }
         
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
-        mv.addObject("projectId", projectId);
+        mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
         response.addCookie(cookie);
 
@@ -108,7 +108,7 @@ public class EditDocumentController {
 	// New Sniped
 	@RequestMapping(value = "/newsniped.secu", method = RequestMethod.GET)
 	public ModelAndView saveNewSniped(
-			@RequestParam(value = "projectId", required = true) int projectId,
+			@RequestParam(value = "documentId", required = true) int documentId,
 			@RequestParam(value = "documentname", required = true) String documentname,
 			@RequestParam(value = "content_type", required = true) int content_type,
 			@RequestParam(value = "snipedContent", required = true) String snipedContent,
@@ -131,7 +131,7 @@ public class EditDocumentController {
 		int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
         
         //Insert the Content to DB
-        String sqlInsert = String.format("INSERT INTO LatexSniped (id, muser_id, project_id, content, content_type) VALUES (NULL, %s, %s, '%s', %s)", UserIDFromSessionOverDatabase, projectId, snipedContent, content_type);
+        String sqlInsert = String.format("INSERT INTO LatexSniped (id, muser_id, document_id, content, content_type) VALUES (NULL, %s, %s, '%s', %s)", UserIDFromSessionOverDatabase, documentId, snipedContent, content_type);
 
         int res = 0;
         try {
@@ -143,7 +143,7 @@ public class EditDocumentController {
         
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
 
-        mv.addObject("projectId", projectId);
+        mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
         response.addCookie(cookie);
 
