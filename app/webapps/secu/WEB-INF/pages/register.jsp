@@ -2,6 +2,7 @@
 <jsp:include page="../../head.jsp"/>
 
 <span style="font-size:3em"><font color="FF9900"><b>Registrieren</b></font></span>
+<h2><c:out value="${msg}"/></h2>
 
 <form action="register.secu" method="post">
     <br><br>
