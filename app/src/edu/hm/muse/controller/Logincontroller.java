@@ -81,7 +81,7 @@ public class Logincontroller {
     @RequestMapping(value = "/login.secu", method = RequestMethod.GET)
     public ModelAndView showLoginScreen(HttpServletResponse response, HttpSession session) {
         ModelAndView mv = new ModelAndView("login");
-        mv.addObject("msg", "Enter Name and Password");
+        mv.addObject("msg", "Zum Einloggen bitte Benutzernamen und Passwort eintragen.");
         Integer token = getNewToken();
         mv.addObject("csrfToken", token);
         Cookie loginCookie = new Cookie("login", String.valueOf(token));

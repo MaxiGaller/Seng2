@@ -47,7 +47,7 @@ public class RegisterController {
     public ModelAndView doSomeRegister(@RequestParam(value = "new_uname", required = false) String new_uname, @RequestParam(value = "new_mpwd", required = false) String new_mpwd, HttpServletResponse response, HttpSession session) {
         if (!(new_uname.matches("[A-Za-z0-9]+"))) {
             ModelAndView mv = new ModelAndView("register");
-            mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
+            mv.addObject("msg", "Nur Buchstaben und Zahlen (ohne Umlaute und Sonderzeichen) sind erlaubt!");
             return mv;
         }
 
@@ -59,7 +59,7 @@ public class RegisterController {
 
         if (isLoginNameTaken(new_uname)) {
             ModelAndView mv = new ModelAndView("register");
-            mv.addObject("msg", "duuuh! please try another login name!!");
+            mv.addObject("msg", "Was los? Den Namen gibts schon. Nimm nen anderen!");
             return mv;
         }
 
