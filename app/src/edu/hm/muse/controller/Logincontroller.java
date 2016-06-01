@@ -95,7 +95,6 @@ public class Logincontroller {
 
     @RequestMapping(value = "/login.secu", method = RequestMethod.POST)
     public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname,
-
                                     @RequestParam(value = "mpwd", required = false) String mpwd,
                                     HttpServletResponse response, HttpSession session,
                                     HttpServletRequest request) {
@@ -104,7 +103,7 @@ public class Logincontroller {
         }
 
         if (!isUserInputValid(mname)) {
-            ModelAndView mv = new ModelAndView("login.secu");
+            ModelAndView mv = new ModelAndView("redirect:login.secu");
             mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
             return mv;
         }
@@ -112,11 +111,8 @@ public class Logincontroller {
             return new ModelAndView("redirect:login.secu");
         }
 
-
-
         String getSalt = String.format("select salt from M_USER where muname = '%s'", mname);
         String salt = jdbcTemplate.queryForObject(getSalt, String.class);
-
 
         StringBuilder saltedPw = new StringBuilder();
         saltedPw.append(salt);
