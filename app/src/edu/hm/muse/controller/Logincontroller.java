@@ -99,7 +99,9 @@ public class Logincontroller {
                                     HttpServletResponse response, HttpSession session,
                                     HttpServletRequest request) {
         if (null == mname || null == mpwd || mname.isEmpty() || mpwd.isEmpty()) {
-            throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
+            ModelAndView mv = new ModelAndView("login");
+            mv.addObject("msg", "Fülle bitte alles aus!");
+            return mv;
         }
 
         if (!isUserInputValid(mname)) {
