@@ -103,7 +103,7 @@ public class Logincontroller {
         }
 
         if (!isUserInputValid(mname)) {
-            ModelAndView mv = new ModelAndView("redirect:login.secu");
+            ModelAndView mv = new ModelAndView("login");
             mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
             return mv;
         }
