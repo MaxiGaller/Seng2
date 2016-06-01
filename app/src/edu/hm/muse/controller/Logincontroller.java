@@ -79,9 +79,15 @@ public class Logincontroller {
     }
 
     @RequestMapping(value = "/login.secu", method = RequestMethod.GET)
-    public ModelAndView showLoginScreen(HttpServletResponse response, HttpSession session) {
+    public ModelAndView showLoginScreen(HttpServletResponse response, HttpSession session,
+                                        @RequestParam(value = "login", required = false) String loginStatus) {
         ModelAndView mv = new ModelAndView("login");
-        mv.addObject("msg", "Zum Einloggen bitte Benutzernamen und Passwort eintragen.");
+        if (loginStatus != null && loginStatus.equals("failed")) {
+            mv.addObject("msg", "Fehler beim Login. Bitte Daten eingeben");
+        }
+        else {
+            mv.addObject("msg", "Zum Einloggen bitte Benutzernamen und Passwort eintragen.");
+        }
         Integer token = getNewToken();
         mv.addObject("csrfToken", token);
         Cookie loginCookie = new Cookie("login", String.valueOf(token));
@@ -99,9 +105,8 @@ public class Logincontroller {
                                     HttpServletResponse response, HttpSession session,
                                     HttpServletRequest request) {
         if (null == mname || null == mpwd || mname.isEmpty() || mpwd.isEmpty()) {
-            ModelAndView mv = new ModelAndView("login");
-            mv.addObject("msg", "Fülle bitte alles aus!");
-            return mv;
+            return new ModelAndView("redirect:login.secu?login=failed");
+            //throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
 
         if (!isUserInputValid(mname)) {
@@ -146,7 +151,7 @@ public class Logincontroller {
                     session.setAttribute("usertoken", String.valueOf(token));
                     session.setAttribute("login", true);
                     session.removeAttribute("csrftoken");
-                    return new ModelAndView("redirect:projects.secu");
+                    return new ModelAndView("redirect:projects.secu?justLoggedIn=1");
                 }
             }
 

@@ -2,9 +2,6 @@
 /*
 Hintergrund
 */
-
-}
-
 body {
     color: #474973;
     background-color: #FFFFFF;
@@ -30,7 +27,7 @@ ul#Navigation {
 Menüleiste links: Optionen für die Liste
 */
 ul#Navigation li {
-    list-style: element();
+    list-style: element(1);
     margin: 0;
     padding: 0.5em;
 }
@@ -158,3 +155,11 @@ div#Inhalt p {
     text-align: center;
     background-color: #ededed;
 }*/
+
+#popup {
+    float: right;
+    position: fixed;
+    left: 50%;
+    text-align: left;
+    background-color: red;
+}

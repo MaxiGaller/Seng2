@@ -3,6 +3,7 @@
 <jsp:include page="../../head.jsp"/>
 
 <span style="font-size:3em"><font color="FF9900"><b>LaTeX Editor</b></font></span>
+<h2>${msg}</h2>
 <br><br>
 <table>
 	<c:forEach items="${ProjectsForView}" var="ProjectsForView">

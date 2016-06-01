@@ -95,7 +95,7 @@ public class RegisterController {
         String sqlInsert = "insert into M_USER (muname,mpwd,salt) values (?,?,?)";
         int res = 0;
         try {
-        	//execute the query and check exceptions
+            //execute the query and check exceptions
             res = jdbcTemplate.update(sqlInsert, new Object[] {new_uname, hpwd, saltDB}, new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
             ModelAndView mv = returnToRegister(session);
@@ -105,17 +105,17 @@ public class RegisterController {
         //Register Ok
         //Do Autologin
 
-            if (res > 0) {
-                ModelAndView mv = new ModelAndView("redirect:login.secu");
-                mv.addObject("msg", "You've been successfully registered, please login:");
-                Integer token = getNewToken();
-                mv.addObject("csrfToken", token);
-                Cookie loginCookie = new Cookie("login", String.valueOf(token));
-                response.addCookie(loginCookie);
-                session.setAttribute("csrfToken", token);
-                return mv;
+        if (res > 0) {
+            ModelAndView mv = new ModelAndView("redirect:login.secu");
+            mv.addObject("msg", "You've been successfully registered, please login:");
+            Integer token = getNewToken();
+            mv.addObject("csrfToken", token);
+            Cookie loginCookie = new Cookie("login", String.valueOf(token));
+            response.addCookie(loginCookie);
+            session.setAttribute("csrfToken", token);
+            return mv;
 
-            }
+        }
         //Error
         return returnToRegister(session);
     }
