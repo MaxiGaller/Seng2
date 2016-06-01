@@ -95,7 +95,7 @@ public class Logincontroller {
 
     @RequestMapping(value = "/login.secu", method = RequestMethod.POST)
     public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname,
-                                    @RequestParam(value = "csrftoken",required = false) String csrfParam,
+
                                     @RequestParam(value = "mpwd", required = false) String mpwd,
                                     HttpServletResponse response, HttpSession session,
                                     HttpServletRequest request) {
@@ -112,8 +112,11 @@ public class Logincontroller {
             return new ModelAndView("redirect:login.secu");
         }
 
+
+
         String getSalt = String.format("select salt from M_USER where muname = '%s'", mname);
         String salt = jdbcTemplate.queryForObject(getSalt, String.class);
+
 
         StringBuilder saltedPw = new StringBuilder();
         saltedPw.append(salt);
@@ -133,9 +136,13 @@ public class Logincontroller {
         try {
             res = jdbcTemplate.queryForInt(sql,new Object[] {mname, hpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
 
+            if (session.getAttribute("csrfToken") == null || getCookie(request, "login") == null) {
+                return new ModelAndView("redirect:login.secu");
+            }
+
             int csrfTokenFromSession = (int) session.getAttribute("csrfToken");
             int csrfTolenFromCookie = Integer.parseInt(getCookie(request, "login").getValue());
-            if (csrfTokenFromSession != 0 && csrfTolenFromCookie != 0) {
+            if (csrfTokenFromSession != 0 && csrfTolenFromCookie != 0 && res > 0) {
                 if (csrfTolenFromCookie == csrfTokenFromSession) {
                     int token = getNewToken();
                     session.setAttribute("user", mname);
@@ -155,11 +162,11 @@ public class Logincontroller {
 
 
         //If there are any results, than the username and password is correct
-        if (res > 0) {
+        /*if (res > 0) {
             session.setAttribute("user", mname);
             session.setAttribute("login", true);
             return new ModelAndView("redirect:projects.secu");
-        }
+        }*/
 
         //Ohhhhh not correct try again
         ModelAndView mv = returnToLogin(session);
@@ -177,7 +184,7 @@ public class Logincontroller {
 
     private ModelAndView returnToLogin(HttpSession session) {
         //Ohhhhh not correct try again
-        ModelAndView mv = new ModelAndView("login");
+        ModelAndView mv = new ModelAndView("redirect:login.secu");
         mv.addObject("msg", "Sorry try again");
         session.invalidate();
         return mv;

@@ -20,7 +20,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
-import java.util.Arrays;
 
 @Controller
 public class RegisterController {
@@ -72,20 +71,32 @@ public class RegisterController {
         //Build the query with the new User and Passwd
 
 
-        StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
-        //saltErstellen = saltErstellen.INSTANCE;
+
+        StringBuilder saltedPw = new StringBuilder();
         byte[] salt = saltErstellen.getNextSalt();
-        saltedPw.append(Arrays.toString(salt));
+        String saltDB = saltErstellen.byteArrayToString(salt);
+        saltedPw.append(saltErstellen.byteArrayToString(salt));
         saltedPw.append(new_mpwd);
+
+
+
+        //StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
+        //saltErstellen = saltErstellen.INSTANCE;
+        //byte[] salt = saltErstellen.getNextSalt();
+        //Todo: Salt in Datenbank reinschreiben
+        //String saltInsert = "insert into M_USER (muname, salt) values (?)";
+        //jdbcTemplate.execute(saltInsert);
+        //saltedPw.append(Arrays.toString(salt));
+        //saltedPw.append(new_mpwd);
 
 
         String hpwd = hashen256(saltedPw.toString());
 
-        String sqlInsert = "insert into M_USER (muname,mpwd) values (?,?)";
+        String sqlInsert = "insert into M_USER (muname,mpwd,salt) values (?,?,?)";
         int res = 0;
         try {
         	//execute the query and check exceptions
-            res = jdbcTemplate.update(sqlInsert, new Object[] {new_uname, hpwd}, new int[]{Types.VARCHAR, Types.VARCHAR});
+            res = jdbcTemplate.update(sqlInsert, new Object[] {new_uname, hpwd, saltDB}, new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
             ModelAndView mv = returnToRegister(session);
             //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
