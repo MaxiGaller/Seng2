@@ -103,7 +103,7 @@ public class Logincontroller {
             throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
 
-        if (!(mname.matches("[A-Za-z0-9]+"))) {
+        if (!isUserInputValid(mname)) {
             ModelAndView mv = new ModelAndView("login.secu");
             mv.addObject("msg", "Nur Buchstaben und Zahlen sind erlaubt!!");
             return mv;
@@ -127,10 +127,6 @@ public class Logincontroller {
 
         //This is the sql statement
         String sql = "select count(*) from M_USER where muname = ? and mpwd = ?";
-
-
-        //StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
-
 
         int res = 0;
         try {
@@ -159,14 +155,6 @@ public class Logincontroller {
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
         }
-
-
-        //If there are any results, than the username and password is correct
-        /*if (res > 0) {
-            session.setAttribute("user", mname);
-            session.setAttribute("login", true);
-            return new ModelAndView("redirect:projects.secu");
-        }*/
 
         //Ohhhhh not correct try again
         ModelAndView mv = returnToLogin(session);
