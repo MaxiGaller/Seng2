@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Galler du stinkst</title>
+    <title>Verdammt tolle Seite</title>
 
     <link rel="stylesheet" href="stylesheets/master.css" type="text/css">
 
@@ -17,17 +17,17 @@
 <!-- Links für das Menü auf der linken Seite -->
 
 <ul id="navigation">
-    <a href="http://localhost:8081/secu/"><img src="img/HMLogo.png" alt="Bild" width="80%" /></a>
+    <a href="http://localhost:8081/secu/" id="logo"><img src="img/bavaria.png" alt="Bild" width="98%" /></a>
     <br>
     <% if ((session.getAttribute("login") == null) ) { %>
-    <li><a href="login.secu">Login</a></li>
-    <li><a href="register.secu">Registrieren</a> </li>
+    <li><a href="login.secu" class="menubutton">Login</a></li>
+    <li><a href="register.secu" class="menubutton">Registrieren</a> </li>
     <% } %>
 
     <% if ((session.getAttribute("login") != null) ) { %>
-    <li><a href="intern.secu">Benutzerkonto</a></li>
-    <li><a href="projects.secu">LaTeX Editor</a></li>
-    <li><a href="logout.secu">Logout</a></li>
+    <li><a href="intern.secu" class="menubutton">Benutzerkonto</a></li>
+    <li><a href="projects.secu" class="menubutton">LaTeX Editor</a></li>
+    <li><a href="logout.secu" class="menubutton">Logout</a></li>
     <% } %>
 </ul>
 

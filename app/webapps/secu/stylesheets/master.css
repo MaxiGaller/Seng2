@@ -42,11 +42,22 @@ ul#Navigation a {
     font-family: Arial;
 }
 
+#logo {
+    background-color: white;
+}
+
+#logo:hover {
+    background-color: whitesmoke;
+}
+
+#logo:active {
+     background-color: #c9c9c9;
+ }
 /*
 wenn ich es noch nicht geklickt hab: bis klick dauerhaft
 */
-ul#Navigation a:link {
-    color: #2b17c0;
+.menubutton:link {
+    color: black;
     background-color: #ededed;
     text-decoration: none;
 }
@@ -54,25 +65,25 @@ ul#Navigation a:link {
 /*
 wenn man es mal geklickt hat: danach dauerhaft
 */
-ul#Navigation a:visited {
-    color: #2b17c0;
+.menubutton:visited {
+    color: black;
     background-color: white;
 }
 
 /*
 wenn mitm Zeiger drauf
 */
-ul#Navigation a:hover {
+.menubutton:hover {
     color: #000000;
-    background-color: rgba(34, 39, 255, 0.25);
+    background-color: #c9c9c9;
 }
 
 /*
 beim klicken
 */
-ul#Navigation a:active {
+.menubutton:active {
     color: #000000;
-    background-color: #2b17c0;
+    background-color: #ababab;
 }
 
 /*
