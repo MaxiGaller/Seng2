@@ -135,9 +135,6 @@ public class WatchAccountController extends functions {
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
 
-        //String getSalt = String.format("select salt from M_USER where muname = '%s'", uname);
-        //String salt = jdbcTemplate.queryForObject(getSalt, String.class);
-
         StringBuilder saltedPw = new StringBuilder();
         saltedPw.append(salt);
         saltedPw.append(upwd);
@@ -148,10 +145,7 @@ public class WatchAccountController extends functions {
         String sql = "update M_USER set  mpwd = ? " +
                 "where " +
                 "ID = "+uid;
-
-        //Todo: Passwort mit Salt versehen
-        //Die Fragezeichen sind für des jdbcTemplate Zeile in dem Object Array
-
+        
         jdbcTemplate.update(sql, new Object[]{hpwd}, new int[]{Types.VARCHAR});
         session.setAttribute("user", uname);
         return new ModelAndView("redirect:intern.secu");
