@@ -182,12 +182,12 @@ public class ProjectsController {
 
         //Update the DB
         //Todo
-        String sqlUpdate = String.format("UPDATE LatexDocuments SET trash = '%s' WHERE id = %s", trashmark, documentId);
+        String sqlUpdate = "UPDATE LatexDocuments SET trash = ? WHERE id = ?";// trashmark, documentId);
 
         int res = 0;
         try {
             //execute the query and check exceptions
-            res = jdbcTemplate.update(sqlUpdate);
+            res = jdbcTemplate.update(sqlUpdate, new Object[] {trashmark, documentId}, new int[] {Types.INTEGER, Types.NUMERIC});
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
         }
@@ -219,12 +219,12 @@ public class ProjectsController {
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
 
         //Update the DB
-        String sqlUpdate = String.format("UPDATE LatexDocuments SET muser_id = 0 WHERE trash = 1 AND muser_id = %s", UserIDFromSessionOverDatabase);
+        String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE trash = 1 AND muser_id = ?"; //, UserIDFromSessionOverDatabase);
 
         int res = 0;
         try {
             //execute the query and check exceptions
-            res = jdbcTemplate.update(sqlUpdate);
+            res = jdbcTemplate.update(sqlUpdate, new Object[]{UserIDFromSessionOverDatabase}, new int[] {Types.INTEGER});
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
         }
