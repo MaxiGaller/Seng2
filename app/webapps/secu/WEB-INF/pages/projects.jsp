@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../../head.jsp"/>
 <span style="font-size:3em"><font color="FF9900"><b>LaTeX Editor</b></font></span>
+<br>
+<h2>${msg}</h2>
 <br><br>
 
 <table>

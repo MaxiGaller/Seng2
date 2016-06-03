@@ -70,7 +70,6 @@ public class ProjectsController {
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
 
         return mv;
-
     }
 
     // New Project

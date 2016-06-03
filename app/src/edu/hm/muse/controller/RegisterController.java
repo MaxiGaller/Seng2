@@ -106,7 +106,7 @@ public class RegisterController {
         //Do Autologin
 
         if (res > 0) {
-            ModelAndView mv = new ModelAndView("redirect:login.secu");
+            ModelAndView mv = new ModelAndView("redirect:login.secu?justRegistered=1");
             mv.addObject("msg", "You've been successfully registered, please login:");
             Integer token = getNewToken();
             mv.addObject("csrfToken", token);

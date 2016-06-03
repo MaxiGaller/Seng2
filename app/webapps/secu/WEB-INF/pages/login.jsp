@@ -4,6 +4,7 @@
 <span style="font-size:3em"><font color="FF9900"><b>Login</b></font></span>
 <h2><c:out value="${msg}"/></h2>
 
+
 <form action="login.secu" method="post">
     <br><br>
     <label for="mname"></label>
