@@ -142,10 +142,8 @@ public class WatchAccountController extends functions {
 
         String hpwd = hashen256(saltedPw.toString());
 
-        String sql = "update M_USER set  mpwd = ? " +
-                "where " +
-                "ID = "+uid;
-        
+        String sql = "update M_USER set  mpwd = ? where ID = "+uid;
+
         jdbcTemplate.update(sql, new Object[]{hpwd}, new int[]{Types.VARCHAR});
         session.setAttribute("user", uname);
         return new ModelAndView("redirect:intern.secu");
