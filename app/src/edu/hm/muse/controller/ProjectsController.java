@@ -51,10 +51,10 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
-        
 
-        String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
+
+        String sql_id = "select ID from M_USER where muname = ?";
+        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, uname);
 
         String sql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ? AND trash = 0";
         List<Map<String,Object>> projectnames = jdbcTemplate.queryForList(sql, UserIDFromSessionOverDatabase);
@@ -131,13 +131,12 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
-        //Todo
-        String sqlUpdate = String.format("UPDATE LatexDocuments SET documentname = '%s' WHERE id = %s", documentname, documentId);
+        String sqlUpdate = "UPDATE LatexDocuments SET documentname = ? WHERE id = ?"; //, documentname, documentId);
 
         int res = 0;
         try {
             //execute the query and check exceptions
-            res = jdbcTemplate.update(sqlUpdate);
+            res = jdbcTemplate.update(sqlUpdate, new Object[] {documentname, documentId}, new int[]{Types.VARCHAR, Types.NUMERIC});
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
         }
@@ -169,10 +168,11 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Todo
-        String sql_id = String.format("SELECT trash FROM LatexDocuments WHERE id = '%s'", documentId);
-        int CheckTrashState = jdbcTemplate.queryForInt(sql_id);
+        String sql_id = "SELECT trash FROM LatexDocuments WHERE id = ?"; //documentId);
+        int CheckTrashState = jdbcTemplate.queryForInt(sql_id, new Object[] {documentId}, new int[]{Types.NUMERIC});
 
-        int trashmark;
+
+            int trashmark;
 
         if (CheckTrashState == 1) {
             trashmark = 0;
