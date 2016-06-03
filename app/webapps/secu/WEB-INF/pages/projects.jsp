@@ -1,7 +1,8 @@
 <%--@elvariable id="userDomain" type="edu.hm.muse.domain.User"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../../head.jsp"/>
-<h1>The LaTeX Editor</h1>
+<span style="font-size:3em"><font color="FF9900"><b>LaTeX Editor</b></font></span>
+<br><br>
 
 <table>
 	<c:forEach items="${ProjectsForView}" var="ProjectsForView">
@@ -65,6 +66,3 @@
 	    </tr>
 	</c:forEach>
 </table>
-
-<jsp:include page="../help/acc_help.jsp"/>
-<jsp:include page="../../foot.jsp"/>

@@ -14,4 +14,4 @@
 <br><br>
 Hallo <b><c:out value="${userDomain.uname}"/></b>
 <br><br>
-<a href="internchange.secu">Passwort &aumlndern</a>
+<a href="internchange.secu">Passwort &auml;ndern</a>
