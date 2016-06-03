@@ -197,7 +197,6 @@ public class ProjectsController {
     }
 
     // Move all to Attic
-    //Todo: sql injection rausmachen
     @RequestMapping(value = "/cleantrashcan.secu", method = RequestMethod.GET)
     public ModelAndView finalDeleteTrashcanByID(
             HttpSession session,
@@ -251,12 +250,12 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
-        String sqlUpdate = String.format("UPDATE LatexDocuments SET muser_id = 0 WHERE id = %s", documentId);
+        String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE id = ?"; //, documentId);
 
         int res = 0;
         try {
             //execute the query and check exceptions
-            res = jdbcTemplate.update(sqlUpdate);
+            res = jdbcTemplate.update(sqlUpdate, new Object[] {documentId}, new int[] {Types.NUMERIC});
         } catch (DataAccessException e) {
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
         }

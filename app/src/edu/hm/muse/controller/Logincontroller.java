@@ -225,10 +225,10 @@ public class Logincontroller {
 
 
     private boolean isLoginNameTaken(String mname) {
-        String sql = String.format("select count(*) from M_USER where muname = '%s'", mname);
+        String sql = "select count(*) from M_USER where muname = ?";
         int res=0;
         try {
-            res = jdbcTemplate.queryForInt(sql);
+            res = jdbcTemplate.queryForInt(sql, new Object[] {mname}, new int[] {Types.VARCHAR});
             if (res > 0) {
                 return true;
             }
