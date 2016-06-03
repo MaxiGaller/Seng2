@@ -132,9 +132,11 @@ public class WatchAccountController extends functions {
         }
 
 
+        String getSalt = "select salt from M_USER where muname = ?";
+        String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
 
-        String getSalt = String.format("select salt from M_USER where muname = '%s'", uname);
-        String salt = jdbcTemplate.queryForObject(getSalt, String.class);
+        //String getSalt = String.format("select salt from M_USER where muname = '%s'", uname);
+        //String salt = jdbcTemplate.queryForObject(getSalt, String.class);
 
         StringBuilder saltedPw = new StringBuilder();
         saltedPw.append(salt);

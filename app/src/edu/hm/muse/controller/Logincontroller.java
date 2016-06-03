@@ -37,7 +37,6 @@
 
 package edu.hm.muse.controller;
 
-import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -106,7 +105,6 @@ public class Logincontroller {
                                     HttpServletRequest request) {
         if (null == mname || null == mpwd || mname.isEmpty() || mpwd.isEmpty()) {
             return new ModelAndView("redirect:login.secu?login=failed");
-            //throw new SuperFatalAndReallyAnnoyingException("I can not process, because the requestparam mname or mpwd is empty or null or something like this");
         }
 
         if (!isUserInputValid(mname)) {
@@ -156,7 +154,8 @@ public class Logincontroller {
             }
 
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
+            return new ModelAndView("redirect:login.secu?login=failed");
+            //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
         }
 
         //Ohhhhh not correct try again
@@ -233,7 +232,8 @@ public class Logincontroller {
                 return true;
             }
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
+             ModelAndView mv = new ModelAndView("redirect:login.secu?login=failed");
+            //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
         }
         return false;
     }
