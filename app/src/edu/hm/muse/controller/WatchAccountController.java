@@ -53,7 +53,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Types;
-import java.util.Arrays;
 
 
 @Controller
@@ -133,17 +132,17 @@ public class WatchAccountController extends functions {
         }
 
 
-        StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
-        //saltErstellen = saltErstellen.INSTANCE;
-        byte[] salt = saltErstellen.getNextSalt();
-        saltedPw.append(Arrays.toString(salt));
+
+        String getSalt = String.format("select salt from M_USER where muname = '%s'", uname);
+        String salt = jdbcTemplate.queryForObject(getSalt, String.class);
+
+        StringBuilder saltedPw = new StringBuilder();
+        saltedPw.append(salt);
         saltedPw.append(upwd);
 
 
         String hpwd = hashen256(saltedPw.toString());
-
-        //String hpwd = hashen256(upwd);
-
+        
         String sql = "update M_USER set  mpwd = ? " +
                 "where " +
                 "ID = "+uid;
