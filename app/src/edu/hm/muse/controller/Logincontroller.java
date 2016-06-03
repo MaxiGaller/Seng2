@@ -118,8 +118,8 @@ public class Logincontroller {
             return new ModelAndView("redirect:login.secu");
         }
 
-        String getSalt = String.format("select salt from M_USER where muname = '%s'", mname);
-        String salt = jdbcTemplate.queryForObject(getSalt, String.class);
+        String getSalt = "select salt from M_USER where muname = ?";
+        String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{mname}, String.class);
 
         StringBuilder saltedPw = new StringBuilder();
         saltedPw.append(salt);

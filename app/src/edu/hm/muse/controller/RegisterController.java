@@ -62,12 +62,6 @@ public class RegisterController {
             return mv;
         }
 
-        //Select the Last ID from the Table
-    	/*String sqlSelect = "SELECT id FROM M_USER ORDER BY id DESC LIMIT 1";
-        int lastId = jdbcTemplate.queryForInt(sqlSelect);
-        //Increment the last ID
-        lastId++;*/
-
         //Build the query with the new User and Passwd
 
 
@@ -77,17 +71,6 @@ public class RegisterController {
         String saltDB = saltErstellen.byteArrayToString(salt);
         saltedPw.append(saltErstellen.byteArrayToString(salt));
         saltedPw.append(new_mpwd);
-
-
-
-        //StringBuilder saltedPw = new StringBuilder(); //For building the salt + password String
-        //saltErstellen = saltErstellen.INSTANCE;
-        //byte[] salt = saltErstellen.getNextSalt();
-        //Todo: Salt in Datenbank reinschreiben
-        //String saltInsert = "insert into M_USER (muname, salt) values (?)";
-        //jdbcTemplate.execute(saltInsert);
-        //saltedPw.append(Arrays.toString(salt));
-        //saltedPw.append(new_mpwd);
 
 
         String hpwd = hashen256(saltedPw.toString());

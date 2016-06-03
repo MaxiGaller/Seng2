@@ -51,6 +51,8 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
+        
+
         String sql_id = String.format("select ID from M_USER where muname = '%s'", uname);
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id);
 
@@ -129,6 +131,7 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
+        //Todo
         String sqlUpdate = String.format("UPDATE LatexDocuments SET documentname = '%s' WHERE id = %s", documentname, documentId);
 
         int res = 0;
@@ -165,6 +168,7 @@ public class ProjectsController {
 
         Cookie cookie = getCookie(request, "loggedIn");
 
+        //Todo
         String sql_id = String.format("SELECT trash FROM LatexDocuments WHERE id = '%s'", documentId);
         int CheckTrashState = jdbcTemplate.queryForInt(sql_id);
 
@@ -177,6 +181,7 @@ public class ProjectsController {
         }
 
         //Update the DB
+        //Todo
         String sqlUpdate = String.format("UPDATE LatexDocuments SET trash = '%s' WHERE id = %s", trashmark, documentId);
 
         int res = 0;
@@ -192,6 +197,7 @@ public class ProjectsController {
     }
 
     // Move all to Attic
+    //Todo: sql injection rausmachen
     @RequestMapping(value = "/cleantrashcan.secu", method = RequestMethod.GET)
     public ModelAndView finalDeleteTrashcanByID(
             HttpSession session,
