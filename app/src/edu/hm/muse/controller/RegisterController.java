@@ -131,7 +131,7 @@ public class RegisterController {
 
     private boolean isLoginNameTaken(String mname) {
         String sql = String.format("select count(*) from M_USER where muname = '%s'", mname);
-        int res=0;
+        int res = 0;
         try {
             res = jdbcTemplate.queryForInt(sql);
             if (res > 0) {
