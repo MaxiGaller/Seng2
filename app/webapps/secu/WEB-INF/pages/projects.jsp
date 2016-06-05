@@ -14,13 +14,15 @@
 				<form action="editdocument.secu" method="get">
 					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${ProjectsForView.documentname}"/>" name="documentname" id="documentname">
-				    <input type="submit" value="Bearbeiten">	
+				    <%--<input type="submit" value="Bearbeiten">--%>
+					<button class="button" value="Bearbeiten" style="vertical-align:middle"><span>Bearbeiten</span></button>
 				</form>
 			</td>
 	        <td>
 				<form action="recycledocuments.secu" method="get">
 					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">
-				    <input type="submit" value="Papierkorb">	
+				    <%--<input type="submit" value="Papierkorb">--%>
+					<button class="button" value="Papierkorb" style="vertical-align:middle"><span>Papierkorb</span></button>
 				</form>
 			</td>
 	    </tr>
@@ -34,8 +36,9 @@
 	<table>
 		<tr>  
 			<td>
-				<input type="text" value="" name="documentname" id="documentname">
-			    <input type="submit" value="Neues Projekt anlegen">
+				<input type="text" value="" name="documentname" id="documentname" placeholder="Name des Dokuments">
+			    <%--<input type="submit" value="Neues Projekt anlegen">--%>
+				<button class="button" value="Neues Projekt anlegen" style="vertical-align:middle"><span>Neues Projekt anlegen</span></button>
 			</td>
 		</tr>
 	</table>
@@ -46,7 +49,8 @@
 <h2>M&uuml;lleimer</h2>
 
 <form action="cleantrashcan.secu" method="get">
-	<input type="submit" value="Papierkorb leeren">	
+	<%--<input type="submit" value="Papierkorb leeren">--%>
+	<button class="button" value="Papierkorb leeren" style="vertical-align:middle"><span>Papierkorb leeren</span></button>
 </form>
 
 <table>

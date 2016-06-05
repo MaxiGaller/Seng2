@@ -15,7 +15,7 @@
     <%--TODO Funktion fehlt--%>
     <input type="text"   placeholder="Passwort wiederholen">
     <br><br>
-    <input type="submit" value="Passwort &auml;ndern">
+    <input type="image" src="img/floppy.gif"  value="Passwort &auml;ndern">
 </form>
 
 
