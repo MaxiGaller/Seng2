@@ -168,9 +168,20 @@ div#Inhalt p {
 }*/
 
 #popup {
+    position: absolute;
+    text-align: left;
+    background-color: #000000;
+    color: #ffffff;
+    border: double;
+    border-color: #9c0000;
+}
+
+/*
+#popup {
     float: right;
     position: fixed;
-    left: 50%;
+    left: 35%;
     text-align: left;
-    background-color: #0e731d;
-}
+    background-color: #000000;
+    color: #ffffff;
+}*/
