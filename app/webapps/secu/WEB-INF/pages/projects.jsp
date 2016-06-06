@@ -15,14 +15,14 @@
 					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${ProjectsForView.documentname}"/>" name="documentname" id="documentname">
 				    <%--<input type="submit" value="Bearbeiten">--%>
-					<button class="button" value="Bearbeiten" style="vertical-align:middle"><span>Bearbeiten</span></button>
+					<button class="buttonKlein" value="Bearbeiten" style="vertical-align:middle"><span>Bearbeiten</span></button>
 				</form>
 			</td>
 	        <td>
 				<form action="recycledocuments.secu" method="get">
 					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">
 				    <%--<input type="submit" value="Papierkorb">--%>
-					<button class="button" value="Papierkorb" style="vertical-align:middle"><span>Papierkorb</span></button>
+					<button class="buttonKlein" value="Papierkorb" style="vertical-align:middle"><span>Papierkorb</span></button>
 				</form>
 			</td>
 	    </tr>
@@ -38,7 +38,7 @@
 			<td>
 				<input type="text" value="" name="documentname" id="documentname" placeholder="Name des Dokuments">
 			    <%--<input type="submit" value="Neues Projekt anlegen">--%>
-				<button class="button" value="Neues Projekt anlegen" style="vertical-align:middle"><span>Neues Projekt anlegen</span></button>
+				<button class="buttonKleinBreit" value="Neues Projekt anlegen" style="vertical-align:middle"><span>Neues Projekt anlegen</span></button>
 			</td>
 		</tr>
 	</table>
@@ -50,7 +50,7 @@
 
 <form action="cleantrashcan.secu" method="get">
 	<%--<input type="submit" value="Papierkorb leeren">--%>
-	<button class="button" value="Papierkorb leeren" style="vertical-align:middle"><span>Papierkorb leeren</span></button>
+	<button class="buttonKleinSchwarz" value="Papierkorb leeren" style="vertical-align:middle"><span><b>Papierkorb leeren</b></span></button>
 </form>
 
 <table>
@@ -60,13 +60,15 @@
 	        <td>
 				<form action="recycledocuments.secu" method="get">
 					<input type="hidden" value="<c:out value="${TrashDocumentsForView.id}"/>" name="documentId" id="documentId">
-				    <input type="submit" value="Wiederherstellen">	
+				    <%--<input type="submit" value="Wiederherstellen">--%>
+					<button class="buttonKleinBreit" value="Wiederherstellen" style="vertical-align:middle"><span>Wiederherstellen</span></button>
 				</form>
 			</td>
 	        <td>
 				<form action="finaldelete.secu" method="get">
 					<input type="hidden" value="<c:out value="${TrashDocumentsForView.id}"/>" name="documentId" id="documentId">
-				    <input type="submit" value="Endg&uuml;ltig l&ouml;schen">	
+				    <%--<input type="submit" value="Endg&uuml;ltig l&ouml;schen">--%>
+					<button class="buttonKleinBreit" value="Endg&uuml;ltig l&ouml;schen" style="vertical-align:middle"><span>Endg&uuml;ltig l&ouml;schen</span></button>
 				</form>
 			</td>
 	    </tr>

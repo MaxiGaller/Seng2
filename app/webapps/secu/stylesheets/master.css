@@ -209,7 +209,7 @@ div#Inhalt p {
 }
 
 .button span:after {
-    content: "~";
+    content: "\00BB";
     position: absolute;
     opacity: 0;
     top: 0;
@@ -222,6 +222,127 @@ div#Inhalt p {
 }
 
 .button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.buttonKlein {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 15px;
+    padding: 8px;
+    width: 120px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.buttonKlein span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.buttonKlein span:after {
+    content: "\00BB";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -40px;
+    transition: 1.0s;
+}
+
+.buttonKlein:hover span {
+    padding-right: 25px;
+}
+
+.buttonKlein:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.buttonKleinBreit {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 15px;
+    padding: 8px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.buttonKleinBreit span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.buttonKleinBreit span:after {
+    content: "\00BB";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -40px;
+    transition: 1.0s;
+}
+
+.buttonKleinBreit:hover span {
+    padding-right: 25px;
+}
+
+.buttonKleinBreit:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.buttonKleinSchwarz {
+    display: inline-block;
+    border-radius: 20px;
+    background-color: rgba(106, 106, 106, 0.71);
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 18px;
+    font-color: white;
+    padding: 12px;
+    width: 300px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.buttonKleinSchwarz span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.buttonKleinSchwarz span:after {
+    content: "\00BB";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -40px;
+    transition: 1.0s;
+}
+
+.buttonKleinSchwarz:hover span {
+    padding-right: 25px;
+}
+
+.buttonKleinSchwarz:hover span:after {
     opacity: 1;
     right: 0;
 }

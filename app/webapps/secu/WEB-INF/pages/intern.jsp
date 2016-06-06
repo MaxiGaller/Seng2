@@ -14,4 +14,5 @@
 <br><br>
 Hallo <b><c:out value="${userDomain.uname}"/></b>
 <br><br>
-<a href="internchange.secu">Passwort &auml;ndern</a>
+<%--<a href="internchange.secu">Passwort &auml;ndern</a>--%>
+<a href="internchange.secu"</a><button class="buttonKleinBreit" a href="internchange.secu" style="vertical-align:middle"><span>Passwort &auml;ndern</span></button>

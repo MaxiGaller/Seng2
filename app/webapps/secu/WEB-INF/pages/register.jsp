@@ -7,12 +7,12 @@
 <form action="register.secu" method="post">
     <br><br>
     <label for="new_uname"></label>
-    <input type="text" name="new_uname" id="new_uname" placeholder="neuer Benutzername" style="margin-left: 5px;">
+    <input type="text" name="new_uname" id="new_uname" placeholder="neuer Benutzername" style="margin-left: 5px;" >
     <br><br>
     <label for="new_mpwd"></label>
     <input type="password" name="new_mpwd" id="new_mpwd" placeholder="neues Passwort" style="margin-left: 5px;">
     <br><br><br>
-    <button class="button" value="Register" style="vertical-align:middle"><span>Registrieren </span></button>
+    <button class="button" value="Register" style="vertical-align:middle"><span>Registrieren</span></button>
     <%--<input type="submit" value="Registrieren" style="margin-left: 5px;">--%>
 </form>
 
