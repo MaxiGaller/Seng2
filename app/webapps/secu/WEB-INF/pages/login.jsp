@@ -6,12 +6,12 @@
 
 
 <form action="login.secu" method="post">
-    <br><br>
+    <br>
     <label for="mname"></label>
-    <input type="text" name="mname" id="mname" placeholder="Benutzername" style="margin-left: 5px;">
+    <input class="eingabefeld" type="text" name="mname" id="mname" placeholder="Benutzername" style="margin-left: 5px;">
     <br><br>
     <label for="mpwd"></label>
-    <input type="password" name="mpwd" id="mpwd" placeholder="Passwort" style="margin-left: 5px;">
+    <input class=eingabefeld type="password" name="mpwd" id="mpwd" placeholder="Passwort" style="margin-left: 5px;">
     <br><br><br>
     <%--<input type="submit" value="Login" style="margin-left: 5px;">--%>
     <button class="button" value="Login" style="vertical-align:middle"><span>Login</span></button>

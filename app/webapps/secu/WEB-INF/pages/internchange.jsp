@@ -10,11 +10,10 @@
     <input type="hidden" name="uid" value="${userDomain.id}" >
     <input type="hidden" name="uname" value="${userDomain.uname}" id="uname">
     <br><br>
-    <input type="password" name="upwd" id="upwd" placeholder="neues Passwort">
-    <br><br>
-    <%--TODO Funktion fehlt--%>
-    <input type="text"   placeholder="Passwort wiederholen">
-    <br><br>
+    <%--<input type="password" name="upwd" id="upwd" placeholder="neues Passwort">--%>
+    <input class="eingabefeld" type="password" name="upwd" id="upwd" placeholder="neues Passwort">
+
+    <br><br><br>
     <input type="image" src="img/floppy.gif"  value="Passwort &auml;ndern">
 </form>
 

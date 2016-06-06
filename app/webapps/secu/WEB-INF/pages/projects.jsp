@@ -36,7 +36,7 @@
 	<table>
 		<tr>  
 			<td>
-				<input type="text" value="" name="documentname" id="documentname" placeholder="Name des Dokuments">
+				<input class="eingabefeld" type="text" value="" name="documentname" id="documentname" placeholder="Name des Dokuments">
 			    <%--<input type="submit" value="Neues Projekt anlegen">--%>
 				<button class="buttonKleinBreit" value="Neues Projekt anlegen" style="vertical-align:middle"><span>Neues Projekt anlegen</span></button>
 			</td>
