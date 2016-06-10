@@ -37,6 +37,26 @@ Dokumentnamen &auml;ndern in
 					</select>
 				</form>
 			</td>
+            <td>
+
+                <form action="editSnipedMove.secu" method="post">
+                    <input type="hidden" value="up" name="type">
+                    <input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
+                    <input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
+                    <input type="hidden" value="<c:out value="${SnipedsForView.ordinal}"/>" name="ordinal">
+                    <input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
+                    
+                    <button class="buttonKlein" value="up" style="vertical-align:middle"><span>Up</span></button>
+                </form>
+                <form action="editSnipedMove.secu" method="post">
+                    <input type="hidden" value="down" name="type">
+                    <input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
+                    <input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
+                    <input type="hidden" value="<c:out value="${SnipedsForView.ordinal}"/>" name="ordinal">
+                    <input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
+                    <button class="buttonKlein" value="down" style="vertical-align:middle"><span>Down</span></button>
+                </form>
+            </td>
 	    </tr>
 	</c:forEach>
 </table>

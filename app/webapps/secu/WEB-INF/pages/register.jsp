@@ -7,7 +7,7 @@
 <form action="register.secu" method="post">
     <br>
     <label for="new_uname"></label>
-    <input class="eingabefeld" type="text" name="new_uname" id="new_uname" placeholder="neuer Benutzername" style="margin-left: 5px;" >
+    <input class="eingabefeld" type="text" name="new_uname" id="new_uname" placeholder="neuer Benutzername" style="margin-left: 5px;" autofocus >
     <br><br>
     <label for="new_mpwd"></label>
     <input class="eingabefeld" type="password" name="new_mpwd" id="new_mpwd" placeholder="neues Passwort" style="margin-left: 5px;">

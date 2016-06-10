@@ -8,7 +8,7 @@
 <form action="login.secu" method="post">
     <br>
     <label for="mname"></label>
-    <input class="eingabefeld" type="text" name="mname" id="mname" placeholder="Benutzername" style="margin-left: 5px;">
+    <input class="eingabefeld" type="text" name="mname" id="mname" placeholder="Benutzername" style="margin-left: 5px;" autofocus>
     <br><br>
     <label for="mpwd"></label>
     <input class=eingabefeld type="password" name="mpwd" id="mpwd" placeholder="Passwort" style="margin-left: 5px;">

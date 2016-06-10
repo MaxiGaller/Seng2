@@ -172,7 +172,7 @@ public class ProjectsController {
         int CheckTrashState = jdbcTemplate.queryForInt(sql_id, new Object[] {documentId}, new int[]{Types.NUMERIC});
 
 
-            int trashmark;
+        int trashmark;
 
         if (CheckTrashState == 1) {
             trashmark = 0;
