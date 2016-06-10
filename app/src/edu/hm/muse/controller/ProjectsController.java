@@ -70,6 +70,7 @@ public class ProjectsController {
         mv.addObject("TrashDocumentsForView", trashprojectnames);
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
 
+
         return mv;
     }
 
