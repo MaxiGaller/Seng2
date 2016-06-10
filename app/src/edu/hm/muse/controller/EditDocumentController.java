@@ -1,6 +1,5 @@
 package edu.hm.muse.controller;
 
-import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -75,7 +74,10 @@ public class EditDocumentController {
         	//execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {snipedContent, content_type,snipedId}, new int[] {Types.VARCHAR, Types.NUMERIC, Types.NUMERIC});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            mv.addObject("msg", "kleiner Fehler versuchs erneut");
+            return mv;
+
         }
 
         ModelAndView mv = getProjectPage(documentId, documentname, session);
@@ -149,8 +151,9 @@ public class EditDocumentController {
         try {
             id = jdbcTemplate.queryForInt("select MAX(id) from latexsniped");
         }catch (DataAccessException e){
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", id, e.getMessage()));
-
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            mv.addObject("msg", "kleiner Fehler versuchs erneut");
+            return mv;
         }
         id++;
 
@@ -160,20 +163,21 @@ public class EditDocumentController {
         try {
             ordinal = jdbcTemplate.queryForInt(getOrdinal, new Object[]{documentId}, new int[]{Types.NUMERIC});
         }catch (DataAccessException e){
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", ordinal, e.getMessage()));
-
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            mv.addObject("msg", "kleiner Fehler versuchs erneut");
+            return mv;
         }
             ordinal++;
         
-        //Insert the Content to DB
         String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, ?, ?, ?, ?, ?)";
 
         int res = 0;
         try {
-        	//execute the query and check exceptions
             res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, snipedContent, content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            mv.addObject("msg", "kleiner Fehler versuchs erneut");
+            return mv;
         }
         
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
