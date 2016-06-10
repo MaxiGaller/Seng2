@@ -42,26 +42,8 @@ public class EditDocumentController {
 			@RequestParam(value = "documentname", required = true) String documentname,
 			HttpSession session){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
-            return new ModelAndView("redirect:login.secu");
-        }
-
-//        String sql = "SELECT * FROM LatexSniped JOIN LatexType WHERE LatexSniped.document_id = ? AND LatexSniped.content_type LIKE LatexType.id";
-        String sql = "SELECT * FROM LatexSniped WHERE document_id = ? ORDER BY ordinal ASC";
-        List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, documentId);
-
-        String sqlTypes = "SELECT * FROM LatexType WHERE accessable = 1";
-        List<Map<String,Object>> projectTypes = jdbcTemplate.queryForList(sqlTypes);
-
-        ModelAndView mv = new ModelAndView("editdocument");
-
-        mv.addObject("documentId", documentId);
-        mv.addObject("documentname", documentname);
-        mv.addObject("TypesForView", projectTypes);
-        mv.addObject("SnipedsForView", projectSnipeds);
-
-        return mv;
-
+            ModelAndView mv = getProjectPage(documentId,documentname,session);
+            return mv;
 	}
 	
 	// Edit Sniped
@@ -76,7 +58,7 @@ public class EditDocumentController {
             HttpServletResponse response, 
             HttpServletRequest request){
 		
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
@@ -86,7 +68,7 @@ public class EditDocumentController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
-        String sqlUpdate = String.format("UPDATE LatexSniped SET content = ?, content_type = ? WHERE id = ?");//, snipedContent, content_type, snipedId);
+        String sqlUpdate = "UPDATE LatexSniped SET content = ?, content_type = ? WHERE id = ?";
 
         int res = 0;
         try {
@@ -115,7 +97,7 @@ public class EditDocumentController {
             HttpServletResponse response,
             HttpServletRequest request){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
@@ -158,7 +140,7 @@ public class EditDocumentController {
 
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
-        String sql_id = String.format("select ID from M_USER where muname = ?");//, uname);
+        String sql_id = "select ID from M_USER where muname = ?";
 		int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
 
 
@@ -184,7 +166,7 @@ public class EditDocumentController {
             ordinal++;
         
         //Insert the Content to DB
-        String sqlInsert = String.format("INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, ?, ?, ?, ?, ?)"); //, UserIDFromSessionOverDatabase, documentId, ordinal, snipedContent, content_type);
+        String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, ?, ?, ?, ?, ?)";
 
         int res = 0;
         try {
@@ -212,46 +194,37 @@ public class EditDocumentController {
 
 
 
-        queryToSaveRecordInSpareRow  = String.format("UPDATE LatexSniped SET ordinal = '%s' WHERE document_id = '%s' AND ordinal = '%s'", -1, documentId, ordinal);
-        queryToMoveNeighborRowToClickedRow = String.format("UPDATE LatexSniped SET ordinal = '%s' WHERE  document_id = '%s' AND ordinal = '%s'", ordinal, documentId, (ordinal - 1));
-        queryToMoveClickedFromSpareToNeighbor = String.format("UPDATE LatexSniped SET  ordinal = '%s' WHERE document_id = '%s' AND  ordinal = '%s'", (ordinal - 1), documentId, -1);
+        queryToSaveRecordInSpareRow  = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
+        queryToMoveNeighborRowToClickedRow = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
+        queryToMoveClickedFromSpareToNeighbor = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
 
 
-        jdbcTemplate.execute(queryToSaveRecordInSpareRow);
-        jdbcTemplate.execute(queryToMoveNeighborRowToClickedRow);
-        jdbcTemplate.execute(queryToMoveClickedFromSpareToNeighbor);
+        jdbcTemplate.update(queryToSaveRecordInSpareRow, new Object[]{-1 ,documentId, ordinal}, new int[]{Types.INTEGER, Types.NUMERIC, Types.INTEGER});
+        jdbcTemplate.update(queryToMoveNeighborRowToClickedRow, new Object[]{ordinal ,documentId, (ordinal - 1)}, new int[]{Types.INTEGER, Types.NUMERIC, Types.INTEGER});
+        jdbcTemplate.update(queryToMoveClickedFromSpareToNeighbor, new Object[]{(ordinal - 1) ,documentId, -1}, new int[]{Types.INTEGER, Types.NUMERIC, Types.INTEGER});
     }
 
 
-    private void moveDown(int docId, int ordinal) {
+    private void moveDown(int documentId, int ordinal) {
         String queryToSaveRecordInSpareRow = "";
         String queryToMoveNeighborRowToClickedRow = "";
         String queryToMoveClickedFromSpareToNeighbor = "";
 
 
+        queryToSaveRecordInSpareRow  = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
+        queryToMoveNeighborRowToClickedRow = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
+        queryToMoveClickedFromSpareToNeighbor = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
 
-        queryToSaveRecordInSpareRow  = String.format("UPDATE LatexSniped SET ordinal = '%s' WHERE document_id = '%s' AND ordinal = '%s'", -1, docId, ordinal);
-        queryToMoveNeighborRowToClickedRow = String.format("UPDATE LatexSniped SET ordinal = '%s' WHERE  document_id = '%s' AND ordinal = '%s'", ordinal, docId, (ordinal + 1));
-        queryToMoveClickedFromSpareToNeighbor = String.format("UPDATE LatexSniped SET  ordinal = '%s' WHERE document_id = '%s' AND  ordinal = '%s'", (ordinal + 1), docId, -1);
-
-
-        jdbcTemplate.execute(queryToSaveRecordInSpareRow);
-        jdbcTemplate.execute(queryToMoveNeighborRowToClickedRow);
-        jdbcTemplate.execute(queryToMoveClickedFromSpareToNeighbor);
-
-
-        /*String sqlQueryForUpdateText = "UPDATE LatexSniped SET ordinal=? WHERE document_id = ? AND ordinal = ?;";
-
-        jdbcTemplate.queryForInt(sqlQueryForUpdateText, -1, docId, ordinal);
-        jdbcTemplate.queryForInt(sqlQueryForUpdateText, ordinal, docId, (ordinal + 1));
-        jdbcTemplate.queryForInt(sqlQueryForUpdateText, (ordinal + 1), docId, -1);*/
+        jdbcTemplate.update(queryToSaveRecordInSpareRow, new Object[]{-1 ,documentId, ordinal}, new int[]{Types.INTEGER, Types.NUMERIC, Types.INTEGER});
+        jdbcTemplate.update(queryToMoveNeighborRowToClickedRow, new Object[]{ordinal ,documentId, (ordinal + 1)}, new int[]{Types.INTEGER, Types.NUMERIC, Types.INTEGER});
+        jdbcTemplate.update(queryToMoveClickedFromSpareToNeighbor, new Object[]{(ordinal + 1) ,documentId, -1}, new int[]{Types.INTEGER, Types.NUMERIC, Types.INTEGER});
     }
 
 
 
     private ModelAndView getProjectPage(int documentId,String documentname,HttpSession session){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         String sql = "SELECT * FROM LatexSniped WHERE document_id = ? ORDER BY ordinal ASC";
@@ -268,9 +241,4 @@ public class EditDocumentController {
         mv.addObject("SnipedsForView", projectSnipeds);
         return mv;
     }
-
-
-
-
 }
-
