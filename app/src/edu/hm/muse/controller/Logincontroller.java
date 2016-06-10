@@ -157,8 +157,7 @@ public class Logincontroller {
         }
 
         //Ohhhhh not correct try again
-        ModelAndView mv = returnToLogin(session);
-        return mv;
+        return returnToLogin(session);
     }
 
 
@@ -213,7 +212,6 @@ public class Logincontroller {
             }
         } catch (DataAccessException e) {
              ModelAndView mv = new ModelAndView("redirect:login.secu?login=failed");
-            //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
         }
         return false;
     }
@@ -222,6 +220,4 @@ public class Logincontroller {
         SecureRandom random = new SecureRandom();
         return random.nextInt();
     }
-
-
 }

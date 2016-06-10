@@ -1,6 +1,5 @@
 package edu.hm.muse.controller;
 
-import edu.hm.muse.exception.SuperFatalAndReallyAnnoyingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,7 +39,7 @@ public class ProjectsController {
     public ModelAndView getProjectsByUserId(HttpSession session, HttpServletRequest request,
                                             @RequestParam(value = "justLoggedIn", required = false) Integer justLoggedIn){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
@@ -80,7 +79,7 @@ public class ProjectsController {
             @RequestParam(value = "documentname", required = true) String documentname,
             HttpSession session, HttpServletRequest request, HttpServletResponse response){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (isNotLoggedIn(request, session)) {
@@ -105,7 +104,7 @@ public class ProjectsController {
             //execute the query and check exceptions
             resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, documentname}, new int[]{Types.NUMERIC, Types.VARCHAR});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %s is a bad grammar or has following problem %s ", sqlContent, e.getMessage()));
+            return new ModelAndView("redirect:projects.secu");
         }
 
         return new ModelAndView("redirect:projects.secu");
@@ -121,7 +120,7 @@ public class ProjectsController {
             HttpServletResponse response,
             HttpServletRequest request){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
@@ -131,14 +130,14 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
-        String sqlUpdate = "UPDATE LatexDocuments SET documentname = ? WHERE id = ?"; //, documentname, documentId);
+        String sqlUpdate = "UPDATE LatexDocuments SET documentname = ? WHERE id = ?";
 
         int res = 0;
         try {
             //execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {documentname, documentId}, new int[]{Types.VARCHAR, Types.NUMERIC});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+            return new ModelAndView("redirect:projects.secu");
         }
 
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
@@ -158,7 +157,7 @@ public class ProjectsController {
             HttpServletResponse response,
             HttpServletRequest request){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
@@ -168,7 +167,7 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Todo
-        String sql_id = "SELECT trash FROM LatexDocuments WHERE id = ?"; //documentId);
+        String sql_id = "SELECT trash FROM LatexDocuments WHERE id = ?";
         int CheckTrashState = jdbcTemplate.queryForInt(sql_id, new Object[] {documentId}, new int[]{Types.NUMERIC});
 
 
@@ -180,16 +179,14 @@ public class ProjectsController {
             trashmark = 1;
         }
 
-        //Update the DB
-        //Todo
-        String sqlUpdate = "UPDATE LatexDocuments SET trash = ? WHERE id = ?";// trashmark, documentId);
+        String sqlUpdate = "UPDATE LatexDocuments SET trash = ? WHERE id = ?";
 
         int res = 0;
         try {
             //execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {trashmark, documentId}, new int[] {Types.INTEGER, Types.NUMERIC});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+            return new ModelAndView("redirect:projects.secu");
         }
 
         return new ModelAndView("redirect:projects.secu");
@@ -203,7 +200,7 @@ public class ProjectsController {
             HttpServletResponse response,
             HttpServletRequest request){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
@@ -218,14 +215,14 @@ public class ProjectsController {
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
 
         //Update the DB
-        String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE trash = 1 AND muser_id = ?"; //, UserIDFromSessionOverDatabase);
+        String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE trash = 1 AND muser_id = ?";
 
         int res = 0;
         try {
             //execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[]{UserIDFromSessionOverDatabase}, new int[] {Types.INTEGER});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+            return new ModelAndView("redirect:projects.secu");
         }
 
         return new ModelAndView("redirect:projects.secu");
@@ -240,7 +237,7 @@ public class ProjectsController {
             HttpServletResponse response,
             HttpServletRequest request){
 
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
@@ -250,30 +247,21 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
-        String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE id = ?"; //, documentId);
+        String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE id = ?";
 
         int res = 0;
         try {
             //execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {documentId}, new int[] {Types.NUMERIC});
         } catch (DataAccessException e) {
-            throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but >%s< is a bad grammar or has following problem %s", sqlUpdate, e.getMessage()));
+            return new ModelAndView("redirect:projects.secu");
         }
-
         return new ModelAndView("redirect:projects.secu");
-
     }
 
 
     private boolean isNotLoggedIn(HttpServletRequest request, HttpSession session) {
         Cookie cookie = getCookie(request, "loggedIn");
-        if (cookie == null) {
-            return true;
-        }
-        if (cookie.getValue().equals(session.getAttribute("usertoken"))) {
-            return false;
-        }
-        return true;
+        return cookie == null || !cookie.getValue().equals(session.getAttribute("usertoken"));
     }
-
 }

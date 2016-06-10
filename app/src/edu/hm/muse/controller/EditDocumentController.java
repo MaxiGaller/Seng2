@@ -41,8 +41,7 @@ public class EditDocumentController {
 			@RequestParam(value = "documentname", required = true) String documentname,
 			HttpSession session){
 
-            ModelAndView mv = getProjectPage(documentId,documentname,session);
-            return mv;
+        return getProjectPage(documentId,documentname,session);
 	}
 	
 	// Edit Sniped

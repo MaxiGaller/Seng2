@@ -4,12 +4,10 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by mratusny on 10.06.16.
- */
-public class HashenController {
 
-    public static String hashen256(String mpwd) {
+class HashenController {
+
+    static String hashen256(String mpwd) {
         String hpwd = null;
 
         try {
