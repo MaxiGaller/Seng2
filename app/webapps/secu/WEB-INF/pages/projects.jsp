@@ -12,7 +12,8 @@
 <table>
 	<c:forEach items="${ProjectsForView}" var="ProjectsForView">
 		<tr>
-			<td>${ProjectsForView.documentname}</td>
+
+			<td><c:out value="${ProjectsForView.documentname}"/></td>
 			<td>
 				<form action="editdocument.secu" method="get">
 					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">

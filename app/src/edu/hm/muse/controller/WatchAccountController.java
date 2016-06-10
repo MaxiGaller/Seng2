@@ -87,7 +87,11 @@ public class WatchAccountController {
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
-
+        if (!isValidPw(upwd)) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "Pw muss Groß- Kleinbuchstaben und Sonderzeichen haben!");
+            return mv;
+        }
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
 
@@ -101,4 +105,13 @@ public class WatchAccountController {
         session.setAttribute("user", uname);
         return new ModelAndView("redirect:intern.secu");
     }
+
+
+    private boolean isValidPw(String upwd) {
+        String ePattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^+=?!])(?=\\S+$).{4,}$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(upwd);
+        return m.matches();
+    }
+
 }

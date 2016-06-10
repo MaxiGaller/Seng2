@@ -8,7 +8,7 @@
 <br><br><br>
 
 <form method="post" action="change.secu">
-    <input type="hidden" name="uid" value="${userDomain.id}" >
+    <%--<input type="hidden" name="uid" value="${userDomain.id}" >--%>
     <input type="hidden" name="uname" value="${userDomain.uname}" id="uname">
     <%--<input type="password" name="upwd" id="upwd" placeholder="neues Passwort">--%>
     <input class="eingabefeld" type="password" name="upwd" id="upwd" placeholder="neues Passwort" style="margin-left: 20px;" autofocus>
