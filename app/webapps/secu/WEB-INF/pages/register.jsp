@@ -13,8 +13,10 @@
     <label for="new_mpwd"></label>
     <input class="eingabefeld" type="password" name="new_mpwd" id="new_mpwd" placeholder="neues Passwort" style="margin-left: 20px;">
     <br><br><br>
+    <label for="new_mpwd"></label>
+    <input class="eingabefeld" type="password" name="new_mpwd" id="new_mpwd1" placeholder="Passwort wiederholen" style="margin-left: 20px;">
+    <br><br><br>
     <button class="button" value="Register" style="vertical-align:middle; margin-left: 20px;"><span>Registrieren</span></button>
-    <%--<input type="submit" value="Registrieren" style="margin-left: 5px;">--%>
 </form>
 
 

@@ -40,7 +40,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/register.secu", method = RequestMethod.POST)
-    public ModelAndView doSomeRegister(@RequestParam(value = "new_uname", required = false) String new_uname, @RequestParam(value = "new_mpwd", required = false) String new_mpwd, HttpServletResponse response, HttpSession session) {
+    public ModelAndView doSomeRegister(@RequestParam(value = "new_uname", required = false) String new_uname, @RequestParam(value = "new_mpwd", required = false) String new_mpwd, @RequestParam(value = "new_mpwd1", required = false) String new_mpwd1, HttpServletResponse response, HttpSession session) {
         if (!(new_uname.matches("[A-Za-z0-9]+"))) {
             ModelAndView mv = new ModelAndView("register");
             mv.addObject("msg", "Nur Buchstaben und Zahlen (ohne Umlaute und Sonderzeichen) sind erlaubt!");
@@ -56,6 +56,18 @@ public class RegisterController {
         if (isLoginNameTaken(new_uname)) {
             ModelAndView mv = new ModelAndView("register");
             mv.addObject("msg", "Was los? Den Namen gibts schon. Nimm nen anderen!");
+            return mv;
+        }
+
+        if (!isValidPw(new_mpwd)) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "Pw muss Groß- Kleinbuchstaben und Sonderzeichen haben!");
+            return mv;
+        }
+
+        if (!new_mpwd.equals(new_mpwd1)) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "passen nicht!");
             return mv;
         }
 
@@ -91,10 +103,15 @@ public class RegisterController {
     }
 
     private ModelAndView returnToRegister(HttpSession session) {
-        //Ohhhhh not correct try again
         return new ModelAndView("redirect:register.secu");
     }
 
+    private boolean isValidPw(String new_mpwd) {
+        String ePattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^+=?!])(?=\\S+$).{6,}$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(new_mpwd);
+        return m.matches();
+    }
 
     private boolean isUserInputValid(String mname) {
         return mname.matches("[A-Za-z0-9]+");
@@ -111,8 +128,6 @@ public class RegisterController {
         } catch (DataAccessException e) {
             //returnToRegister(session);
             throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
-            //return new ModelAndView("redirect:register.secu");
-
         }
         return false;
     }

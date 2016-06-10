@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Max Haubelt ist ein geiler Typ</title>
+    <title>OnlineLatex</title>
     <link rel="stylesheet" href="stylesheets/master.css" type="text/css">
     <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script src="js/popup.js" type="text/javascript"></script>

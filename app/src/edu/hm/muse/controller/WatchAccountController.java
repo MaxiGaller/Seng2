@@ -88,19 +88,16 @@ public class WatchAccountController {
             return new ModelAndView("redirect:login.secu");
         }
 
-
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
 
-        String saltedPw = salt +
-                upwd;
-
+        String saltedPw = salt + upwd;
 
         String hpwd = HashenController.hashen256(saltedPw);
 
-        String sql = "update M_USER set  mpwd = ? where ID = "+uid;
+        String sql = "update M_USER set  mpwd = ? where ID = ?";
 
-        jdbcTemplate.update(sql, new Object[]{hpwd}, new int[]{Types.VARCHAR});
+        jdbcTemplate.update(sql, new Object[]{hpwd, uid}, new int[]{Types.VARCHAR, Types.NUMERIC});
         session.setAttribute("user", uname);
         return new ModelAndView("redirect:intern.secu");
     }
