@@ -1,26 +1,58 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Verdammt tolle Seite</title>
-
+    <title>Max Haubelt ist ein geiler Typ</title>
     <link rel="stylesheet" href="stylesheets/master.css" type="text/css">
-
     <script src="js/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script src="js/popup.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/jqpopup.js"></script>
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            font-size: 18px;
+        }
 
+        li {
+            float: left;
+        }
 
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 18px 30px;
+            text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+            background-color: #111;
+        }
+
+        .active {
+            background-color: #4CAF50;
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- Links für das Menü auf der linken Seite -->
+<ul>
+    <%--<img src="img/iDontKnow.gif" width="300px" align="left">--%>
+    <li><a class="active" href="http://localhost:8081/secu/"><i class="fa fa-home"></i> Home</a></li>
+    <%--<li><a class="active" href="http://localhost:8081/secu/">Home</a></li>--%>
 
-<ul id="navigation">
-    <a href="http://localhost:8081/secu/" id="logo"><img src="img/bavaria.png" alt="Bild" width="98%" /></a>
-    <br>
     <% if ((session.getAttribute("login") == null) ) { %>
-    <li><a href="login.secu" class="menubutton">Login</a></li>
+    <li><a href="login.secu" class="menubutton" >Login</a></li>
     <li><a href="register.secu" class="menubutton">Registrieren</a> </li>
     <% } %>
 
@@ -30,5 +62,6 @@
     <li><a href="logout.secu" class="menubutton">Logout</a></li>
     <% } %>
 </ul>
-
-<div id="Inhalt">
+<br><br><br>
+</body>
+</html>

@@ -1,117 +1,5 @@
 
 /*
-Hintergrund
-*/
-body {
-    color: #474973;
-    background-color: #FFFFFF;
-    font-size: 100.01%;
-    font-family: Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 1em;
-}
-
-/*
-Umrandung von der Menüleiste
-*/
-ul#Navigation {
-    font-size: 0.91em;
-    float: left;
-    width: 22em;
-    margin: 0;
-    padding: 0;
-    margin-left: 10px;
-}
-
-/*
-Menüleiste links: Optionen für die Liste
-*/
-ul#Navigation li {
-    list-style: element(1);
-    margin: 0;
-    padding: 0.5em;
-}
-
-/*
-Menüleiste links: Fett und Schrifthinterlegung
-*/
-ul#Navigation a {
-    display: block;
-    padding: 0.2em;
-    font-weight: bold;
-    font-family: Arial;
-}
-
-#logo {
-    background-color: white;
-}
-
-#logo:hover {
-    background-color: whitesmoke;
-}
-
-#logo:active {
-     background-color: #c9c9c9;
- }
-/*
-wenn ich es noch nicht geklickt hab: bis klick dauerhaft
-*/
-.menubutton:link {
-    color: black;
-    background-color: #ededed;
-    text-decoration: none;
-}
-
-/*
-wenn man es mal geklickt hat: danach dauerhaft
-*/
-.menubutton:visited {
-    color: black;
-    background-color: white;
-}
-
-/*
-wenn mitm Zeiger drauf
-*/
-.menubutton:hover {
-    color: #000000;
-    background-color: #c9c9c9;
-}
-
-/*
-beim klicken
-*/
-.menubutton:active {
-    color: #000000;
-    background-color: #ababab;
-}
-
-/*
-
-*/
-div#Inhalt {
-    margin-left: 22em;
-    padding: 0 1em;
-    min-width: 16em;
-}
-
-div#Inhalt h1 {
-    font-size: 1.5em;
-    margin: 0 0 1em;
-    color: #9c0000;
-}
-
-div#Inhalt h2 {
-    font-size: 1.2em;
-    margin: 0 0 1em;
-    color: #9c0000;
-}
-
-div#Inhalt p {
-    font-size: 1em;
-    margin: 1em 0;
-}
-/*
 *Just for the help popup
 */
 #backgroundPopup {
@@ -169,11 +57,20 @@ div#Inhalt p {
 
 #popup {
     position: absolute;
-    text-align: left;
-    background-color: #000000;
-    color: #ffffff;
-    border: double;
-    border-color: #9c0000;
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: dotted;
+    border-color: #4CAF50;
+    color: #000000;
+    text-align: center;
+    font-size: 15px;
+    padding: 5px;
+    width: 150px;
+    transition: all 0.5s;
+    cursor: not-allowed;
+    margin: 5px;
+    left: 10px;
 }
 
 /*
@@ -353,8 +250,8 @@ div#Inhalt p {
     color: white;
     padding: 5px;
     width: 200px;
-    text-align: center;
-    text-decoration: none;
+    text-align: left;
+    text-decoration: dotted;
     display: inline-block;
     font-size: 14px;
     margin: 4px 2px;
@@ -375,4 +272,67 @@ div#Inhalt p {
 .eingabefeld:focus {
     background-color: white;
     border: 2px solid #6d70e7;
+}
+
+.buttonKleinSchmal {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 15px;
+    padding: 5px;
+    width: 60px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.buttonKleinSchmal span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.buttonKleinSchmal span:after {
+    content: "\00BB";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -40px;
+    transition: 1.0s;
+}
+
+.buttonKleinSchmal:hover span {
+    padding-right: 25px;
+}
+
+.buttonKleinSchmal:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+/* remove standard-styles */
+select {
+    border:none;
+    border-radius: 0;
+    font-size: 1em;
+    width: 100%
+}
+
+/* styling */
+select {
+    width: 200px;
+    border: 2px solid #bbb;
+    padding:.75em 1em .5em 1em;
+    box-shadow: 0 2px 1px 0 rgba(0,0,0,0.2);
+    background-color:white;
+    background-position: right;
+    background-repeat: no-repeat;
+}
+
+select:hover {
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
 }

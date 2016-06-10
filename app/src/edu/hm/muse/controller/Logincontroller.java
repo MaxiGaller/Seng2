@@ -55,7 +55,6 @@ import javax.sql.DataSource;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
 
@@ -119,12 +118,11 @@ public class Logincontroller {
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{mname}, String.class);
 
-        StringBuilder saltedPw = new StringBuilder();
-        saltedPw.append(salt);
-        saltedPw.append(mpwd);
+        String saltedPw = salt +
+                mpwd;
 
 
-        String hpwd = hashen256(saltedPw.toString());
+        String hpwd = HashenController.hashen256(saltedPw);
 
         //This is the sql statement
         String sql = "select count(*) from M_USER where muname = ? and mpwd = ?";
@@ -159,8 +157,7 @@ public class Logincontroller {
         }
 
         //Ohhhhh not correct try again
-        ModelAndView mv = returnToLogin(session);
-        return mv;
+        return returnToLogin(session);
     }
 
 
@@ -200,24 +197,6 @@ public class Logincontroller {
         return output;
     }
 
-
-    private String hashen256(String mpwd) {
-        String hpwd = null;
-
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-            digest.update(mpwd.getBytes(), 0, mpwd.length());
-
-            hpwd = new BigInteger(1, digest.digest()).toString(16);
-        }
-        catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        return hpwd;
-    }
-
     private boolean isUserInputValid(String mname) {
         return mname.matches("[A-Za-z0-9]+");
     }
@@ -232,8 +211,7 @@ public class Logincontroller {
                 return true;
             }
         } catch (DataAccessException e) {
-             ModelAndView mv = new ModelAndView("redirect:login.secu?login=failed");
-            //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sql, e.getMessage()));
+            ModelAndView mv = new ModelAndView("redirect:login.secu?login=failed");
         }
         return false;
     }
@@ -242,6 +220,4 @@ public class Logincontroller {
         SecureRandom random = new SecureRandom();
         return random.nextInt();
     }
-
-
 }

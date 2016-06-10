@@ -15,9 +15,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Types;
 
@@ -62,10 +59,6 @@ public class RegisterController {
             return mv;
         }
 
-        //Build the query with the new User and Passwd
-
-
-
         StringBuilder saltedPw = new StringBuilder();
         byte[] salt = saltErstellen.getNextSalt();
         String saltDB = saltErstellen.byteArrayToString(salt);
@@ -73,7 +66,7 @@ public class RegisterController {
         saltedPw.append(new_mpwd);
 
 
-        String hpwd = hashen256(saltedPw.toString());
+        String hpwd = HashenController.hashen256(saltedPw.toString());
 
         String sqlInsert = "insert into M_USER (muname,mpwd,salt) values (?,?,?)";
         int res = 0;
@@ -82,11 +75,7 @@ public class RegisterController {
             res = jdbcTemplate.update(sqlInsert, new Object[] {new_uname, hpwd, saltDB}, new int[]{Types.VARCHAR, Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
             ModelAndView mv = returnToRegister(session);
-            //throw new SuperFatalAndReallyAnnoyingException(String.format("Sorry but %sis a bad grammar or has following problem %s", sqlInsert, e.getMessage()));
         }
-
-        //Register Ok
-        //Do Autologin
 
         if (res > 0) {
             ModelAndView mv = new ModelAndView("redirect:login.secu?justRegistered=1");
@@ -99,7 +88,6 @@ public class RegisterController {
             return mv;
 
         }
-        //Error
         return returnToRegister(session);
     }
 
@@ -108,22 +96,6 @@ public class RegisterController {
         return new ModelAndView("redirect:register.secu");
     }
 
-    private String hashen256(String mpwd) {
-        String hpwd = null;
-
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-            digest.update(mpwd.getBytes(), 0, mpwd.length());
-
-            hpwd = new BigInteger(1, digest.digest()).toString(16);
-        }
-        catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        return hpwd;
-    }
 
     private boolean isUserInputValid(String mname) {
         return mname.matches("[A-Za-z0-9]+");

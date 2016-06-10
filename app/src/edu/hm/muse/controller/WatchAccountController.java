@@ -49,9 +49,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Types;
 
 
@@ -70,7 +68,7 @@ public class WatchAccountController extends functions {
 
     @RequestMapping(value = "/internchange.secu", method = RequestMethod.GET)
     public ModelAndView showAccountToChange(HttpSession session) {
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         String uname = (String) session.getAttribute("user");
@@ -89,7 +87,7 @@ public class WatchAccountController extends functions {
 
     @RequestMapping(value = "/intern.secu", method = RequestMethod.GET)
     public ModelAndView showAccount(HttpSession session) {
-        if ((null == session) || (null == session.getAttribute("login")) || ((Boolean) session.getAttribute("login") == false)) {
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         String uname = (String) session.getAttribute("user");
@@ -106,24 +104,24 @@ public class WatchAccountController extends functions {
 //            digest.reset();
             digest.update(u.getUpwd().getBytes());
             byte[] md = digest.digest();
-            StringBuffer hex = new StringBuffer();
-            for (int i = 0; i < md.length; i++) {
-                if(md[i] <= 15 && md[i] >= 0){
+            StringBuilder hex = new StringBuilder();
+            for (byte aMd : md) {
+                if (aMd <= 15 && aMd >= 0) {
                     hex.append("0");
                 }
-                hex.append(Integer.toHexString(0xFF & md[i]));
+                hex.append(Integer.toHexString(0xFF & aMd));
             }
             pwd = hex.toString();
         } catch (Exception e) {
             //This is a frog not a bug...perhaps your system do not want this.....
             pwd = "7c6a180b36896a0a8c02787eeafb0e4c"; //With this you can try it.....
         }
-        
+
         mv.addObject("md5pwd", pwd);
-        
+
         return mv;
     }
-    
+
 
     @RequestMapping(value = "/change.secu", method = RequestMethod.POST)
     public ModelAndView changeAccount(HttpSession session, @RequestParam(value = "uid", required = true) String uid, @RequestParam(value = "uname", required = true) String uname, @RequestParam(value = "upwd", required = true) String upwd) {
@@ -135,12 +133,11 @@ public class WatchAccountController extends functions {
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
 
-        StringBuilder saltedPw = new StringBuilder();
-        saltedPw.append(salt);
-        saltedPw.append(upwd);
+        String saltedPw = salt +
+                upwd;
 
 
-        String hpwd = hashen256(saltedPw.toString());
+        String hpwd = HashenController.hashen256(saltedPw);
 
         String sql = "update M_USER set  mpwd = ? where ID = "+uid;
 
@@ -153,23 +150,5 @@ public class WatchAccountController extends functions {
     public String showHelp() {
         return "howto";
     }
-
-    private String hashen256(String mpwd) {
-        String hpwd = null;
-
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-            digest.update(mpwd.getBytes(), 0, mpwd.length());
-
-            hpwd = new BigInteger(1, digest.digest()).toString(16);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-
-        return hpwd;
-    }
-
 
 }

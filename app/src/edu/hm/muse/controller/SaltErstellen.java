@@ -6,13 +6,10 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-/**
- * Created by Society on 13.05.2016.
- */
 @Component
 public class SaltErstellen {
 
-    SecureRandom salt;
+    private SecureRandom salt;
 
     private SaltErstellen() {
         try {
@@ -22,13 +19,13 @@ public class SaltErstellen {
         }
     }
 
-    public byte[] getNextSalt() {
+    byte[] getNextSalt() {
         byte[] randomBytes = new byte[32];
         salt.nextBytes(randomBytes);
         return randomBytes;
     }
 
-    public String byteArrayToString(byte[] bytes) {
+    String byteArrayToString(byte[] bytes) {
 
         String output;
         try {
