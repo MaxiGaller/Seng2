@@ -1,18 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../../head.jsp"/>
 
-<span style="font-size:3em"><font color="FF9900"><b>Registrieren</b></font></span>
-<h2><c:out value="${msg}"/></h2>
+<span style="font-size: 50px; font-family: Arial; margin-left: 20px; color:#4169e1;"><b>Registrieren</b></span>
+<br>
+<span style="margin-left: 20px; font-size: 20px;"><c:out value="${msg}"/></span>
 
 <form action="register.secu" method="post">
-    <br>
+    <br><br>
     <label for="new_uname"></label>
-    <input class="eingabefeld" type="text" name="new_uname" id="new_uname" placeholder="neuer Benutzername" style="margin-left: 5px;" >
+    <input class="eingabefeld" type="text" name="new_uname" id="new_uname" placeholder="neuer Benutzername" style="margin-left: 20px;" autofocus >
     <br><br>
     <label for="new_mpwd"></label>
-    <input class="eingabefeld" type="password" name="new_mpwd" id="new_mpwd" placeholder="neues Passwort" style="margin-left: 5px;">
+    <input class="eingabefeld" type="password" name="new_mpwd" id="new_mpwd" placeholder="neues Passwort" style="margin-left: 20px;">
     <br><br><br>
-    <button class="button" value="Register" style="vertical-align:middle"><span>Registrieren</span></button>
+    <button class="button" value="Register" style="vertical-align:middle; margin-left: 20px;"><span>Registrieren</span></button>
     <%--<input type="submit" value="Registrieren" style="margin-left: 5px;">--%>
 </form>
 

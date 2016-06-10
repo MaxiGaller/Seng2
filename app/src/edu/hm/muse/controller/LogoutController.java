@@ -26,16 +26,15 @@ public class LogoutController {
 		return logout("logout", request, response, session);
 	}
 
-    @RequestMapping(value = "/logout.secu", method = RequestMethod.GET)
-    public ModelAndView logout(
-            @RequestParam(value = "logout", required = false) String logout,
-            HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	@RequestMapping(value = "/logout.secu", method = RequestMethod.GET)
+	public ModelAndView logout(
+			@RequestParam(value = "logout", required = false) String logout,
+			HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
-        cookieHelper.eraseCookies(request, response);
-        session.invalidate();
+		cookieHelper.eraseCookies(request, response);
+		session.invalidate();
 
-        ModelAndView mv = new ModelAndView("redirect:login.secu");
-        return mv;
-    }
+		return new ModelAndView("redirect:login.secu");
+	}
 
 }
