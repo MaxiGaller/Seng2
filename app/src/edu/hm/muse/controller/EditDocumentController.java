@@ -65,7 +65,7 @@ public class EditDocumentController {
 	}
 	
 	// Edit Sniped
-	@RequestMapping(value = "/editsniped.secu", method = RequestMethod.POST)
+	@RequestMapping(value = "/editsniped.secu", method = RequestMethod.GET)
 	public ModelAndView editSnipedBySnipedID(
             @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
