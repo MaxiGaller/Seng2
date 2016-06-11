@@ -28,7 +28,6 @@
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId" id="snipedId">
 					<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
-				</form>
 			</td>
 			<td>
 				<c:forEach items="${TypesForView}" var="TypesForView">
