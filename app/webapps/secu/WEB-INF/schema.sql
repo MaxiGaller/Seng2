@@ -2,7 +2,7 @@ CREATE TABLE M_USER (ID INTEGER IDENTITY, muname VARCHAR(255) UNIQUE, mpwd VARCH
 CREATE TABLE NEWSLETTER (id NUMERIC PRIMARY KEY, text VARCHAR(1000));
 CREATE TABLE M_ADMIN (ID NUMERIC PRIMARY KEY, mpwd VARCHAR(255) UNIQUE);
 
-CREATE TABLE LatexSniped (id NUMERIC IDENTITY, muser_id NUMERIC, document_id NUMERIC, ordinal int not null, content VARCHAR(1000000), content_type NUMERIC);
+CREATE TABLE LatexSniped (id NUMERIC IDENTITY, muser_id NUMERIC, document_id NUMERIC, ordinal int not null, content VARCHAR(1000000), content_type NUMERIC, global_Sniped_id NUMERIC, editable NUMERIC, trash NUMERIC);
 CREATE TABLE LatexGlobalSniped (id NUMERIC IDENTITY, muser_id NUMERIC, content VARCHAR(1000000), content_type NUMERIC);
 CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255), trash NUMERIC);
 CREATE TABLE LatexType (id NUMERIC IDENTITY, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), html_opening_tag VARCHAR(255), html_closeing_tag VARCHAR(255), accessable NUMERIC);
@@ -11,19 +11,22 @@ INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 
 INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'Ernsthaftes Test Dokument', 0);
 INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'LULULULULUL', 1);
 
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 0, 0, 'Bla Bla Blub! Überschrift', 0);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 0, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 0, 2, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 1);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 0, 3, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 0, 4, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 0, 5, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 1, 0, 'H1 H1 H1 H1 H1', 0);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 1, 1, 'TEXT TEXT TEXT', 3);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 1, 2, 'H2 H2 H2 H2 H2', 1);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 1, 3, 'TEXT TEXT TEXT', 3);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, 2, 1, 4, 'H3 H3 H3 H3 H3', 2);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 0, 'Bla Bla Blub! Überschrift', 0, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 2, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 1, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 3, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 4, 'Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet Dolor Sit Amet ', 2, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 5, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 0, 'H1 H1 H1 H1 H1', 0, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 1, 'TEXT TEXT TEXT', 3, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 2, 'H2 H2 H2 H2 H2', 1, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 3, 'TEXT TEXT TEXT', 3, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 4, 'H3 H3 H3 H3 H3', 2, NULL, 1, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 5, 'DU DARFST MICH NICHT SEHEN', 5, 2, 0, 0);
 
-insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 1, 'globaler Footer', 8);
+insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 0, 'NULL', NULL);
+insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 2, 'Globaler Footer', 6);
+insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 2, 'Author', 5);
 
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'section', '\section{', '}', '<h1>', '</h1>', 1);
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'subsection', '\subsection{', '}', '<h2>', '</h2>',  1);
@@ -35,7 +38,7 @@ insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_openi
 
 
 insert into M_USER (ID,muname,mpwd) values (1,'never','login');
-insert into M_USER (ID,muname,mpwd, salt) values (2,'a','bb07befc1620374b8d2ff20c4cd8a2f119d9fc77b8805fe42917b2d9a4ed7870', 'nvplgossrskt161vd69nihripg8pmbr1025mi6g8ctuo2hudq9');
+insert into M_USER (ID,muname,mpwd, salt) values (2,'q','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
 
 insert into NEWSLETTER (id,text) values (1,'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.');
 insert into NEWSLETTER (id,text) values (2,'Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zufälligen Umständen, in denen Mühen und Schmerz ihm große Freude bereiten können. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender körperlicher Betätigung, außer um Vorteile daraus zu ziehen? Aber wer hat irgend ein Recht, einen Menschen zu tadeln, der die Entscheidung trifft, eine Freude zu genießen, die keine unangenehmen Folgen hat, oder einen, der Schmerz vermeidet, welcher keine daraus resultierende Freude nach sich zieht? Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zufälligen Umständen, in denen Mühen und Schmerz ihm große Freude bereiten können. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender körperlicher Betätigung, außer um Vorteile daraus zu ziehen?');

@@ -9,23 +9,22 @@
 <h2>${msg}</h2>
 <br><br>
 
-<h2>Ihre Projekte</h2>
+<span style="margin-left: 20px; font-size: 25px;">Ihre Projekte</span>
 <table>
-	<c:forEach items="${ProjectsForView}" var="ProjectsForView">
+	<c:forEach items="${DocumentsForView}" var="DocumentsForView">
 		<tr>
-
-			<td><c:out value="${ProjectsForView.documentname}"/></td>
+			<td><c:out value="${DocumentsForView.documentname}"/></td>
 			<td>
 				<form action="editdocument.secu" method="get">
-					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">
-					<input type="hidden" value="<c:out value="${ProjectsForView.documentname}"/>" name="documentname" id="documentname">
+					<input type="hidden" value="<c:out value="${DocumentsForView.id}"/>" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${DocumentsForView.documentname}"/>" name="documentname" id="documentname">
 						<%--<input type="submit" value="Bearbeiten">--%>
 					<button class="buttonKleinSchmal" value="Bearbeiten" style="vertical-align:middle"><span><i class="fa fa-edit"></i></span></button>
 				</form>
 			</td>
 			<td>
 				<form action="recycledocuments.secu" method="get">
-					<input type="hidden" value="<c:out value="${ProjectsForView.id}"/>" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${DocumentsForView.id}"/>" name="documentId" id="documentId">
 						<%--<input type="submit" value="Papierkorb">--%>
 					<button class="buttonKleinSchmal" value="Papierkorb" style="vertical-align:middle"><span><i class="fa fa-trash w3-large"></i></span></button>
 				</form>
@@ -52,8 +51,7 @@
 
 <hr>
 
-<h2>M&uuml;lleimer</h2>
-
+<span style="margin-left: 20px; font-size: 25px;">M&uuml;lleimer</span>
 <form action="cleantrashcan.secu" method="get">
 	<%--<input type="submit" value="Papierkorb leeren">--%>
 	<button class="buttonKleinSchwarz" value="Papierkorb leeren" style="vertical-align:middle"><span><b>Papierkorb leeren</b></span></button>
@@ -77,6 +75,67 @@
 					<button class="buttonKleinBreit" value="Endg&uuml;ltig l&ouml;schen" style="vertical-align:middle"><span>Endg&uuml;ltig l&ouml;schen</span></button>
 				</form>
 			</td>
+		</tr>
+	</c:forEach>
+</table>
+
+<hr>
+
+<span style="margin-left: 20px; font-size: 25px;">Globale Snippeds</span>
+<table>
+	<form action="newglobalsniped.secu" method="get">
+		<tr>
+			<td>
+				<textarea rows="4" cols="50" name="snipedGlobalContent" id="snipedGlobalContent"></textarea>
+			</td>
+			<td>
+				<select name="Global_content_type">
+					<c:forEach items="${AllContentTypes}" var="AllContentTypes">
+						<option value="${AllContentTypes.id}">${AllContentTypes.type}</option>
+					</c:forEach>
+				</select>
+				<button class="buttonKlein" value="Neu Anlegen" style="vertical-align:middle"><span>Speichern <i class="fa fa-save"></i></span></button>
+			</td>
+		</tr>
+	</form>
+</table>
+
+<table>
+	<c:forEach items="${GlobalSnipedsForView}" var="GlobalSnipedsForView">
+	<form action="editGlobalSnipeds.secu" method="get">
+		<tr>
+			<td>
+				<textarea rows="4" cols="50" name="GlobalSniped_content" id="GlobalSnipeds">${GlobalSnipedsForView.content}</textarea>
+				<input type="hidden" value="<c:out value="${GlobalSnipedsForView.id}"/>" name="GlobalSniped_id" id="GlobalSniped_id">
+			</td>
+			<td>
+				<select name="GlobalSniped_content_type">
+					<c:forEach items="${AllContentTypes}" var="AllContentTypes">
+						<c:if test="${AllContentTypes.id == GlobalSnipedsForView.content_type}">
+							<option value="${AllContentTypes.id}" selected>${AllContentTypes.type}</option>
+						</c:if>
+						<c:if test="${AllContentTypes.id != GlobalSnipedsForView.content_type}">
+							<option value="${AllContentTypes.id}">${AllContentTypes.type}</option>
+						</c:if>
+					</c:forEach>
+				</select>
+				<button class="buttonKleinSchmal" value="Speichern" style="vertical-align:middle"><span><i class="fa fa-save"></i></span></button>
+			</td>
+	</form>
+	<form action="CopyGlobalSnipedToDocument.secu" method="get">
+			<td>
+				<select name="documentId">
+					<c:forEach items="${DocumentsForView}" var="DocumentsForView">
+							<option value="${DocumentsForView.id}">${DocumentsForView.documentname}</option>
+					</c:forEach>
+				</select>
+			</td>
+			<td>
+				<input type="hidden" value="<c:out value="${GlobalSnipedsForView.id}"/>" name="GlobalSniped_id" id="GlobalSniped_id">
+				<input type="hidden" value="<c:out value="${GlobalSnipedsForView.content_type}"/>" name="GlobalSniped_content_type" id="GlobalSniped_content_type">
+				<button class="buttonKleinBreit" value="Kopieren" style="vertical-align:middle">Zu Dokument kopieren</button>
+			</td>
+	</form>
 		</tr>
 	</c:forEach>
 </table>
