@@ -88,10 +88,11 @@ public class WatchAccountController {
             return new ModelAndView("redirect:login.secu");
         }
         if (!isValidPw(upwd)) {
-            ModelAndView mv = new ModelAndView("register");
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
             mv.addObject("msg", "Pw muss Groß- Kleinbuchstaben und Sonderzeichen haben!");
             return mv;
         }
+
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
 

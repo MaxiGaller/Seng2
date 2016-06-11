@@ -59,11 +59,11 @@ public class RegisterController {
             return mv;
         }
 
-        if (!isValidPw(new_mpwd)) {
+        /*if (!isValidPw(new_mpwd)) {
             ModelAndView mv = new ModelAndView("register");
             mv.addObject("msg", "Pw muss Groß- Kleinbuchstaben und Sonderzeichen haben!");
             return mv;
-        }
+        }*/
 
         if (!new_mpwd.equals(new_mpwd1)) {
             ModelAndView mv = new ModelAndView("register");
