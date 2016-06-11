@@ -9,6 +9,7 @@
 <h2>${msg}</h2>
 <br><br>
 
+<h2>Ihre Projekte</h2>
 <table>
 	<c:forEach items="${ProjectsForView}" var="ProjectsForView">
 		<tr>
