@@ -24,7 +24,7 @@
 		<tr>
 			<td>
 				<form action="editsniped.secu" method="get">
-					<textarea rows="4"; cols="50"; name="snipedContent"; id="snipedContent";>${SnipedsForView.content}</textarea>
+					<textarea rows="4"; cols="50"; name="snipedContent" id="snipedContent"><c:out value="${SnipedsForView.content}"/></textarea>
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId" id="snipedId">
 					<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
@@ -33,13 +33,12 @@
 				<c:forEach items="${TypesForView}" var="TypesForView">
 					<c:if test="${TypesForView.id != SnipedsForView.content_type}">
 						${TypesForView.html_opening_tag}
-					</c:if>	
-				</c:forEach>		
-				${SnipedsForView.content}
+					</c:if>
+				</c:forEach> <c:out value="${SnipedsForView.content}"/>
 				<c:forEach items="${TypesForView}" var="TypesForView">
 					<c:if test="${TypesForView.id != SnipedsForView.content_type}">
 						${TypesForView.html_closeing_tag}
-					</c:if>	
+					</c:if>
 				</c:forEach>
 			</td>
 			<td>
@@ -47,7 +46,7 @@
 					<select name="content_type">
 						<c:forEach items="${TypesForView}" var="TypesForView">
 							<c:if test="${TypesForView.id == SnipedsForView.content_type}">
-								<option value="${TypesForView.id}" selected>${TypesForView.type}</option>
+								<option value="<c:out value="${TypesForView.id}"/>" selected>${TypesForView.type}</option>
 							</c:if>
 							<c:if test="${TypesForView.id != SnipedsForView.content_type}">
 								<option value="${TypesForView.id}">${TypesForView.type}</option>
@@ -87,13 +86,13 @@
 			<td>
 				<br>
 				<textarea rows="4" cols="50" name="snipedContent" id="snipedContent"></textarea>
-				<input type="hidden" value="${documentname}" name="documentname" id="documentname">
-				<input type="hidden" value="${documentId}" name="documentId" id="documentId">
+				<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
+				<input type="hidden" value="<c:out value="${documentId}"/>" name="documentId" id="documentId">
 				<br>
 				<br>
 				<select name="content_type">
 					<c:forEach items="${TypesForView}" var="TypesForView">
-						<option value="${TypesForView.id}">${TypesForView.type}</option>
+						<option value="<c:out value="${TypesForView.id}"/>">${TypesForView.type}</option>
 					</c:forEach>
 				</select>
 				<button class="buttonKlein" value="Neu Anlegen" style="vertical-align:middle"><span>Neu <i class="fa fa-save"></i></span></button>
