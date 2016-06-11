@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.hm.muse.domain.User;
+
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +37,7 @@ public class EditDocumentController {
     }
 
     // Load Document
+    // Author Marco Ratusny
     @RequestMapping(value = "/editdocument.secu", method = RequestMethod.GET)
     public ModelAndView getSnipedsByDocumentID(
             @RequestParam(value = "documentId", required = true) int documentId,
@@ -44,7 +47,8 @@ public class EditDocumentController {
         return getProjectPage(documentId,documentname,session);
     }
 
-    // Edit Sniped
+    // Edit an Saved Sniped
+    // Author Maximilian Galler
     @RequestMapping(value = "/editsniped.secu", method = RequestMethod.GET)
     public ModelAndView editSnipedBySnipedID(
             @RequestParam(value = "documentId", required = true) int documentId,
@@ -86,7 +90,8 @@ public class EditDocumentController {
     }
 
 
-    // Edit Sniped
+    // Move Sniped
+    // Author Marco Ratusny
     @RequestMapping(value = "/editSnipedMove.secu", method = RequestMethod.POST)
     public ModelAndView moveUpAndDown(
             @RequestParam(value = "type", required = true) String type,
@@ -122,6 +127,7 @@ public class EditDocumentController {
 
 
     // New Sniped
+    // Author Maximilian Galler
     @RequestMapping(value = "/newsniped.secu", method = RequestMethod.GET)
     public ModelAndView saveNewSniped(
             @RequestParam(value = "documentId", required = true) int documentId,
@@ -165,7 +171,7 @@ public class EditDocumentController {
         }
         ordinal++;
 
-        String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type) VALUES (NULL, ?, ?, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, 1, 0)";
 
         int res = 0;
         try {
@@ -185,8 +191,69 @@ public class EditDocumentController {
         return mv;
 
     }
+    
+    // Copy Global Sniped to Document
+    // Author Maximilian Galler
+    @RequestMapping(value = "/CopyGlobalSnipedToDocument.secu", method = RequestMethod.GET)
+    public ModelAndView CopyGlobalSnipedToDocument(
+            @RequestParam(value = "documentId", required = true) int documentId,
+            @RequestParam(value = "GlobalSniped_id", required = true) String GlobalSniped_id,
+            @RequestParam(value = "GlobalSniped_content_type", required = true) String GlobalSniped_content_type,
+            HttpSession session,
+            HttpServletRequest request,
+            HttpServletResponse response){
+
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        Cookie cookie = getCookie(request, "loggedIn");
+        
+        String uname = (String) session.getAttribute("user");
+        String sql_id = "select ID from M_USER where muname = ?";
+        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
 
 
+        int id = 0;
+        try {
+            id = jdbcTemplate.queryForInt("select MAX(id) from latexsniped");
+        }catch (DataAccessException e){
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            mv.addObject("msg", "kleiner Fehler versuchs erneut");
+            return mv;
+        }
+        id++;
+
+        String getOrdinal = "select MAX(ordinal) from latexsniped WHERE document_id = ?";
+
+        int ordinal = 0;
+        try {
+            ordinal = jdbcTemplate.queryForInt(getOrdinal, new Object[]{documentId}, new int[]{Types.NUMERIC});
+        }catch (DataAccessException e){
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            mv.addObject("msg", "kleiner Fehler versuchs erneut");
+            return mv;
+        }
+        ordinal++;
+                
+        String content = "DU DARFST MICH NIEMALS SEHEN";
+                
+        String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, 0, 0)";
+        
+        int res = 0;
+        try {
+            res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, content, GlobalSniped_content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC});
+        } catch (DataAccessException e) {
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            mv.addObject("msg", "kleiner Fehler versuchs erneut");
+            return mv;
+        }
+
+        return new ModelAndView("redirect:projects.secu");
+
+    }
+
+    // Author Marco Ratusny
     private void moveUp(int documentId, int ordinal) {
         String setMinusOne  = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
         String setToOldOrdinal = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
@@ -198,6 +265,7 @@ public class EditDocumentController {
     }
 
 
+    // Author Marco Ratusny
     private void moveDown(int documentId, int ordinal) {
         String setMinusOne  = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
         String setToOldOrdinal = "UPDATE LatexSniped SET ordinal = ? WHERE document_id = ? AND ordinal = ?";
@@ -208,24 +276,76 @@ public class EditDocumentController {
         jdbcTemplate.update(setNewOrdinal, new Object[]{(ordinal + 1) ,documentId, -1}, new int[]{Types.INTEGER, Types.NUMERIC, Types.INTEGER});
     }
 
-
-
-    private ModelAndView getProjectPage(int documentId,String documentname,HttpSession session){
+    // Move Sniped to Attic
+    // Author Maximilian Galler
+    @RequestMapping(value = "/deleteSniped.secu", method = RequestMethod.GET)
+    public ModelAndView DeleteSnipedByID(
+            @RequestParam(value = "documentId", required = true) int documentId,
+            @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "snipedId", required = true) int snipedId,
+            HttpSession session,
+            HttpServletResponse response,
+            HttpServletRequest request){
 
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
-        String sql = "SELECT * FROM LatexSniped WHERE document_id = ? ORDER BY ordinal ASC";
-        List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, documentId);
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
 
-        String sqlTypes = "SELECT * FROM LatexType WHERE accessable = 1";
-        List<Map<String,Object>> projectTypes = jdbcTemplate.queryForList(sqlTypes);
+        Cookie cookie = getCookie(request, "loggedIn");
 
-        ModelAndView mv = new ModelAndView("editdocument");
+        //Update the DB
+        String sqlUpdate = "UPDATE LatexSniped SET trash = 1 WHERE id = ?";
+
+        int res = 0;
+        try {
+            //execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate, new Object[] {snipedId}, new int[] {Types.NUMERIC});
+        } catch (DataAccessException e) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
+        ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
 
         mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
-        mv.addObject("TypesForView", projectTypes);
+        response.addCookie(cookie);
+
+        return mv;
+    }
+    
+    //Load Documents and Snipeds
+    // Author Maximilian Galler
+    private ModelAndView getProjectPage(
+    		int documentId,
+    		String documentname,
+    		HttpSession session){
+
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        
+        String sql = "SELECT * FROM LatexSniped WHERE document_id = ? AND trash = 0 ORDER BY ordinal ASC";
+        List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, documentId);
+
+        String sqlContentTypes = "SELECT * FROM LatexType WHERE accessable = 1";
+        List<Map<String,Object>> contentTypes = jdbcTemplate.queryForList(sqlContentTypes);
+
+        String sqlAllTypes = "SELECT * FROM LatexType";
+        List<Map<String,Object>> AllContentTypes = jdbcTemplate.queryForList(sqlAllTypes);
+        
+        String sqlGlobalSnipeds = "SELECT * FROM LatexGlobalSniped";
+        List<Map<String,Object>> GlobalSnipeds = jdbcTemplate.queryForList(sqlGlobalSnipeds);
+
+        ModelAndView mv = new ModelAndView("editdocument");
+        
+        mv.addObject("documentId", documentId);
+        mv.addObject("documentname", documentname);
+        mv.addObject("AllContentTypes", AllContentTypes);
+        mv.addObject("TypesForView", contentTypes);
+        mv.addObject("GlobalSnipedsForView", GlobalSnipeds);
         mv.addObject("SnipedsForView", projectSnipeds);
         return mv;
     }

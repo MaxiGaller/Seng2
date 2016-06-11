@@ -18,9 +18,7 @@
 
 <table>
 	<c:forEach items="${SnipedsForView}" var="SnipedsForView">
-		<tr>
-			<td>${SnipedsForView.type}</td>
-		</tr>
+	<c:if test="${SnipedsForView.editable == 1}">
 		<tr>
 			<td>
 				<form action="editsniped.secu" method="get">
@@ -56,6 +54,16 @@
 					<br><button class="buttonKleinSchmal" value="Speichern" style="vertical-align:middle"><span><i class="fa fa-save"></i></span></button>
 				</form>
 			</td>
+			</c:if>
+			<c:if test="${SnipedsForView.editable == 0}">
+			<td>
+				<c:forEach items="${GlobalSnipedsForView}" var="GlobalSnipedsForView">
+					<c:if test="${SnipedsForView.global_Sniped_id == GlobalSnipedsForView.id}">
+						${GlobalSnipedsForView.content}
+					</c:if>
+				</c:forEach>
+			</td>
+			</c:if>
 			<td>
 				<form action="editSnipedMove.secu" method="post">
 					<input type="hidden" value="up" name="type">
@@ -74,11 +82,20 @@
 					<button class="buttonKleinSchmal" value="down" style="vertical-align:middle"><span><i class="fa fa-arrow-down"></i></span></button>
 				</form>
 			</td>
+			<td>
+				<form action="deleteSniped.secu" method="get">
+				<input type="hidden" value="${documentname}" name="documentname" id="documentname">
+				<input type="hidden" value="${documentId}" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
+					<button class="buttonKleinSchmal" value="Papierkorb" style="vertical-align:middle"><span><i class="fa fa-trash w3-large"></i></span></button>
+				</form>
+			</td>
 		</tr>
 	</c:forEach>
 </table>
 
 <hr>
+
 <span style="margin-left: 20px; font-size: 20px;"><b>Neues Element</b></span>
 <form action="newsniped.secu" method="get">
 	<table>
