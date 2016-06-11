@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.hm.muse.domain.User;
-
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -127,7 +125,7 @@ public class EditDocumentController {
 
 
     // New Sniped
-    // Author Maximilian Galler
+    // Author Maximilian Galler and Marco Ratusny
     @RequestMapping(value = "/newsniped.secu", method = RequestMethod.GET)
     public ModelAndView saveNewSniped(
             @RequestParam(value = "documentId", required = true) int documentId,

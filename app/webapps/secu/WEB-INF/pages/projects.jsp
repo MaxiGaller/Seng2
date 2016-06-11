@@ -60,7 +60,7 @@
 <table>
 	<c:forEach items="${TrashDocumentsForView}" var="TrashDocumentsForView">
 		<tr>
-			<td>${TrashDocumentsForView.documentname}</td>
+			<td><c:out value="${TrashDocumentsForView.documentname}"/></td>
 			<td>
 				<form action="recycledocuments.secu" method="get">
 					<input type="hidden" value="<c:out value="${TrashDocumentsForView.id}"/>" name="documentId" id="documentId">
@@ -126,7 +126,7 @@
 			<td>
 				<select name="documentId">
 					<c:forEach items="${DocumentsForView}" var="DocumentsForView">
-							<option value="${DocumentsForView.id}">${DocumentsForView.documentname}</option>
+							<option <c:out value="${DocumentsForView.id}"/>${DocumentsForView.documentname}</option>
 					</c:forEach>
 				</select>
 			</td>
