@@ -50,8 +50,6 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
-
-
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, uname);
 
@@ -69,7 +67,6 @@ public class ProjectsController {
         mv.addObject("ProjectsForView", projectnames);
         mv.addObject("TrashDocumentsForView", trashprojectnames);
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
-
 
         return mv;
     }

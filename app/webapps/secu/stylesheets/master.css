@@ -26,6 +26,20 @@
     font-size: 13px;
 }
 
+#Haubelt TODO, Bitte schriftgrösen Hirachisch anlegen
+h1 {
+    font-size: 15px;
+}
+h2 {
+    font-size: 13px;
+}
+h3 {
+    font-size: 11px;
+}
+p {
+    font-size: 8px;
+}
+
 #popupContact h1 {
     text-align: left;
     color: #9c0000;

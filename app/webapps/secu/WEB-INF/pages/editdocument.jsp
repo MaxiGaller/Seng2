@@ -28,9 +28,21 @@
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId" id="snipedId">
 					<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
-
+				</form>
 			</td>
-
+			<td>
+				<c:forEach items="${TypesForView}" var="TypesForView">
+					<c:if test="${TypesForView.id != SnipedsForView.content_type}">
+						${TypesForView.html_opening_tag}
+					</c:if>	
+				</c:forEach>		
+				${SnipedsForView.content}
+				<c:forEach items="${TypesForView}" var="TypesForView">
+					<c:if test="${TypesForView.id != SnipedsForView.content_type}">
+						${TypesForView.html_closeing_tag}
+					</c:if>	
+				</c:forEach>
+			</td>
 			<td>
 				<form>
 					<select name="content_type">
@@ -46,11 +58,7 @@
 					<br><button class="buttonKleinSchmal" value="Speichern" style="vertical-align:middle"><span><i class="fa fa-save"></i></span></button>
 				</form>
 			</td>
-
 			<td>
-
-
-
 				<form action="editSnipedMove.secu" method="post">
 					<input type="hidden" value="up" name="type">
 					<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
@@ -59,7 +67,6 @@
 					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
 					<button class="buttonKleinSchmal" value="up" style="vertical-align:middle"><span><i class="fa fa-arrow-up"></i></span></button>
 				</form>
-
 				<form action="editSnipedMove.secu" method="post">
 					<input type="hidden" value="down" name="type">
 					<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
@@ -83,15 +90,14 @@
 				<textarea rows="4" cols="50" name="snipedContent" id="snipedContent"></textarea>
 				<input type="hidden" value="${documentname}" name="documentname" id="documentname">
 				<input type="hidden" value="${documentId}" name="documentId" id="documentId">
-
-				<br><br>
+				<br>
+				<br>
 				<select name="content_type">
 					<c:forEach items="${TypesForView}" var="TypesForView">
 						<option value="${TypesForView.id}">${TypesForView.type}</option>
 					</c:forEach>
 				</select>
 				<button class="buttonKlein" value="Neu Anlegen" style="vertical-align:middle"><span>Neu <i class="fa fa-save"></i></span></button>
-
 			</td>
 		</tr>
 	</table>
