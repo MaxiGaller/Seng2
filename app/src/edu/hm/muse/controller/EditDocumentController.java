@@ -292,6 +292,8 @@ public class EditDocumentController {
     public ModelAndView DeleteSnipedByID(
             @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "documentauthor", required = true) String documentauthor,
+            @RequestParam(value = "mode", required = false) String mode,
             @RequestParam(value = "snipedId", required = true) int snipedId,
             HttpSession session,
             HttpServletResponse response,
@@ -320,7 +322,9 @@ public class EditDocumentController {
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
 
         mv.addObject("documentId", documentId);
-        mv.addObject("documentname", documentname);
+        mv.addObject("documentname", documentname);        
+        mv.addObject("documentauthor", documentauthor);
+        mv.addObject("mode", mode);
         response.addCookie(cookie);
 
         return mv;

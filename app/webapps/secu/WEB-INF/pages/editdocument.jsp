@@ -192,10 +192,10 @@
 			</td>
 			<td>
 				<form action="deleteSniped.secu" method="get">
-				<input type="hidden" value="${documentname}" name="documentname" id="documentname">
-				<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
-				<input type="hidden" value="<c:out value="${mode}"/>" name="mode">
-				<input type="hidden" value="${documentId}" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
+					<input type="hidden" value="<c:out value="${documentId}"/>" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${mode}"/>" name="mode" id="mode">
+					<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
 					<button class="buttonKleinSchmal" value="Papierkorb" style="vertical-align:middle"><span><i class="fa fa-trash w3-large"></i></span></button>
 				</form>
