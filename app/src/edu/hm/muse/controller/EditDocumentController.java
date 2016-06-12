@@ -138,6 +138,7 @@ public class EditDocumentController {
     public ModelAndView saveNewSniped(
             @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "documentauthor", required = true) String documentauthor,
             @RequestParam(value = "mode", required = false) String mode,
             @RequestParam(value = "content_type", required = true) int content_type,
             @RequestParam(value = "snipedContent", required = true) String snipedContent,
@@ -193,6 +194,7 @@ public class EditDocumentController {
 
         mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
+        mv.addObject("documentauthor", documentauthor);
         mv.addObject("mode", mode);
         response.addCookie(cookie);
 

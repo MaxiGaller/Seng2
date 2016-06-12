@@ -66,6 +66,7 @@
 						<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId" id="snipedId">
 						<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId" id="documentId">
 						<input type="hidden" value="<c:out value="${mode}"/>" name="mode">
+						<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
 						<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
 				</td>
 			</c:if>
@@ -175,6 +176,7 @@
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
 					<input type="hidden" value="<c:out value="${SnipedsForView.ordinal}"/>" name="ordinal">
 					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
+					<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<button class="buttonKleinSchmal" value="up" style="vertical-align:middle"><span><i class="fa fa-arrow-up"></i></span></button>
 				</form>
 				<form action="editSnipedMove.secu" method="post">
@@ -184,12 +186,14 @@
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
 					<input type="hidden" value="<c:out value="${SnipedsForView.ordinal}"/>" name="ordinal">
 					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
+					<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<button class="buttonKleinSchmal" value="down" style="vertical-align:middle"><span><i class="fa fa-arrow-down"></i></span></button>
 				</form>
 			</td>
 			<td>
 				<form action="deleteSniped.secu" method="get">
 				<input type="hidden" value="${documentname}" name="documentname" id="documentname">
+				<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
 				<input type="hidden" value="<c:out value="${mode}"/>" name="mode">
 				<input type="hidden" value="${documentId}" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
@@ -232,6 +236,7 @@
 				<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname" id="documentname">
 				<input type="hidden" value="<c:out value="${documentId}"/>" name="documentId" id="documentId">
 				<input type="hidden" value="<c:out value="${mode}"/>" name="mode">
+				<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
 				<br>
 				<br>
 				<select name="content_type">
