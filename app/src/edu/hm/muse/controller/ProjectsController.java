@@ -64,6 +64,12 @@ public class ProjectsController {
 
         String sqlGlobalSnipeds = "SELECT * FROM LatexGlobalSniped WHERE muser_id = ?";
         List<Map<String,Object>> GlobalSnipeds = jdbcTemplate.queryForList(sqlGlobalSnipeds, UserIDFromSessionOverDatabase);
+        
+        String sqlContributors = "SELECT * FROM M_USER WHERE id != ? AND id != 0";
+        List<Map<String,Object>> Contributors = jdbcTemplate.queryForList(sqlContributors, UserIDFromSessionOverDatabase);
+        
+        String sqlSavedContributors = "SELECT * FROM LatexDocumentContributors WHERE owner_muser_id = ?";
+        List<Map<String,Object>> SavedContributors = jdbcTemplate.queryForList(sqlSavedContributors, UserIDFromSessionOverDatabase);
 
         ModelAndView mv = new ModelAndView("projects");
 
@@ -71,6 +77,8 @@ public class ProjectsController {
             mv.addObject("msg", "<div id='popup'>Login erfolgreich</div>");
         }
 
+        mv.addObject("SavedContributors", SavedContributors);
+        mv.addObject("Contributors", Contributors);
         mv.addObject("AllContentTypes", AllContentTypes);
         mv.addObject("GlobalSnipedsForView", GlobalSnipeds);
         mv.addObject("DocumentsForView", documentNames);
@@ -119,6 +127,78 @@ public class ProjectsController {
 
     }
     
+    // New Invite Contributor
+    // Author Maximilian Galler
+    @RequestMapping(value = "/invitecontributor.secu", method = RequestMethod.GET)
+    public ModelAndView inviteContributor(
+            @RequestParam(value = "ContribteDocument", required = true) String ContribteDocument,
+            @RequestParam(value = "ContributeUser", required = true) String ContributeUser,
+            HttpSession session, HttpServletRequest request, HttpServletResponse response){
+
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.form");
+        }
+
+        //ToDo Auslagern
+        String uname = (String) session.getAttribute("user");
+        String sql_id = "select ID from M_USER where muname = ?";
+        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
+
+        Cookie cookie = getCookie(request, "loggedIn");
+
+        ModelAndView mv = new ModelAndView("project");
+        mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
+        response.addCookie(cookie);
+
+        String sqlContent = "INSERT INTO LatexDocumentContributors (id, owner_muser_id, contribute_muser_id, document_id) VALUES (NULL, ?, ?, ?)";
+
+        int resContent = 0;
+        try {
+            //execute the query and check exceptions
+            resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, ContributeUser, ContribteDocument}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.NUMERIC});
+        } catch (DataAccessException e) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
+        return new ModelAndView("redirect:projects.secu");
+
+    }
+    
+    // Remove Contributor
+    // Author Maximilian Galler
+    @RequestMapping(value = "/removecontributor.secu", method = RequestMethod.GET)
+    public ModelAndView removeContributorByID(
+            @RequestParam(value = "contribute_id", required = true) int contribute_id,
+            HttpSession session,
+            HttpServletResponse response,
+            HttpServletRequest request){
+
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        Cookie cookie = getCookie(request, "loggedIn");
+
+        String sqlUpdate = "DELETE FROM LatexDocumentContributors WHERE id = ?";
+
+        int res = 0;
+        try {
+            //execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate, new Object[] {contribute_id}, new int[] {Types.NUMERIC});
+        } catch (DataAccessException e) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
+        return new ModelAndView("redirect:projects.secu");
+
+    }
+    
     // New Global Sniped
     // Author Maximilian Galler
     @RequestMapping(value = "/newglobalsniped.secu", method = RequestMethod.GET)
@@ -141,17 +221,17 @@ public class ProjectsController {
                 
         String sqlInsert = "INSERT INTO LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, ?, ?, ?)";
         
-    int resContent = 0;
-    try {
-        //execute the query and check exceptions
-    	resContent = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, snipedGlobalContent, Global_content_type}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.NUMERIC});
-    } catch (DataAccessException e) {
-        return new ModelAndView("redirect:projects.secu");
-    }
-
-    return new ModelAndView("redirect:projects.secu");
-
-}
+	    int resContent = 0;
+	    try {
+	        //execute the query and check exceptions
+	    	resContent = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, snipedGlobalContent, Global_content_type}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.NUMERIC});
+	    } catch (DataAccessException e) {
+	        return new ModelAndView("redirect:projects.secu");
+	    }
+	
+	    return new ModelAndView("redirect:projects.secu");
+	
+	}
     
     // Edit an Saved Global Sniped
     // Author Maximilian Galler

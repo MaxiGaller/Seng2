@@ -118,7 +118,6 @@
 		</tr>
 	</form>
 </table>
-
 <table>
 	<c:forEach items="${GlobalSnipedsForView}" var="GlobalSnipedsForView">
 	<form action="editGlobalSnipeds.secu" method="get">
@@ -155,6 +154,52 @@
 				<button class="buttonKleinBreit" value="Kopieren" style="vertical-align:middle">Zu Dokument kopieren</button>
 			</td>
 	</form>
+		</tr>
+	</c:forEach>
+</table>
+
+<hr>
+
+<span style="margin-left: 20px; font-size: 25px;">Mitarbeiter Verwaltung</span>
+	<table>
+		<tr>
+			<form action="invitecontributor.secu" method="get">
+				<td>
+					<select name="ContribteDocument">
+						<c:forEach items="${DocumentsForView}" var="DocumentsForView">
+							<option value="${DocumentsForView.id}">${DocumentsForView.documentname}</option>
+						</c:forEach>
+					</select>
+					<select name="ContributeUser">
+						<c:forEach items="${Contributors}" var="Contributors">
+							<option value="${Contributors.id}">${Contributors.muname}</option>
+						</c:forEach>
+					</select>
+					<button class="buttonKleinBreit" value="Speichern" style="vertical-align:middle">Einladen</button>
+				</td>
+			</form>
+		</tr>
+	</table>
+	<table>
+	<c:forEach items="${SavedContributors}" var="SavedContributors">
+		<tr>
+			<td>
+				<c:forEach items="${DocumentsForView}" var="DocumentsForView">
+					<c:forEach items="${Contributors}" var="Contributors">
+							<c:if test="${Contributors.id == SavedContributors.contribute_muser_id}">
+									<c:if test="${DocumentsForView.id == SavedContributors.document_id}">
+										${Contributors.muname} - ${DocumentsForView.documentname}
+									</c:if>
+							</c:if>
+					</c:forEach>
+				</c:forEach>
+			</td>
+			<td>
+				<form action="removecontributor.secu" method="get">
+					<input type="hidden" value="<c:out value="${SavedContributors.id}"/>" name="contribute_id" id="contribute_id">
+					<button class="buttonKleinBreit" value="Entfernen" style="vertical-align:middle">Entfernen</button>
+				</form>
+			</td>
 		</tr>
 	</c:forEach>
 </table>

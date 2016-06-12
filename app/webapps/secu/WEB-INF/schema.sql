@@ -4,8 +4,10 @@ CREATE TABLE M_ADMIN (ID NUMERIC PRIMARY KEY, mpwd VARCHAR(255) UNIQUE);
 
 CREATE TABLE LatexSniped (id NUMERIC IDENTITY, muser_id NUMERIC, document_id NUMERIC, ordinal int not null, content VARCHAR(1000000), content_type NUMERIC, global_Sniped_id NUMERIC, editable NUMERIC, trash NUMERIC);
 CREATE TABLE LatexGlobalSniped (id NUMERIC IDENTITY, muser_id NUMERIC, content VARCHAR(1000000), content_type NUMERIC);
-CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255), documentauthor VARCHAR(255), trash NUMERIC);
+CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255), documentauthor VARCHAR(999), trash NUMERIC);
 CREATE TABLE LatexType (id NUMERIC IDENTITY, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), html_opening_tag VARCHAR(255), html_closeing_tag VARCHAR(255), accessable NUMERIC);
+CREATE TABLE LatexDocumentContributors (id NUMERIC IDENTITY, owner_muser_id NUMERIC, contribute_muser_id NUMERIC, document_id NUMERIC);
+
 
 INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 2, 'Test Doc', 'q', 0);
 INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 2, 'Ernsthaftes Test Dokument', 'q', 0);
@@ -35,8 +37,14 @@ insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_openi
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'text', '', '', '<p>', '</p>',  1);
 
 
-insert into M_USER (ID,muname,mpwd) values (1,'never','login');
+insert into M_USER (ID,muname,mpwd) values (0,'never','login');
+insert into M_USER (ID,muname,mpwd, salt) values (1,'Hias','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
 insert into M_USER (ID,muname,mpwd, salt) values (2,'q','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
+insert into M_USER (ID,muname,mpwd, salt) values (3,'Franz','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
+insert into M_USER (ID,muname,mpwd, salt) values (4,'Sepp','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
+insert into M_USER (ID,muname,mpwd, salt) values (5,'Schorsch','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
+insert into M_USER (ID,muname,mpwd, salt) values (6,'Ignaz','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
+insert into M_USER (ID,muname,mpwd, salt) values (7,'Alois','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
 
 insert into NEWSLETTER (id,text) values (1,'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.');
 insert into NEWSLETTER (id,text) values (2,'Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zufälligen Umständen, in denen Mühen und Schmerz ihm große Freude bereiten können. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender körperlicher Betätigung, außer um Vorteile daraus zu ziehen? Aber wer hat irgend ein Recht, einen Menschen zu tadeln, der die Entscheidung trifft, eine Freude zu genießen, die keine unangenehmen Folgen hat, oder einen, der Schmerz vermeidet, welcher keine daraus resultierende Freude nach sich zieht? Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder wünscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zufälligen Umständen, in denen Mühen und Schmerz ihm große Freude bereiten können. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender körperlicher Betätigung, außer um Vorteile daraus zu ziehen?');
