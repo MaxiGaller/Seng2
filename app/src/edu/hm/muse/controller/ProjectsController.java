@@ -53,7 +53,7 @@ public class ProjectsController {
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, uname);
 
-        String sql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ? AND trash = 0";
+        String sql = "SELECT id, documentname, documentauthor FROM LatexDocuments WHERE muser_id = ? AND trash = 0";
         List<Map<String,Object>> documentNames = jdbcTemplate.queryForList(sql, UserIDFromSessionOverDatabase);
 
         String trashsql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ? AND trash = 1";
@@ -80,7 +80,7 @@ public class ProjectsController {
         return mv;
     }
 
-    // New Project
+    // New Document
     // Author Maximilian Galler
     @RequestMapping(value = "/newdocument.secu", method = RequestMethod.GET)
     public ModelAndView saveNewProject(
@@ -105,12 +105,12 @@ public class ProjectsController {
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
         response.addCookie(cookie);
 
-        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, ?, ?, 0)";
+        String sqlContent = "INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, ?, ?, ?, 0)";
 
         int resContent = 0;
         try {
             //execute the query and check exceptions
-            resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, documentname}, new int[]{Types.NUMERIC, Types.VARCHAR});
+            resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, documentname, uname}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
         }
@@ -193,6 +193,8 @@ public class ProjectsController {
     public ModelAndView renameDocumentById(
             @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "mode", required = false) String mode,
+            @RequestParam(value = "documentauthor", required = true) String documentauthor,
             HttpSession session,
             HttpServletResponse response,
             HttpServletRequest request){
@@ -220,11 +222,57 @@ public class ProjectsController {
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
         mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
+        mv.addObject("documentauthor", documentauthor);
+        mv.addObject("mode", mode);
         response.addCookie(cookie);
 
         return mv;
 
     }
+    
+    // set document author 
+    // Author Maximilian Galler
+    @RequestMapping(value = "/setauthor.secu", method = RequestMethod.GET)
+    public ModelAndView setDocumentAuthorById(
+            @RequestParam(value = "documentId", required = true) int documentId,
+            @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "mode", required = false) String mode,
+            @RequestParam(value = "documentauthor", required = true) String documentauthor,
+            HttpSession session,
+            HttpServletResponse response,
+            HttpServletRequest request){
+
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        Cookie cookie = getCookie(request, "loggedIn");
+
+        //Update the DB
+        String sqlUpdate = "UPDATE LatexDocuments SET documentauthor = ? WHERE id = ?";
+
+        int res = 0;
+        try {
+            //execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate, new Object[] {documentauthor, documentId}, new int[]{Types.VARCHAR, Types.NUMERIC});
+        } catch (DataAccessException e) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
+        ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
+        mv.addObject("documentId", documentId);
+        mv.addObject("documentname", documentname);
+        mv.addObject("documentauthor", documentauthor);
+        mv.addObject("mode", mode);
+        response.addCookie(cookie);
+
+        return mv;
+
+    }
+    
 
     // Recycle document
     // Author Maximilian Galler

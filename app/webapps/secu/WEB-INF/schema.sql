@@ -4,12 +4,12 @@ CREATE TABLE M_ADMIN (ID NUMERIC PRIMARY KEY, mpwd VARCHAR(255) UNIQUE);
 
 CREATE TABLE LatexSniped (id NUMERIC IDENTITY, muser_id NUMERIC, document_id NUMERIC, ordinal int not null, content VARCHAR(1000000), content_type NUMERIC, global_Sniped_id NUMERIC, editable NUMERIC, trash NUMERIC);
 CREATE TABLE LatexGlobalSniped (id NUMERIC IDENTITY, muser_id NUMERIC, content VARCHAR(1000000), content_type NUMERIC);
-CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255), trash NUMERIC);
+CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255), documentauthor VARCHAR(255), trash NUMERIC);
 CREATE TABLE LatexType (id NUMERIC IDENTITY, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), html_opening_tag VARCHAR(255), html_closeing_tag VARCHAR(255), accessable NUMERIC);
 
-INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'Test Doc', 0);
-INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'Ernsthaftes Test Dokument', 0);
-INSERT INTO LatexDocuments (id, muser_id, documentname, trash) VALUES (NULL, 2, 'LULULULULUL', 1);
+INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 2, 'Test Doc', 'q', 0);
+INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 2, 'Ernsthaftes Test Dokument', 'q', 0);
+INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 2, 'LULULULULUL', 'q', 1);
 
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 0, 'Bla Bla Blub! Überschrift', 0, NULL, 1, 0);
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3, NULL, 1, 0);
@@ -22,19 +22,17 @@ insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_ty
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 2, 'H2 H2 H2 H2 H2', 1, NULL, 1, 0);
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 3, 'TEXT TEXT TEXT', 3, NULL, 1, 0);
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 4, 'H3 H3 H3 H3 H3', 2, NULL, 1, 0);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 5, 'DU DARFST MICH NICHT SEHEN', 5, 2, 0, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 5, 'DU DARFST MICH NICHT SEHEN', 5, 1, 0, 0);
+insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 6, 'DU DARFST MICH NICHT SEHEN', 5, 2, 0, 0);
 
 insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 0, 'NULL', NULL);
-insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 2, 'Globaler Footer', 6);
-insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 2, 'Author', 5);
+insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 2, 'Globaler Footer', 3);
+insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 2, 'Fetter Text der überall krass wichtig is!', 3);
 
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'section', '\section{', '}', '<h1>', '</h1>', 1);
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'subsection', '\subsection{', '}', '<h2>', '</h2>',  1);
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'subsubsection', '\subsubsection{', '}', '<h3>', '</h3>',  1);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'text', '<text>', '}', '<p>', '</p>',  1);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'Titel', '\titel{', '}', '<i>', '</i>',  0);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'Author', '\author{', '}', '<b>', '</b>',  0);
-insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'Footer', '\footer{', '}', '<p>', '</p>',  0);
+insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'text', '', '', '<p>', '</p>',  1);
 
 
 insert into M_USER (ID,muname,mpwd) values (1,'never','login');

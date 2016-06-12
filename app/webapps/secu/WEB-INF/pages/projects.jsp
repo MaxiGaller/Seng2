@@ -18,8 +18,27 @@
 				<form action="editdocument.secu" method="get">
 					<input type="hidden" value="<c:out value="${DocumentsForView.id}"/>" name="documentId" id="documentId">
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentname}"/>" name="documentname" id="documentname">
-						<%--<input type="submit" value="Bearbeiten">--%>
-					<button class="buttonKleinSchmal" value="Bearbeiten" style="vertical-align:middle"><span><i class="fa fa-edit"></i></span></button>
+					<input type="hidden" value="<c:out value="${DocumentsForView.documentauthor}"/>" name="documentauthor" id="documentauthor">
+					<input type="hidden" value="write" name="mode">
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">Bearbeiten Modus</button>
+				</form>
+			</td>
+			<td>
+				<form action="editdocument.secu" method="get">
+					<input type="hidden" value="<c:out value="${DocumentsForView.id}"/>" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${DocumentsForView.documentname}"/>" name="documentname" id="documentname">
+					<input type="hidden" value="<c:out value="${DocumentsForView.documentauthor}"/>" name="documentauthor" id="documentauthor">
+					<input type="hidden" value="read" name="mode">
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">Lesen Modus</button>
+				</form>
+			</td>
+			<td>
+				<form action="editdocument.secu" method="get">
+					<input type="hidden" value="<c:out value="${DocumentsForView.id}"/>" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${DocumentsForView.documentname}"/>" name="documentname" id="documentname">
+					<input type="hidden" value="<c:out value="${DocumentsForView.documentauthor}"/>" name="documentauthor" id="documentauthor">
+					<input type="hidden" value="showlatex" name="mode">
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">LaTeX Modus</button>
 				</form>
 			</td>
 			<td>
@@ -60,7 +79,7 @@
 <table>
 	<c:forEach items="${TrashDocumentsForView}" var="TrashDocumentsForView">
 		<tr>
-			<td><c:out value="${TrashDocumentsForView.documentname}"/></td>
+			<td>${TrashDocumentsForView.documentname}</td>
 			<td>
 				<form action="recycledocuments.secu" method="get">
 					<input type="hidden" value="<c:out value="${TrashDocumentsForView.id}"/>" name="documentId" id="documentId">
@@ -126,7 +145,7 @@
 			<td>
 				<select name="documentId">
 					<c:forEach items="${DocumentsForView}" var="DocumentsForView">
-							<option <c:out value="${DocumentsForView.id}"/>${DocumentsForView.documentname}</option>
+							<option value="${DocumentsForView.id}">${DocumentsForView.documentname}</option>
 					</c:forEach>
 				</select>
 			</td>

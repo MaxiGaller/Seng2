@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.hm.muse.domain.User;
+
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -40,9 +42,11 @@ public class EditDocumentController {
     public ModelAndView getSnipedsByDocumentID(
             @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "documentauthor", required = true) String documentauthor,
+            @RequestParam(value = "mode", required = false) String mode,
             HttpSession session){
 
-        return getProjectPage(documentId,documentname,session);
+        return getProjectPage(documentId, documentname, documentauthor, mode,session);
     }
 
     // Edit an Saved Sniped
@@ -51,6 +55,8 @@ public class EditDocumentController {
     public ModelAndView editSnipedBySnipedID(
             @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "documentauthor", required = true) String documentauthor,
+            @RequestParam(value = "mode", required = false) String mode,
             @RequestParam(value = "snipedId", required = true) int snipedId,
             @RequestParam(value = "content_type", required = true) int content_type,
             @RequestParam(value = "snipedContent", required = true) String snipedContent,
@@ -81,7 +87,7 @@ public class EditDocumentController {
 
         }
 
-        ModelAndView mv = getProjectPage(documentId, documentname, session);
+        ModelAndView mv = getProjectPage(documentId, documentname, documentauthor, mode, session);
         response.addCookie(cookie);
 
         return mv;
@@ -94,6 +100,8 @@ public class EditDocumentController {
     public ModelAndView moveUpAndDown(
             @RequestParam(value = "type", required = true) String type,
             @RequestParam(value = "documentId", required = true) int documentId,
+            @RequestParam(value = "documentauthor", required = true) String documentauthor,
+            @RequestParam(value = "mode", required = false) String mode,
             @RequestParam(value = "snipedId", required = true) int snipedId,
             @RequestParam(value = "ordinal", required = true) int ordinal,
             @RequestParam(value = "documentname", required = true) String documentname,
@@ -117,7 +125,7 @@ public class EditDocumentController {
             moveDown(documentId, ordinal);
         }
 
-        ModelAndView mv = getProjectPage(documentId,documentname,session);
+        ModelAndView mv = getProjectPage(documentId, documentname, documentauthor, mode, session);
         response.addCookie(cookie);
         return mv;
 
@@ -130,6 +138,7 @@ public class EditDocumentController {
     public ModelAndView saveNewSniped(
             @RequestParam(value = "documentId", required = true) int documentId,
             @RequestParam(value = "documentname", required = true) String documentname,
+            @RequestParam(value = "mode", required = false) String mode,
             @RequestParam(value = "content_type", required = true) int content_type,
             @RequestParam(value = "snipedContent", required = true) String snipedContent,
             HttpSession session,
@@ -184,6 +193,7 @@ public class EditDocumentController {
 
         mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
+        mv.addObject("mode", mode);
         response.addCookie(cookie);
 
         return mv;
@@ -234,7 +244,7 @@ public class EditDocumentController {
         }
         ordinal++;
                 
-        String content = "DU DARFST MICH NIEMALS SEHEN";
+        String content = "Platzhalter fuer Global Sniped";
                 
         String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, 0, 0)";
         
@@ -319,6 +329,8 @@ public class EditDocumentController {
     private ModelAndView getProjectPage(
     		int documentId,
     		String documentname,
+    		String documentauthor,
+    		String mode,
     		HttpSession session){
 
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
@@ -336,11 +348,13 @@ public class EditDocumentController {
         
         String sqlGlobalSnipeds = "SELECT * FROM LatexGlobalSniped";
         List<Map<String,Object>> GlobalSnipeds = jdbcTemplate.queryForList(sqlGlobalSnipeds);
-
+        
         ModelAndView mv = new ModelAndView("editdocument");
         
         mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
+        mv.addObject("documentauthor", documentauthor);
+        mv.addObject("mode", mode);
         mv.addObject("AllContentTypes", AllContentTypes);
         mv.addObject("TypesForView", contentTypes);
         mv.addObject("GlobalSnipedsForView", GlobalSnipeds);
