@@ -79,7 +79,7 @@
 <table>
 	<c:forEach items="${TrashDocumentsForView}" var="TrashDocumentsForView">
 		<tr>
-			<td>${TrashDocumentsForView.documentname}</td>
+			<td><c:out value="${TrashDocumentsForView.documentname}"/></td>
 			<td>
 				<form action="recycledocuments.secu" method="get">
 					<input type="hidden" value="<c:out value="${TrashDocumentsForView.id}"/>" name="documentId" id="documentId">
