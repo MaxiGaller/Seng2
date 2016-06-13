@@ -144,7 +144,7 @@
 			<td>
 				<select name="documentId">
 					<c:forEach items="${DocumentsForView}" var="DocumentsForView">
-							<option value="${DocumentsForView.id}">${DocumentsForView.documentname}</option>
+							<option value="${DocumentsForView.id}"><c:out value="${DocumentsForView.documentname}"/></option>
 					</c:forEach>
 				</select>
 			</td>
