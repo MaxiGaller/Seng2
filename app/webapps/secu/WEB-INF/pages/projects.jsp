@@ -54,6 +54,45 @@
 
 <hr>
 
+<span style="margin-left: 20px; font-size: 25px;">Freigebene Projekte</span>
+<table>
+	<c:forEach items="${contributorDocuments}" var="contributorDocuments">
+		<tr>
+			<td><c:out value="${contributorDocuments.documentname}"/></td>
+			<td>
+				<form action="editdocument.secu" method="get">
+					<input type="hidden" value="<c:out value="${contributorDocuments.document_id}"/>" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${contributorDocuments.documentname}"/>" name="documentname" id="documentname">
+					<input type="hidden" value="<c:out value="${contributorDocuments.documentauthor}"/>" name="documentauthor" id="documentauthor">
+					<input type="hidden" value="write" name="mode">
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">Bearbeiten Modus</button>
+				</form>
+			</td>
+			<td>
+				<form action="editdocument.secu" method="get">
+					<input type="hidden" value="<c:out value="${contributorDocuments.document_id}"/>" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${contributorDocuments.documentname}"/>" name="documentname" id="documentname">
+					<input type="hidden" value="<c:out value="${contributorDocuments.documentauthor}"/>" name="documentauthor" id="documentauthor">
+					<input type="hidden" value="read" name="mode">
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">Lesen Modus</button>
+				</form>
+			</td>
+			<td>
+				<form action="editdocument.secu" method="get">
+					<input type="hidden" value="<c:out value="${contributorDocuments.document_id}"/>" name="documentId" id="documentId">
+					<input type="hidden" value="<c:out value="${contributorDocuments.documentname}"/>" name="documentname" id="documentname">
+					<input type="hidden" value="<c:out value="${contributorDocuments.documentauthor}"/>" name="documentauthor" id="documentauthor">
+					<input type="hidden" value="showlatex" name="mode">
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">LaTeX Modus</button>
+				</form>
+			</td>
+		</tr>
+	</c:forEach>
+</table>
+
+<hr>
+
+
 <span style="margin-left: 20px; font-size: 25px;">Neues Dokument anlegen</span>
 <form action="newdocument.secu" method="get">
 	<table>

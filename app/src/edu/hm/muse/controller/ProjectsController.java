@@ -53,8 +53,12 @@ public class ProjectsController {
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, uname);
 
+//      String sql = "SELECT * FROM LatexDocuments d INNER JOIN LatexDocumentContributors c ON c.document_id = d.id AND d.trash = 0 AND (d.muser_id = ? OR c.contribute_muser_id = ?)";
         String sql = "SELECT id, documentname, documentauthor FROM LatexDocuments WHERE muser_id = ? AND trash = 0";
         List<Map<String,Object>> documentNames = jdbcTemplate.queryForList(sql, UserIDFromSessionOverDatabase);
+        
+        String sqlContributor = "SELECT * FROM LatexDocumentContributors c INNER JOIN LatexDocuments d ON c.document_id = d.id  WHERE owner_muser_id != ? AND contribute_muser_id = ? AND trash = 0";
+        List<Map<String,Object>> contributorDocuments = jdbcTemplate.queryForList(sqlContributor, UserIDFromSessionOverDatabase, UserIDFromSessionOverDatabase);
 
         String trashsql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ? AND trash = 1";
         List<Map<String,Object>> trashDocumentNames = jdbcTemplate.queryForList(trashsql, UserIDFromSessionOverDatabase);
@@ -77,7 +81,9 @@ public class ProjectsController {
             mv.addObject("msg", "<div id='popup'>Login erfolgreich</div>");
         }
 
+        mv.addObject("DUMP", sqlContributor);
         mv.addObject("SavedContributors", SavedContributors);
+        mv.addObject("contributorDocuments", contributorDocuments);
         mv.addObject("Contributors", Contributors);
         mv.addObject("AllContentTypes", AllContentTypes);
         mv.addObject("GlobalSnipedsForView", GlobalSnipeds);

@@ -8,10 +8,13 @@ CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname
 CREATE TABLE LatexType (id NUMERIC IDENTITY, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), html_opening_tag VARCHAR(255), html_closeing_tag VARCHAR(255), accessable NUMERIC);
 CREATE TABLE LatexDocumentContributors (id NUMERIC IDENTITY, owner_muser_id NUMERIC, contribute_muser_id NUMERIC, document_id NUMERIC);
 
+INSERT INTO LatexDocumentContributors (id, owner_muser_id, contribute_muser_id, document_id) VALUES (NULL, '2', '3', '0');
+INSERT INTO LatexDocumentContributors (id, owner_muser_id, contribute_muser_id, document_id) VALUES (NULL, '3', '2', '3');
 
 INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 2, 'Test Doc', 'q', 0);
 INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 2, 'Ernsthaftes Test Dokument', 'q', 0);
 INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 2, 'LULULULULUL', 'q', 1);
+INSERT INTO LatexDocuments (id, muser_id, documentname, documentauthor, trash) VALUES (NULL, 3, 'Contribute Dokument', 'Franz', 0);
 
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 0, 'Bla Bla Blub! Überschrift', 0, NULL, 1, 0);
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 0, 1, 'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', 3, NULL, 1, 0);
@@ -35,6 +38,7 @@ insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_openi
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'subsection', '\subsection{', '}', '<h2>', '</h2>',  1);
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'subsubsection', '\subsubsection{', '}', '<h3>', '</h3>',  1);
 insert into LatexType (id, type, type_opening_tag, type_closeing_tag, html_opening_tag, html_closeing_tag, accessable) VALUES (NULL, 'text', '', '', '<p>', '</p>',  1);
+
 
 
 insert into M_USER (ID,muname,mpwd) values (0,'never','login');

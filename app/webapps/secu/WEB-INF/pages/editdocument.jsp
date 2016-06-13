@@ -216,7 +216,12 @@
 			\end{document}</br>
 		</td>
 	</tr>
-		<tr>
+	<tr>
+		<td>
+			<hr>
+		</td>
+	</tr>
+	<tr>
 		<td>
 			<a href="https://www.overleaf.com/docs?rich_text=true&template=overleaf" target="_blank">Online LaTeX Compiler</a>
 		</td>

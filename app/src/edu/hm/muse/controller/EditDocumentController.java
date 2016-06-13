@@ -343,6 +343,10 @@ public class EditDocumentController {
             return new ModelAndView("redirect:login.secu");
         }
         
+        String uname = (String) session.getAttribute("user");
+        String sql_id = "select ID from M_USER where muname = ?";
+        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
+        
         String sql = "SELECT * FROM LatexSniped WHERE document_id = ? AND trash = 0 ORDER BY ordinal ASC";
         List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, documentId);
 
@@ -367,4 +371,5 @@ public class EditDocumentController {
         mv.addObject("SnipedsForView", projectSnipeds);
         return mv;
     }
+    
 }

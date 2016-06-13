@@ -29,15 +29,18 @@
 #Haubelt TODO, Bitte schriftgrösen Hierarchisch anlegen
 h1 {
     font-size: 15px;
+    font-weight: 700;
 }
 h2 {
     font-size: 13px;
+    font-weight: 500;
 }
 h3 {
     font-size: 11px;
+    font-weight: 400;
 }
 p {
-    font-size: 8px;
+    font-size: 15px;
 }
 
 #popupContact h1 {
