@@ -99,7 +99,7 @@
 		<tr>
 			<td>
 				<br>
-				<input class="eingabefeld" type="text" value="" name="documentname" id="documentname" placeholder="Name des Dokuments" style="margin-left: 20px;">
+				<input class="eingabefeld" type="text" name="documentname" id="documentname" placeholder="Name des Dokuments" style="margin-left: 20px;">
 				<%--<input type="submit" value="Neues Projekt anlegen">--%>
 				<button class="buttonKleinBreit" value="Neues Projekt anlegen" style="vertical-align:middle"><span>Neues Projekt <i class="fa fa-save"></i></span></button>
 			</td>

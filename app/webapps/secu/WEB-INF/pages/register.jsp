@@ -16,7 +16,7 @@
     <label for="new_mpwd1"></label>
     <input class="eingabefeld" type="password" name="new_mpwd1" id="new_mpwd1" placeholder="Passwort wiederholen" style="margin-left: 20px;">
     <br><br><br>
-    <button class="button" value="Register" style="vertical-align:middle; margin-left: 20px;"><span>Registrieren</span></button>
+    <button class="button" style="vertical-align:middle; margin-left: 20px;"><span>Registrieren</span></button>
 </form>
 
 

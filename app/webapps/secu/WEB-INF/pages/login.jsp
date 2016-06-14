@@ -14,7 +14,7 @@
     <input class=eingabefeld type="password" name="mpwd" id="mpwd" placeholder="Passwort" style="margin-left: 20px;">
     <br><br><br>
     <%--<input type="submit" value="Login" style="margin-left: 5px;">--%>
-    <button class="button" value="Login" style="vertical-align:middle; margin-left: 20px;"><span>Login</span></button>
+    <button class="button" style="vertical-align:middle; margin-left: 20px;"><span>Login</span></button>
 </form>
 
 <script type="text/javascript">
