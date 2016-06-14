@@ -108,6 +108,10 @@ public class ProjectsController {
             return new ModelAndView("redirect:login.form");
         }
 
+        if (documentname.replace("[A-Za-z0-9] ", "").length() != 0) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
