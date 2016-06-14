@@ -109,7 +109,7 @@ public class ProjectsController {
         }
 
         if (documentname.replaceAll("[A-Za-z0-9]", "").length() > 0) {
-            return new ModelAndView("redirect:projects.secu");
+                return new ModelAndView("redirect:projects.secu");
         }
 
         //ToDo Auslagern
