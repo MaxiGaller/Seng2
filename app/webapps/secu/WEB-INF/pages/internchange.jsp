@@ -7,11 +7,19 @@
 <span style="margin-left: 20px; font-size: 20px;">Hier kannst du dein Passwort &auml;ndern</span>
 <br><br><br>
 
-<form method="post" action="change.secu">
+<h2>${msg}</h2>
+
+<form action="change.secu" method="post" >
     <input type="hidden" name="uid" value="${userDomain.id}" >
     <input type="hidden" name="uname" value="${userDomain.uname}" id="uname">
     <%--<input type="password" name="upwd" id="upwd" placeholder="neues Passwort">--%>
+    <label for="upwd"></label>
     <input class="eingabefeld" type="password" name="upwd" id="upwd" placeholder="neues Passwort" style="margin-left: 20px;" autofocus>
     <br><br><br>
+
+    <label for="upwd1"></label>
+    <input class="eingabefeld" type="password" name="upwd1" id="upwd1" placeholder="Passwort wiederholen" style="margin-left: 20px;">
+    <br><br><br>
+
     <input type="image" src="img/floppy.gif"  value="Passwort &auml;ndern" style="margin-left: 20px;">
 </form>

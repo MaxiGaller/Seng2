@@ -83,15 +83,25 @@ public class WatchAccountController {
 
 
     @RequestMapping(value = "/change.secu", method = RequestMethod.POST)
-    public ModelAndView changeAccount(HttpSession session, @RequestParam(value = "uid", required = true) String uid, @RequestParam(value = "uname", required = true) String uname, @RequestParam(value = "upwd", required = true) String upwd) {
+    public ModelAndView changeAccount(HttpSession session, @RequestParam(value = "uid", required = true) String uid, @RequestParam(value = "uname", required = true) String uname,
+                                      @RequestParam(value = "upwd", required = true) String upwd,
+                                      @RequestParam(value = "upwd1", required = true) String upwd1) {
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (!isValidPw(upwd)) {
-            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            ModelAndView mv = new ModelAndView("internchange");
             mv.addObject("msg", "Pw muss Groß- Kleinbuchstaben und Sonderzeichen haben!");
             return mv;
         }
+
+
+        if (!upwd.equals(upwd1)) {
+            ModelAndView mv = new ModelAndView("register");
+            mv.addObject("msg", "passen nicht!");
+            return mv;
+        }
+
 
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
