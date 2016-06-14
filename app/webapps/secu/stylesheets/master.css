@@ -107,7 +107,7 @@ p {
     border: none;
     color: #FFFFFF;
     text-align: center;
-    font-size: 28px;
+    font-size: 25px;
     padding: 20px;
     width: 200px;
     transition: all 0.5s;
@@ -223,7 +223,7 @@ p {
 .buttonKleinSchwarz {
     display: inline-block;
     border-radius: 20px;
-    background-color: rgba(106, 106, 106, 0.71);
+    background-color: rgba(0, 0, 0, 0.71);
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -294,7 +294,7 @@ p {
 .buttonKleinSchmal {
     display: inline-block;
     border-radius: 4px;
-    background-color: #f4511e;
+    background-color: #000000;
     border: none;
     color: #FFFFFF;
     text-align: center;
@@ -338,7 +338,7 @@ select {
     font-size: 1em;
     width: 100%
 }
-
+/*muss ich noch machen*/
 /* styling */
 select {
     width: 200px;
