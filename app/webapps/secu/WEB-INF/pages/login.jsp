@@ -7,12 +7,9 @@
 
 <form action="login.secu" method="post">
     <br><br>
-    <label for="mname"></label>
-    <input class="eingabefeld" type="text" name="mname" id="mname" placeholder="Benutzername" style="margin-left: 20px;" autofocus>
+    <input class="eingabefeld" type="text" name="mname" placeholder="Benutzername" style="margin-left: 20px;" autofocus>
     <br><br>
-    <label for="mpwd"></label>
-    <input class=eingabefeld type="password" name="mpwd" id="mpwd" placeholder="Passwort" style="margin-left: 20px;">
+    <input class=eingabefeld type="password" name="mpwd" placeholder="Passwort" style="margin-left: 20px;">
     <br><br><br>
-    <%--<input type="submit" value="Login" style="margin-left: 5px;">--%>
     <button class="button" style="vertical-align:middle; margin-left: 20px;"><span>Login</span></button>
 </form>

@@ -7,14 +7,11 @@
 
 <form action="register.secu" method="post">
     <br><br>
-    <label for="new_uname"></label>
-    <input class="eingabefeld" type="text" name="new_uname" id="new_uname" placeholder="neuer Benutzername" style="margin-left: 20px;" autofocus >
+    <input class="eingabefeld" type="text" name="new_uname" placeholder="neuer Benutzername" style="margin-left: 20px;" autofocus >
     <br><br>
-    <label for="new_mpwd"></label>
-    <input class="eingabefeld" type="password" name="new_mpwd" id="new_mpwd" placeholder="neues Passwort" style="margin-left: 20px;">
+    <input class="eingabefeld" type="password" name="new_mpwd" placeholder="neues Passwort" style="margin-left: 20px;">
     <br>
-    <label for="new_mpwd1"></label>
-    <input class="eingabefeld" type="password" name="new_mpwd1" id="new_mpwd1" placeholder="Passwort wiederholen" style="margin-left: 20px;">
+    <input class="eingabefeld" type="password" name="new_mpwd1" placeholder="Passwort wiederholen" style="margin-left: 20px;">
     <br><br><br>
     <button class="button" style="vertical-align:middle; margin-left: 20px;"><span>Registrieren</span></button>
 </form>
