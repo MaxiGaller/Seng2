@@ -1,8 +1,6 @@
 <%--@elvariable id="userDomain" type="edu.hm.muse.domain.User"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../../head.jsp"/>
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 
 <div class="m1">LaTeX Editor</div>
 
@@ -20,7 +18,7 @@
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentname}"/>" name="documentname" id="documentname">
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<input type="hidden" value="write" name="mode">
-					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">Bearbeiten Modus</button>
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle"><span>Bearbeiten Modus</span></button>
 				</form>
 			</td>
 			<td>
@@ -29,7 +27,7 @@
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentname}"/>" name="documentname" id="documentname">
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<input type="hidden" value="read" name="mode">
-					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">Lesen Modus</button>
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle"><span>Lesen Modus</span></button>
 				</form>
 			</td>
 			<td>
@@ -38,7 +36,7 @@
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentname}"/>" name="documentname" id="documentname">
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<input type="hidden" value="showlatex" name="mode">
-					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">LaTeX Modus</button>
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle"><span>LaTeX Modus</span></button>
 				</form>
 			</td>
 			<td>
@@ -65,7 +63,7 @@
 					<input type="hidden" value="<c:out value="${contributorDocuments.documentname}"/>" name="documentname" id="documentname">
 					<input type="hidden" value="<c:out value="${contributorDocuments.documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<input type="hidden" value="write" name="mode">
-					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">Bearbeiten Modus</button>
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle"><span>Bearbeiten Modus</span></button>
 				</form>
 			</td>
 			<td>
@@ -74,7 +72,7 @@
 					<input type="hidden" value="<c:out value="${contributorDocuments.documentname}"/>" name="documentname" id="documentname">
 					<input type="hidden" value="<c:out value="${contributorDocuments.documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<input type="hidden" value="read" name="mode">
-					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">Lesen Modus</button>
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle"><span>Lesen Modus</span></button>
 				</form>
 			</td>
 			<td>
@@ -83,7 +81,7 @@
 					<input type="hidden" value="<c:out value="${contributorDocuments.documentname}"/>" name="documentname" id="documentname">
 					<input type="hidden" value="<c:out value="${contributorDocuments.documentauthor}"/>" name="documentauthor" id="documentauthor">
 					<input type="hidden" value="showlatex" name="mode">
-					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle">LaTeX Modus</button>
+					<button class="buttonKleinBreit" value="Bearbeiten" style="vertical-align:middle"><span>LaTeX Modus</span></button>
 				</form>
 			</td>
 		</tr>
@@ -152,7 +150,7 @@
 						<option value="${AllContentTypes.id}">${AllContentTypes.type}</option>
 					</c:forEach>
 				</select>
-				<button class="buttonKlein" value="Neu Anlegen" style="vertical-align:middle"><span>Speichern <i class="fa fa-save"></i></span></button>
+				<button class="buttonKleinBreit" value="Neu Anlegen" style="vertical-align:middle"><span>Speichern <i class="fa fa-save"></i></span></button>
 			</td>
 		</tr>
 	</form>
