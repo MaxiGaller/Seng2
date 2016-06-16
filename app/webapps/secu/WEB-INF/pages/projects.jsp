@@ -3,10 +3,10 @@
 <jsp:include page="../../head.jsp"/>
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
-<span style="font-size: 50px; font-family: Arial; margin-left: 20px; color:#4169e1;"><b>LaTeX Editor</b></span>
 
-<br>
-<h2>${msg}</h2>
+<div class="m1">LaTeX Editor</div>
+
+<span style="margin-left: 80px; font-size: 20px; font-family: 'Comic Sans MS'; font-style: italic"><c:out value="${msg}"/></span>
 <br><br>
 
 <span style="margin-left: 20px; font-size: 25px;">Ihre Projekte</span>

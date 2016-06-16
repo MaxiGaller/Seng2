@@ -2,10 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../../head.jsp"/>
 
-<span style="font-size: 50px; font-family: Arial; margin-left: 20px; color:#4169e1;"><b>Passwort &auml;ndern</b></span>
-<br>
-<span style="margin-left: 20px; font-size: 20px;">Hier kannst du dein Passwort &auml;ndern</span>
-<br><br><br>
+<div class="m1">Passwort &auml;ndern</div>
+
+<div class="m3">Hier kannst du dein Passwort &auml;ndern</div>
+<br><br>
 
 <h2>${msg}</h2>
 
