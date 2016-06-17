@@ -151,5 +151,4 @@ public class WatchAccountController {
         java.util.regex.Matcher m = p.matcher(upwd);
         return m.matches();
     }
-
 }
