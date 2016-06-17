@@ -8,7 +8,7 @@
 <div class="m4"><c:out value="${msg}"/></div>
 <br>
 <form action="change.secu" method="post" >
-    <input type="hidden" name="uid" value="${userDomain.id}" >
+    <%--<input type="hidden" name="uid" value="${userDomain.id}" >--%>
     <input type="hidden" name="uname" value="${userDomain.uname}" id="uname">
     <input class="eingabefeld" type="password" name="upwd" placeholder="neues Passwort" style="margin-left: 20px;" autofocus>
     <br>
