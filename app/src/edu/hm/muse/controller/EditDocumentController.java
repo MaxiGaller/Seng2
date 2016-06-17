@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.hm.muse.domain.User;
-
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +42,12 @@ public class EditDocumentController {
             @RequestParam(value = "documentname", required = true) String documentname,
             @RequestParam(value = "documentauthor", required = true) String documentauthor,
             @RequestParam(value = "mode", required = false) String mode,
-            HttpSession session){
+            HttpSession session,
+            HttpServletRequest request){
+
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
 
         return getProjectPage(documentId, documentname, documentauthor, mode,session);
     }
@@ -150,6 +153,10 @@ public class EditDocumentController {
             return new ModelAndView("redirect:login.secu");
         }
 
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
         Cookie cookie = getCookie(request, "loggedIn");
         
         String uname = (String) session.getAttribute("user");
@@ -214,6 +221,10 @@ public class EditDocumentController {
             HttpServletResponse response){
 
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        if (loginHelper.isNotLoggedIn(request, session)) {
             return new ModelAndView("redirect:login.secu");
         }
 
@@ -342,7 +353,7 @@ public class EditDocumentController {
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
-        
+
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
