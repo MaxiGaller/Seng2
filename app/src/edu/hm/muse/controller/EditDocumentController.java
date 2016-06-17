@@ -349,9 +349,9 @@ public class EditDocumentController {
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
 
-        /*if (!isUserInDocument(UserIDFromSessionOverDatabase, documentId)) {
+        if (!isUserInDocument(UserIDFromSessionOverDatabase, documentId)) {
             return new ModelAndView("redirect:projects.secu");
-       }*/
+        }
 
         String sql = "SELECT * FROM LatexSniped WHERE document_id = ? AND trash = 0 ORDER BY ordinal ASC";
         List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, documentId);
@@ -378,16 +378,16 @@ public class EditDocumentController {
         return mv;
     }
 
-    /*public boolean isUserInDocument (int userID, int documentID) {
+    public boolean isUserInDocument (int userID, int documentID) {
         String sql = "SELECT Count(*) FROM LatexDocuments where muser_id = ? and id = ?";
         int res = 0;
         try {
-            res = jdbcTemplate.queryForInt(sql, new Object[]{userID, documentID}, Integer.class, Integer.class);
+            res = jdbcTemplate.queryForInt(sql, userID, documentID);
         } catch (DataAccessException e) {
 
         }
 
         return res > 0;
-    }*/
+    }
 
 }
