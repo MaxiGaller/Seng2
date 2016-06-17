@@ -78,7 +78,7 @@ public class ProjectsController {
         ModelAndView mv = new ModelAndView("projects");
 
         if (justLoggedIn != null && justLoggedIn.equals(1)) {
-            mv.addObject("msg", "<div id='popup'>Login erfolgreich</div>");
+            mv.addObject("msg", "Login erfolgreich");
         }
 
         mv.addObject("DUMP", sqlContributor);
