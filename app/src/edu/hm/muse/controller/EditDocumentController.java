@@ -389,5 +389,4 @@ public class EditDocumentController {
 
         return res > 0;
     }
-
 }
