@@ -5,4 +5,4 @@
 <br>
 <div class="m2"> Hallo <b><c:out value="${userDomain.uname}"/></b></div>
 <br><br>
-<a href="internchange.secu"><button class="buttonKleinBreit" style="margin-left: 20px;"><span>Passwort <i class="fa fa-edit"></i></span></button></a>
+<a href="internchange.secu"><button class="button schrift3 hoehe3" style="margin-left: 20px;"><span>Passwort <i class="fa fa-edit"></i></span></button></a>
