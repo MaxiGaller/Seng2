@@ -350,7 +350,9 @@ public class EditDocumentController {
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
 
         if (!isUserInDocument(UserIDFromSessionOverDatabase, documentId)) {
-            return new ModelAndView("redirect:projects.secu");
+            if (!isUserContributor(UserIDFromSessionOverDatabase, documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
         }
 
         String sql = "SELECT * FROM LatexSniped WHERE document_id = ? AND trash = 0 ORDER BY ordinal ASC";
@@ -386,7 +388,17 @@ public class EditDocumentController {
         } catch (DataAccessException e) {
 
         }
+        return res > 0;
+    }
 
+    public boolean isUserContributor (int userID, int documentID) {
+        String sql = "SELECT Count(*) FROM LatexDocumentContributors where contribute_muser_id = ? and document_id = ?";
+        int res = 0;
+        try {
+            res = jdbcTemplate.queryForInt(sql, userID, documentID);
+        } catch (DataAccessException e) {
+
+        }
         return res > 0;
     }
 }
