@@ -27,8 +27,8 @@ insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_ty
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 2, 'H2 H2 H2 H2 H2', 1, NULL, 1, 0);
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 3, 'TEXT TEXT TEXT', 3, NULL, 1, 0);
 insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 4, 'H3 H3 H3 H3 H3', 2, NULL, 1, 0);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 5, 'DU DARFST MICH NICHT SEHEN', 5, 1, 0, 0);
-insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 6, 'DU DARFST MICH NICHT SEHEN', 5, 2, 0, 0);
+--insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 5, 'DU DARFST MICH NICHT SEHEN', 5, 1, 0, 0);
+--insert into LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, 2, 1, 6, 'DU DARFST MICH NICHT SEHEN', 5, 2, 0, 0);
 
 insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 0, 'NULL', NULL);
 insert into LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, 2, 'Globaler Footer', 3);
@@ -48,4 +48,3 @@ insert into M_USER (ID,muname,mpwd, salt) values (3,'Franz','31205d955e9483a9346
 insert into M_USER (ID,muname,mpwd, salt) values (4,'Sepp','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
 insert into M_USER (ID,muname,mpwd, salt) values (5,'Schorsch','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
 insert into M_USER (ID,muname,mpwd, salt) values (6,'Ignaz','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');
-insert into M_USER (ID,muname,mpwd, salt) values (7,'Alois','31205d955e9483a93461b57888fd3a8c2a417b53bbc2def17ce18697f719473f', '1c0qjj3cna3lmuee5ocsjp1sb6ghmk6t65sl3qvqu1pjopotb51n');

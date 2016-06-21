@@ -247,7 +247,7 @@ public class EditDocumentController {
             return mv;
         }
         ordinal++;
-        
+
         String content = "Platzhalter fuer Global Sniped";
 
         String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, ?, 0, 0)";
