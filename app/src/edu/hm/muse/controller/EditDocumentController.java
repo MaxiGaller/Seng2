@@ -254,7 +254,7 @@ public class EditDocumentController {
 
         int res = 0;
         try {
-            res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, content, GlobalSniped_content_type, GlobalSniped_content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC, Types.NUMERIC});
+            res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, content, GlobalSniped_content_type, GlobalSniped_id}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC, Types.NUMERIC});
         } catch (DataAccessException e) {
             ModelAndView mv = new ModelAndView("redirect:projects.secu");
             mv.addObject("msg", "kleiner Fehler versuchs erneut");
