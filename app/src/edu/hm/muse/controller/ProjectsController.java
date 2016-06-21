@@ -109,7 +109,7 @@ public class ProjectsController {
             return new ModelAndView("redirect:login.secu");
         }
 
-        if (documentname.replaceAll("[A-Za-z0-9]", "").length() > 0) {
+        if (documentname.replaceAll("[A-Za-z0-9 ]", "").length() > 0) {
             return new ModelAndView("redirect:projects.secu");
         }
 
