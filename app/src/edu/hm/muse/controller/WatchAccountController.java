@@ -1,6 +1,7 @@
 package edu.hm.muse.controller;
 
 import edu.hm.muse.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.security.MessageDigest;
@@ -19,6 +21,9 @@ import java.sql.Types;
 public class WatchAccountController {
 // extends functions
 
+    @Autowired
+    private LoginHelper loginHelper;
+
     private JdbcTemplate jdbcTemplate;
 
     @Resource(name = "dataSource")
@@ -27,10 +32,15 @@ public class WatchAccountController {
     }
 
     @RequestMapping(value = "/internchange.secu", method = RequestMethod.GET)
-    public ModelAndView showAccountToChange(HttpSession session) {
+    public ModelAndView showAccountToChange(HttpSession session, HttpServletRequest request) {
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
+
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
         String uname = (String) session.getAttribute("user");
 
         String sql = "select ID, muname,mpwd from M_USER where muname = ?";
@@ -46,10 +56,15 @@ public class WatchAccountController {
 
 
     @RequestMapping(value = "/intern.secu", method = RequestMethod.GET)
-    public ModelAndView showAccount(HttpSession session) {
+    public ModelAndView showAccount(HttpSession session, HttpServletRequest request) {
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
+
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
         String uname = (String) session.getAttribute("user");
 
         String sql = "select ID, muname,mpwd from M_USER where muname = ?";
@@ -83,28 +98,40 @@ public class WatchAccountController {
 
 
     @RequestMapping(value = "/change.secu", method = RequestMethod.POST)
-    public ModelAndView changeAccount(HttpSession session, @RequestParam(value = "uid", required = true) String uid, @RequestParam(value = "uname", required = true) String uname,
+    public ModelAndView changeAccount(HttpSession session,
+                                      //@RequestParam(value = "uid", required = true) String uid,
+                                      @RequestParam(value = "uname", required = true) String uname,
                                       @RequestParam(value = "upwd", required = true) String upwd,
-                                      @RequestParam(value = "upwd1", required = true) String upwd1) {
+                                      @RequestParam(value = "upwd1", required = true) String upwd1,
+                                      HttpServletRequest request) {
+
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
-        if (!isValidPw(upwd)) {
-            ModelAndView mv = new ModelAndView("internchange");
-            mv.addObject("msg", "Pw muss Groß- Kleinbuchstaben und Sonderzeichen haben!");
-            return mv;
+
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
         }
 
-
+       /* if (!isValidPw(upwd)) {
+            ModelAndView mv = new ModelAndView("redirect:projects.secu");
+            mv.addObject("msg", "Passwort muss Groß- Kleinbuchstaben und Sonderzeichen haben!");
+            return mv;
+        }
+*/
         if (!upwd.equals(upwd1)) {
             ModelAndView mv = new ModelAndView("register");
             mv.addObject("msg", "passen nicht!");
             return mv;
         }
 
+        String getId = "select id from M_USER where muname = ?";
+        int ID1 = jdbcTemplate.queryForInt(getId, uname);
 
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
+
+        //String id = session.getId();
 
         String saltedPw = salt + upwd;
 
@@ -112,7 +139,7 @@ public class WatchAccountController {
 
         String sql = "update M_USER set  mpwd = ? where ID = ?";
 
-        jdbcTemplate.update(sql, new Object[]{hpwd, uid}, new int[]{Types.VARCHAR, Types.NUMERIC});
+        jdbcTemplate.update(sql, new Object[]{hpwd, ID1}, new int[]{Types.VARCHAR, Types.NUMERIC});
         session.setAttribute("user", uname);
         return new ModelAndView("redirect:intern.secu");
     }
@@ -124,5 +151,4 @@ public class WatchAccountController {
         java.util.regex.Matcher m = p.matcher(upwd);
         return m.matches();
     }
-
 }

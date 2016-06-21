@@ -56,29 +56,29 @@ public class ProjectsController {
 //      String sql = "SELECT * FROM LatexDocuments d INNER JOIN LatexDocumentContributors c ON c.document_id = d.id AND d.trash = 0 AND (d.muser_id = ? OR c.contribute_muser_id = ?)";
         String sql = "SELECT id, documentname, documentauthor FROM LatexDocuments WHERE muser_id = ? AND trash = 0";
         List<Map<String,Object>> documentNames = jdbcTemplate.queryForList(sql, UserIDFromSessionOverDatabase);
-        
+
         String sqlContributor = "SELECT * FROM LatexDocumentContributors c INNER JOIN LatexDocuments d ON c.document_id = d.id  WHERE owner_muser_id != ? AND contribute_muser_id = ? AND trash = 0";
         List<Map<String,Object>> contributorDocuments = jdbcTemplate.queryForList(sqlContributor, UserIDFromSessionOverDatabase, UserIDFromSessionOverDatabase);
 
         String trashsql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ? AND trash = 1";
         List<Map<String,Object>> trashDocumentNames = jdbcTemplate.queryForList(trashsql, UserIDFromSessionOverDatabase);
-        
+
         String sqlAllContentTypes = "SELECT * FROM LatexType";
         List<Map<String,Object>> AllContentTypes = jdbcTemplate.queryForList(sqlAllContentTypes);
 
         String sqlGlobalSnipeds = "SELECT * FROM LatexGlobalSniped WHERE muser_id = ?";
         List<Map<String,Object>> GlobalSnipeds = jdbcTemplate.queryForList(sqlGlobalSnipeds, UserIDFromSessionOverDatabase);
-        
+
         String sqlContributors = "SELECT * FROM M_USER WHERE id != ? AND id != 0";
         List<Map<String,Object>> Contributors = jdbcTemplate.queryForList(sqlContributors, UserIDFromSessionOverDatabase);
-        
+
         String sqlSavedContributors = "SELECT * FROM LatexDocumentContributors WHERE owner_muser_id = ?";
         List<Map<String,Object>> SavedContributors = jdbcTemplate.queryForList(sqlSavedContributors, UserIDFromSessionOverDatabase);
 
         ModelAndView mv = new ModelAndView("projects");
 
         if (justLoggedIn != null && justLoggedIn.equals(1)) {
-            mv.addObject("msg", "<div id='popup'>Login erfolgreich</div>");
+            mv.addObject("msg", "Login erfolgreich");
         }
 
         mv.addObject("DUMP", sqlContributor);
@@ -101,15 +101,16 @@ public class ProjectsController {
             @RequestParam(value = "documentname", required = true) String documentname,
             HttpSession session, HttpServletRequest request, HttpServletResponse response){
 
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
-        if (isNotLoggedIn(request, session)) {
-            return new ModelAndView("redirect:login.form");
-        }
 
-        if (documentname.replaceAll("[A-Za-z0-9]", "").length() > 0) {
-                return new ModelAndView("redirect:projects.secu");
+        if (documentname.replaceAll("[A-Za-z0-9 ]", "").length() > 0) {
+            return new ModelAndView("redirect:projects.secu");
         }
 
         //ToDo Auslagern
@@ -136,7 +137,7 @@ public class ProjectsController {
         return new ModelAndView("redirect:projects.secu");
 
     }
-    
+
     // New Invite Contributor
     // Author Maximilian Galler
     @RequestMapping(value = "/invitecontributor.secu", method = RequestMethod.GET)
@@ -145,11 +146,12 @@ public class ProjectsController {
             @RequestParam(value = "ContributeUser", required = true) String ContributeUser,
             HttpSession session, HttpServletRequest request, HttpServletResponse response){
 
-        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+        if (loginHelper.isNotLoggedIn(request, session)) {
             return new ModelAndView("redirect:login.secu");
         }
-        if (isNotLoggedIn(request, session)) {
-            return new ModelAndView("redirect:login.form");
+
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+            return new ModelAndView("redirect:login.secu");
         }
 
         //ToDo Auslagern
@@ -183,7 +185,7 @@ public class ProjectsController {
         return new ModelAndView("redirect:projects.secu");
 
     }
-    
+
     // Remove Contributor
     // Author Maximilian Galler
     @RequestMapping(value = "/removecontributor.secu", method = RequestMethod.GET)
@@ -192,6 +194,7 @@ public class ProjectsController {
             HttpSession session,
             HttpServletResponse response,
             HttpServletRequest request){
+
 
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
@@ -215,7 +218,7 @@ public class ProjectsController {
         return new ModelAndView("redirect:projects.secu");
 
     }
-    
+
     // New Global Sniped
     // Author Maximilian Galler
     @RequestMapping(value = "/newglobalsniped.secu", method = RequestMethod.GET)
@@ -226,30 +229,34 @@ public class ProjectsController {
             HttpServletRequest request,
             HttpServletResponse response){
 
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
 
         Cookie cookie = getCookie(request, "loggedIn");
-        
+
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
-                
+
         String sqlInsert = "INSERT INTO LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, ?, ?, ?)";
-        
-	    int resContent = 0;
-	    try {
-	        //execute the query and check exceptions
-	    	resContent = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, snipedGlobalContent, Global_content_type}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.NUMERIC});
-	    } catch (DataAccessException e) {
-	        return new ModelAndView("redirect:projects.secu");
-	    }
-	
-	    return new ModelAndView("redirect:projects.secu");
-	
-	}
-    
+
+        int resContent = 0;
+        try {
+            //execute the query and check exceptions
+            resContent = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, snipedGlobalContent, Global_content_type}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.NUMERIC});
+        } catch (DataAccessException e) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
+        return new ModelAndView("redirect:projects.secu");
+
+    }
+
     // Edit an Saved Global Sniped
     // Author Maximilian Galler
     @RequestMapping(value = "/editGlobalSnipeds.secu", method = RequestMethod.GET)
@@ -296,11 +303,16 @@ public class ProjectsController {
             HttpServletResponse response,
             HttpServletRequest request){
 
+
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
             return new ModelAndView("redirect:login.secu");
+        }
+
+        if (documentname.replaceAll("[A-Za-z0-9 ]", "").length() != 0) {
+            return new ModelAndView("redirect:projects.secu");
         }
 
         Cookie cookie = getCookie(request, "loggedIn");
@@ -326,8 +338,8 @@ public class ProjectsController {
         return mv;
 
     }
-    
-    // set document author 
+
+    // set document author
     // Author Maximilian Galler
     @RequestMapping(value = "/setauthor.secu", method = RequestMethod.GET)
     public ModelAndView setDocumentAuthorById(
@@ -369,7 +381,7 @@ public class ProjectsController {
         return mv;
 
     }
-    
+
 
     // Recycle document
     // Author Maximilian Galler
@@ -481,11 +493,5 @@ public class ProjectsController {
             return new ModelAndView("redirect:projects.secu");
         }
         return new ModelAndView("redirect:projects.secu");
-    }
-
-
-    private boolean isNotLoggedIn(HttpServletRequest request, HttpSession session) {
-        Cookie cookie = getCookie(request, "loggedIn");
-        return cookie == null || !cookie.getValue().equals(session.getAttribute("usertoken"));
     }
 }

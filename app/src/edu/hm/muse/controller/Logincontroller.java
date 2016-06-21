@@ -54,9 +54,6 @@ public class Logincontroller {
         return mv;
     }
 
-
-
-
     @RequestMapping(value = "/login.secu", method = RequestMethod.POST)
     public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname,
                                     @RequestParam(value = "mpwd", required = false) String mpwd,

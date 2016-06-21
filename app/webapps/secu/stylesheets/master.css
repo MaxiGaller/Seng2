@@ -1,32 +1,5 @@
+/*Author Maximilian Haubelt*/
 
-/*
-*Just for the help popup
-*/
-#backgroundPopup {
-    display: none;
-    position: fixed;
-    _position: absolute; /* hack for internet explorer 6*/
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    background: #9c0000;
-    z-index: 1;
-}
-
-#popupContact {
-    display: none;
-    position: fixed;
-    _position: absolute; /* hack for internet explorer 6*/
-    height: 384px;
-    width: 408px;
-    background: #FFFFFF;
-    z-index: 2;
-    padding: 12px;
-    font-size: 13px;
-}
-
-#Haubelt TODO, Bitte schriftgrösen Hierarchisch anlegen
 h1 {
     font-size: 15px;
     font-weight: 700;
@@ -43,64 +16,33 @@ p {
     font-size: 15px;
 }
 
-#popupContact h1 {
-    text-align: left;
-    color: #9c0000;
-    font-size: 22px;
-    font-weight: 700;
-    padding-bottom: 2px;
-    margin-bottom: 20px;
+.m1 {
+    font-size: 55px;
+    font-family: Arial;
+    font-weight: bold;
+    margin-left: 20px;
+    color: #005BB2;
 }
 
-#popupContactClose {
-    font-size: 14px;
-    line-height: 14px;
-    right: 6px;
-    top: 4px;
-    position: absolute;
-    color: #9c0000;
-    font-weight: 700;
-    display: block;
+.m2 {
+    font-size: 25px;
+    margin-left: 20px;
 }
 
-/*div#Fusszeile {
-    clear: both;
-    font-size: 0.9em;
-    margin: 0;
-    padding: 0.1em;
-    text-align: center;
-    background-color: #ededed;
-}*/
-
-#popup {
-    position: absolute;
-    display: inline-block;
-    border-radius: 4px;
-    background-color: #ffffff;
-    border: dotted;
-    border-color: #4CAF50;
-    color: #000000;
-    text-align: center;
-    font-size: 15px;
-    padding: 5px;
-    width: 150px;
-    transition: all 0.5s;
-    cursor: not-allowed;
-    margin: 5px;
-    left: 10px;
+.m3 {
+    font-size: 20px;
+    margin-left: 20px;
+    color: #3e3e3e;
 }
 
-/*
-#popup {
-    float: right;
-    position: fixed;
-    left: 35%;
-    text-align: left;
-    background-color: #000000;
-    color: #ffffff;
-}*/
+.m4 {
+    font-size: 18px;
+    margin-left: 20px;
+    font-family: 'Comic Sans MS';
+    font-style: italic
+}
 
-.button {
+/*.button {
     display: inline-block;
     border-radius: 4px;
     background-color: #f4511e;
@@ -116,7 +58,6 @@ p {
 }
 
 .button span {
-    cursor: pointer;
     display: inline-block;
     position: relative;
     transition: 0.5s;
@@ -138,7 +79,7 @@ p {
 .button:hover span:after {
     opacity: 1;
     right: 0;
-}
+}*/
 
 .buttonKlein {
     display: inline-block;
@@ -225,7 +166,6 @@ p {
     border-radius: 20px;
     background-color: rgba(0, 0, 0, 0.71);
     border: none;
-    color: #FFFFFF;
     text-align: center;
     font-size: 18px;
     font-color: white;
@@ -331,15 +271,14 @@ p {
     right: 0;
 }
 
-/* remove standard-styles */
+
 select {
     border:none;
     border-radius: 0;
     font-size: 1em;
     width: 100%
 }
-/*muss ich noch machen*/
-/* styling */
+
 select {
     width: 200px;
     border: 2px solid #bbb;
@@ -352,4 +291,114 @@ select {
 
 select:hover {
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.1);
+}
+
+.button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #00004d;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 25px;
+    padding: 20px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.button span {
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button span:after {
+    content: "\00BB";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -40px;
+    transition: 1.0s;
+}
+
+.button:hover span {
+    padding-right: 25px;
+}
+
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.schwarz {
+    background-color: black;
+    color: white;
+}
+
+.gruen {
+    background-color: #008100;
+    color: white;
+}
+
+.grau {
+    background-color: grey;
+}
+
+.hellBlau {
+    background-color: #9fc9d7;
+}
+
+.hellRot {
+    background-color: rgba(255, 89, 80, 0.81);
+}
+
+.breite1 {
+    width: 300px;
+}
+
+.breite2 {
+    width: 200px;
+}
+
+.Breite3 {
+    width: 120px;
+}
+
+.breite4 {
+    width: 60px;
+}
+
+.schrift1 {
+    font-size: 25px;
+}
+
+.schrift2 {
+    font-size: 18px;
+}
+
+.schrift3 {
+    font-size: 15px;
+}
+
+.hoehe1 {
+    padding: 20px;
+}
+
+.hoehe2 {
+    padding: 12px;
+}
+
+.hoehe3 {
+    padding: 8px;
+}
+
+.hoehe4 {
+    padding: 5px;
+}
+
+.flachBreit {
+    font-size: 15px;
+    padding: 8px;
 }

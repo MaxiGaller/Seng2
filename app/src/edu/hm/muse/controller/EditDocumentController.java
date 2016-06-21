@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import edu.hm.muse.domain.User;
-
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -150,8 +148,12 @@ public class EditDocumentController {
             return new ModelAndView("redirect:login.secu");
         }
 
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
         Cookie cookie = getCookie(request, "loggedIn");
-        
+
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
@@ -201,7 +203,7 @@ public class EditDocumentController {
         return mv;
 
     }
-    
+
     // Copy Global Sniped to Document
     // Author Maximilian Galler
     @RequestMapping(value = "/CopyGlobalSnipedToDocument.secu", method = RequestMethod.GET)
@@ -218,7 +220,7 @@ public class EditDocumentController {
         }
 
         Cookie cookie = getCookie(request, "loggedIn");
-        
+
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
@@ -245,11 +247,11 @@ public class EditDocumentController {
             return mv;
         }
         ordinal++;
-                
+
         String content = "Platzhalter fuer Global Sniped";
-                
+
         String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, 0, 0)";
-        
+
         int res = 0;
         try {
             res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, content, GlobalSniped_content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC});
@@ -322,31 +324,37 @@ public class EditDocumentController {
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
 
         mv.addObject("documentId", documentId);
-        mv.addObject("documentname", documentname);        
+        mv.addObject("documentname", documentname);
         mv.addObject("documentauthor", documentauthor);
         mv.addObject("mode", mode);
         response.addCookie(cookie);
 
         return mv;
     }
-    
+
     //Load Documents and Snipeds
     // Author Maximilian Galler
     private ModelAndView getProjectPage(
-    		int documentId,
-    		String documentname,
-    		String documentauthor,
-    		String mode,
-    		HttpSession session){
+            int documentId,
+            String documentname,
+            String documentauthor,
+            String mode,
+            HttpSession session){
 
         if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
             return new ModelAndView("redirect:login.secu");
         }
-        
+
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
-        
+
+        if (!isUserInDocument(UserIDFromSessionOverDatabase, documentId)) {
+            if (!isUserContributor(UserIDFromSessionOverDatabase, documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
+
         String sql = "SELECT * FROM LatexSniped WHERE document_id = ? AND trash = 0 ORDER BY ordinal ASC";
         List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, documentId);
 
@@ -355,12 +363,12 @@ public class EditDocumentController {
 
         String sqlAllTypes = "SELECT * FROM LatexType";
         List<Map<String,Object>> AllContentTypes = jdbcTemplate.queryForList(sqlAllTypes);
-        
+
         String sqlGlobalSnipeds = "SELECT * FROM LatexGlobalSniped";
         List<Map<String,Object>> GlobalSnipeds = jdbcTemplate.queryForList(sqlGlobalSnipeds);
-        
+
         ModelAndView mv = new ModelAndView("editdocument");
-        
+
         mv.addObject("documentId", documentId);
         mv.addObject("documentname", documentname);
         mv.addObject("documentauthor", documentauthor);
@@ -371,5 +379,26 @@ public class EditDocumentController {
         mv.addObject("SnipedsForView", projectSnipeds);
         return mv;
     }
-    
+
+    public boolean isUserInDocument (int userID, int documentID) {
+        String sql = "SELECT Count(*) FROM LatexDocuments where muser_id = ? and id = ?";
+        int res = 0;
+        try {
+            res = jdbcTemplate.queryForInt(sql, userID, documentID);
+        } catch (DataAccessException e) {
+
+        }
+        return res > 0;
+    }
+
+    public boolean isUserContributor (int userID, int documentID) {
+        String sql = "SELECT Count(*) FROM LatexDocumentContributors where contribute_muser_id = ? and document_id = ?";
+        int res = 0;
+        try {
+            res = jdbcTemplate.queryForInt(sql, userID, documentID);
+        } catch (DataAccessException e) {
+
+        }
+        return res > 0;
+    }
 }

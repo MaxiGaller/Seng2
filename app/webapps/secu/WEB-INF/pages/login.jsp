@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="../../head.jsp"/>
 
-<span style="font-size: 50px; font-family: Arial; margin-left: 20px; color:#4169e1;"><b>Login</b></span>
-<br>
-<span style="margin-left: 20px; font-size: 20px;"><c:out value="${msg}"/></span>
+<div class="m1">Login</div>
+
+<div class="m3"><c:out value="${msg}"/></div>
 
 <form action="login.secu" method="post">
     <br><br>
@@ -11,5 +11,5 @@
     <br><br>
     <input class=eingabefeld type="password" name="mpwd" placeholder="Passwort" style="margin-left: 20px;">
     <br><br><br>
-    <button class="button" style="vertical-align:middle; margin-left: 20px;"><span>Login</span></button>
+    <button class="button" style="margin-left: 20px;"><span>Login</span></button>
 </form>
