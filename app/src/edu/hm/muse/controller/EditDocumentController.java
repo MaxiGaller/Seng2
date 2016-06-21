@@ -250,11 +250,11 @@ public class EditDocumentController {
 
         String content = "Platzhalter fuer Global Sniped";
 
-        String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, 0, 0)";
+        String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, global_Sniped_id, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, ?, 0, 0)";
 
         int res = 0;
         try {
-            res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, content, GlobalSniped_content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC});
+            res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, content, GlobalSniped_content_type, GlobalSniped_content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC, Types.NUMERIC});
         } catch (DataAccessException e) {
             ModelAndView mv = new ModelAndView("redirect:projects.secu");
             mv.addObject("msg", "kleiner Fehler versuchs erneut");
