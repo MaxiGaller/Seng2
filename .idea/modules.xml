@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/webSecFortify.iml" filepath="$PROJECT_DIR$/app/webSecFortify.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webSecFortify.iml" filepath="$PROJECT_DIR$/webSecFortify.iml" />
     </modules>
   </component>
 </project>
