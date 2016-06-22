@@ -169,16 +169,18 @@
 			</c:if>
 			<c:if test="${mode == 'write'}">
 			<td>
-				<form action="editSnipedMove.secu" method="post">
-					<input type="hidden" value="up" name="type">
-					<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
-					<input type="hidden" value="<c:out value="${mode}"/>" name="mode">
-					<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
-					<input type="hidden" value="<c:out value="${SnipedsForView.ordinal}"/>" name="ordinal">
-					<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
-					<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
-					<button class="buttonKleinSchmal" value="up" style="vertical-align:middle"><span><i class="fa fa-arrow-up"></i></span></button>
-				</form>
+				<c:if test="${SnipedsForView.ordinal != 0}">
+					<form action="editSnipedMove.secu" method="post">
+						<input type="hidden" value="up" name="type">
+						<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
+						<input type="hidden" value="<c:out value="${mode}"/>" name="mode">
+						<input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
+						<input type="hidden" value="<c:out value="${SnipedsForView.ordinal}"/>" name="ordinal">
+						<input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
+						<input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor" id="documentauthor">
+						<button class="buttonKleinSchmal" value="up" style="vertical-align:middle"><span><i class="fa fa-arrow-up"></i></span></button>
+					</form>
+				</c:if>
 				<form action="editSnipedMove.secu" method="post">
 					<input type="hidden" value="down" name="type">
 					<input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
