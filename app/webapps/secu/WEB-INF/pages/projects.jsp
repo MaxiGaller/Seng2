@@ -82,6 +82,12 @@
 					<button class="button schrift3 hoehe3 grau" value="Bearbeiten"><span>LaTeX Modus</span></button>
 				</form>
 			</td>
+			<td>
+				<form action="removecontributor.secu" method="get">
+					<input type="hidden" value="<c:out value="${contributorDocuments.ContributorsId}"/>" name="contribute_id">
+					<button class="button breite4 schrift3 hoehe4 hellRot" value="Papierkorb"><span><i class="fa fa-trash w3-large"></i></span></button>
+				</form>
+			</td>
 		</tr>
 	</c:forEach>
 </table>

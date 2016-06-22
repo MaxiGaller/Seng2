@@ -312,7 +312,7 @@ public class EditDocumentController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
-        String sqlUpdate = "UPDATE LatexSniped SET trash = 1 WHERE id = ? ";
+        String sqlUpdate = "UPDATE LatexSniped SET trash = 1 WHERE id = ?";
 
         int res = 0;
         try {
