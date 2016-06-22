@@ -131,6 +131,9 @@ public class EditDocumentController {
             return new ModelAndView("redirect:login.secu");
         }
 
+        String uname = (String) session.getAttribute("user");
+        isUserOrContributor(uname, documentId);
+
         Cookie cookie = getCookie(request, "loggedIn");
 
 
@@ -169,9 +172,11 @@ public class EditDocumentController {
             return new ModelAndView("redirect:login.secu");
         }
 
+        String uname = (String) session.getAttribute("user");
+        isUserOrContributor(uname, documentId);
+
         Cookie cookie = getCookie(request, "loggedIn");
 
-        String uname = (String) session.getAttribute("user");
 
         int id = 0;
         try {
@@ -236,7 +241,8 @@ public class EditDocumentController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         String uname = (String) session.getAttribute("user");
-
+        isUserOrContributor(uname, documentId);
+        
         int id = 0;
         try {
             id = jdbcTemplate.queryForInt("select MAX(id) from latexsniped");

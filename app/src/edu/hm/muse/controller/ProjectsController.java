@@ -265,6 +265,9 @@ public class ProjectsController {
             return new ModelAndView("redirect:login.secu");
         }
 
+        String uname = (String) session.getAttribute("user");
+        isUserOrContributor(uname, GlobalSniped_id);
+
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
@@ -360,8 +363,12 @@ public class ProjectsController {
 
         Cookie cookie = getCookie(request, "loggedIn");
 
+        String uname = (String) session.getAttribute("user");
+        isUserOrContributor(uname, documentId);
+
         //Update the DB
         String sqlUpdate = "UPDATE LatexDocuments SET documentauthor = ? WHERE id = ?";
+
 
         int res = 0;
         try {
@@ -402,6 +409,10 @@ public class ProjectsController {
 
         String sql_id = "SELECT trash FROM LatexDocuments WHERE id = ?";
         int CheckTrashState = jdbcTemplate.queryForInt(sql_id, new Object[] {documentId}, new int[]{Types.NUMERIC});
+
+
+        String uname = (String) session.getAttribute("user");
+        isUserOrContributor(uname, documentId);
 
         int trashmark;
 
