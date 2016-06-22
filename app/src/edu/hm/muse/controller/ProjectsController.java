@@ -33,6 +33,13 @@ public class ProjectsController {
     public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
+    
+    public int getUserID(String uname) {
+        String sql_id = "select ID from M_USER where muname = ?";
+        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
+        
+        return UserIDFromSessionOverDatabase;
+    }
 
     // Load Projects
     // Author Maximilian Galler
@@ -48,32 +55,29 @@ public class ProjectsController {
         }
 
         Cookie cookie = getCookie(request, "loggedIn");
-        //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
-        String sql_id = "select ID from M_USER where muname = ?";
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, uname);
 
 //      String sql = "SELECT * FROM LatexDocuments d INNER JOIN LatexDocumentContributors c ON c.document_id = d.id AND d.trash = 0 AND (d.muser_id = ? OR c.contribute_muser_id = ?)";
         String sql = "SELECT id, documentname, documentauthor FROM LatexDocuments WHERE muser_id = ? AND trash = 0";
-        List<Map<String,Object>> documentNames = jdbcTemplate.queryForList(sql, UserIDFromSessionOverDatabase);
+        List<Map<String,Object>> documentNames = jdbcTemplate.queryForList(sql, getUserID(uname));
 
         String sqlContributor = "SELECT * FROM LatexDocumentContributors c INNER JOIN LatexDocuments d ON c.document_id = d.id  WHERE owner_muser_id != ? AND contribute_muser_id = ? AND trash = 0";
-        List<Map<String,Object>> contributorDocuments = jdbcTemplate.queryForList(sqlContributor, UserIDFromSessionOverDatabase, UserIDFromSessionOverDatabase);
+        List<Map<String,Object>> contributorDocuments = jdbcTemplate.queryForList(sqlContributor, getUserID(uname), getUserID(uname));
 
         String trashsql = "SELECT id, documentname FROM LatexDocuments WHERE muser_id = ? AND trash = 1";
-        List<Map<String,Object>> trashDocumentNames = jdbcTemplate.queryForList(trashsql, UserIDFromSessionOverDatabase);
+        List<Map<String,Object>> trashDocumentNames = jdbcTemplate.queryForList(trashsql, getUserID(uname));
 
         String sqlAllContentTypes = "SELECT * FROM LatexType";
         List<Map<String,Object>> AllContentTypes = jdbcTemplate.queryForList(sqlAllContentTypes);
 
         String sqlGlobalSnipeds = "SELECT * FROM LatexGlobalSniped WHERE muser_id = ?";
-        List<Map<String,Object>> GlobalSnipeds = jdbcTemplate.queryForList(sqlGlobalSnipeds, UserIDFromSessionOverDatabase);
+        List<Map<String,Object>> GlobalSnipeds = jdbcTemplate.queryForList(sqlGlobalSnipeds, getUserID(uname));
 
         String sqlContributors = "SELECT * FROM M_USER WHERE id != ? AND id != 0";
-        List<Map<String,Object>> Contributors = jdbcTemplate.queryForList(sqlContributors, UserIDFromSessionOverDatabase);
+        List<Map<String,Object>> Contributors = jdbcTemplate.queryForList(sqlContributors, getUserID(uname));
 
         String sqlSavedContributors = "SELECT * FROM LatexDocumentContributors WHERE owner_muser_id = ?";
-        List<Map<String,Object>> SavedContributors = jdbcTemplate.queryForList(sqlSavedContributors, UserIDFromSessionOverDatabase);
+        List<Map<String,Object>> SavedContributors = jdbcTemplate.queryForList(sqlSavedContributors, getUserID(uname));
 
         ModelAndView mv = new ModelAndView("projects");
 
@@ -115,8 +119,6 @@ public class ProjectsController {
 
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
-        String sql_id = "select ID from M_USER where muname = ?";
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -129,7 +131,7 @@ public class ProjectsController {
         int resContent = 0;
         try {
             //execute the query and check exceptions
-            resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, documentname, uname}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.VARCHAR});
+            resContent = jdbcTemplate.update(sqlContent, new Object[] {getUserID(uname), documentname, uname}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
         }
@@ -156,8 +158,6 @@ public class ProjectsController {
 
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
-        String sql_id = "select ID from M_USER where muname = ?";
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
         
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -169,7 +169,7 @@ public class ProjectsController {
         int resContent = 0;
         try {
             //execute the query and check exceptions
-            resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, ContributeUser, ContribteDocument}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.NUMERIC});
+            resContent = jdbcTemplate.update(sqlContent, new Object[] {getUserID(uname), ContributeUser, ContribteDocument}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
         }
@@ -232,15 +232,13 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         String uname = (String) session.getAttribute("user");
-        String sql_id = "select ID from M_USER where muname = ?";
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
 
         String sqlInsert = "INSERT INTO LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, ?, ?, ?)";
 
         int resContent = 0;
         try {
             //execute the query and check exceptions
-            resContent = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, snipedGlobalContent, Global_content_type}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.NUMERIC});
+            resContent = jdbcTemplate.update(sqlInsert, new Object[]{getUserID(uname), snipedGlobalContent, Global_content_type}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
         }
@@ -438,8 +436,6 @@ public class ProjectsController {
 
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
-        String sql_id = "select ID from M_USER where muname = ?";
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
 
         //Update the DB
         String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE trash = 1 AND muser_id = ?";
@@ -447,7 +443,7 @@ public class ProjectsController {
         int res = 0;
         try {
             //execute the query and check exceptions
-            res = jdbcTemplate.update(sqlUpdate, new Object[]{UserIDFromSessionOverDatabase}, new int[] {Types.INTEGER});
+            res = jdbcTemplate.update(sqlUpdate, new Object[]{getUserID(uname)}, new int[] {Types.INTEGER});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
         }
@@ -471,16 +467,19 @@ public class ProjectsController {
         if (loginHelper.isNotLoggedIn(request, session)) {
             return new ModelAndView("redirect:login.secu");
         }
+        
+        //ToDo Auslagern
+        String uname = (String) session.getAttribute("user");
 
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
-        String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE id = ?";
+        String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE id = ? AND muser_id = ?";
 
         int res = 0;
         try {
             //execute the query and check exceptions
-            res = jdbcTemplate.update(sqlUpdate, new Object[] {documentId}, new int[] {Types.NUMERIC});
+            res = jdbcTemplate.update(sqlUpdate, new Object[] {documentId, getUserID(uname)}, new int[] {Types.NUMERIC, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
         }

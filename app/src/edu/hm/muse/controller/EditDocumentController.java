@@ -34,6 +34,13 @@ public class EditDocumentController {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    public int getUserID(String uname) {
+        String sql_id = "select ID from M_USER where muname = ?";
+        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
+        
+        return UserIDFromSessionOverDatabase;
+    }
+    
     // Load Document
     // Author Marco Ratusny
     @RequestMapping(value = "/editdocument.secu", method = RequestMethod.GET)
@@ -155,9 +162,6 @@ public class EditDocumentController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         String uname = (String) session.getAttribute("user");
-        String sql_id = "select ID from M_USER where muname = ?";
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
-
 
         int id = 0;
         try {
@@ -185,7 +189,7 @@ public class EditDocumentController {
 
         int res = 0;
         try {
-            res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, snipedContent, content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC});
+            res = jdbcTemplate.update(sqlInsert, new Object[]{getUserID(uname), documentId, ordinal, snipedContent, content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC});
         } catch (DataAccessException e) {
             ModelAndView mv = new ModelAndView("redirect:projects.secu");
             mv.addObject("msg", "kleiner Fehler versuchs erneut");
@@ -222,9 +226,6 @@ public class EditDocumentController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         String uname = (String) session.getAttribute("user");
-        String sql_id = "select ID from M_USER where muname = ?";
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
-
 
         int id = 0;
         try {
@@ -254,7 +255,7 @@ public class EditDocumentController {
 
         int res = 0;
         try {
-            res = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, documentId, ordinal, content, GlobalSniped_content_type, GlobalSniped_id}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC, Types.NUMERIC});
+            res = jdbcTemplate.update(sqlInsert, new Object[]{getUserID(uname), documentId, ordinal, content, GlobalSniped_content_type, GlobalSniped_id}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC, Types.NUMERIC});
         } catch (DataAccessException e) {
             ModelAndView mv = new ModelAndView("redirect:projects.secu");
             mv.addObject("msg", "kleiner Fehler versuchs erneut");
@@ -346,11 +347,9 @@ public class EditDocumentController {
         }
 
         String uname = (String) session.getAttribute("user");
-        String sql_id = "select ID from M_USER where muname = ?";
-        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
 
-        if (!isUserInDocument(UserIDFromSessionOverDatabase, documentId)) {
-            if (!isUserContributor(UserIDFromSessionOverDatabase, documentId)) {
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
         }
