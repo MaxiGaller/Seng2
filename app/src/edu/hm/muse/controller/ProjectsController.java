@@ -305,6 +305,16 @@ public class ProjectsController {
             return new ModelAndView("redirect:projects.secu");
         }
 
+        String uname = (String) session.getAttribute("user");
+
+        isUserOrContributor(uname, documentId);
+
+        /*if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }*/
+
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
@@ -469,11 +479,13 @@ public class ProjectsController {
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
 
-        if (!isUserInDocument(getUserID(uname), documentId)) {
+        isUserOrContributor(uname, documentId);
+
+        /*if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }
+        }*/
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -510,6 +522,15 @@ public class ProjectsController {
 
         }
         return res > 0;
+    }
+
+    public ModelAndView isUserOrContributor (String uname, int documentId) {
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
+        return null;
     }
 
 }

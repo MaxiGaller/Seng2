@@ -125,11 +125,13 @@ public class WatchAccountController {
             return mv;
         }
 
+        String uname1 = (String) session.getAttribute("user");
+
         String getId = "select id from M_USER where muname = ?";
-        int ID1 = jdbcTemplate.queryForInt(getId, uname);
+        int ID1 = jdbcTemplate.queryForInt(getId, uname1);
 
         String getSalt = "select salt from M_USER where muname = ?";
-        String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname}, String.class);
+        String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{uname1}, String.class);
 
         //String id = session.getId();
 
@@ -140,7 +142,7 @@ public class WatchAccountController {
         String sql = "update M_USER set  mpwd = ? where ID = ?";
 
         jdbcTemplate.update(sql, new Object[]{hpwd, ID1}, new int[]{Types.VARCHAR, Types.NUMERIC});
-        session.setAttribute("user", uname);
+        session.setAttribute("user", uname1);
         return new ModelAndView("redirect:intern.secu");
     }
 
