@@ -76,6 +76,14 @@ public class EditDocumentController {
             return new ModelAndView("redirect:login.secu");
         }
 
+        String uname = (String) session.getAttribute("user");
+
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
+
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
@@ -307,6 +315,14 @@ public class EditDocumentController {
         }
         if (loginHelper.isNotLoggedIn(request, session)) {
             return new ModelAndView("redirect:login.secu");
+        }
+
+        String uname = (String) session.getAttribute("user");
+
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
         }
 
         Cookie cookie = getCookie(request, "loggedIn");
