@@ -502,7 +502,7 @@ public class ProjectsController {
         return new ModelAndView("redirect:projects.secu");
     }
 
-    public boolean isUserInDocument (int userID, int documentID) {
+    private boolean isUserInDocument (int userID, int documentID) {
         String sql = "SELECT Count(*) FROM LatexDocuments where muser_id = ? and id = ?";
         int res = 0;
         try {
@@ -513,7 +513,7 @@ public class ProjectsController {
         return res > 0;
     }
 
-    public boolean isUserContributor (int userID, int documentID) {
+    private boolean isUserContributor (int userID, int documentID) {
         String sql = "SELECT Count(*) FROM LatexDocumentContributors where contribute_muser_id = ? and document_id = ?";
         int res = 0;
         try {
@@ -524,7 +524,7 @@ public class ProjectsController {
         return res > 0;
     }
 
-    public ModelAndView isUserOrContributor (String uname, int documentId) {
+    private ModelAndView isUserOrContributor (String uname, int documentId) {
         if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");

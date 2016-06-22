@@ -78,11 +78,13 @@ public class EditDocumentController {
 
         String uname = (String) session.getAttribute("user");
 
-        if (!isUserInDocument(getUserID(uname), documentId)) {
+        isUserOrContributor(uname, documentId);
+
+        /*if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }
+        }*/
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -319,11 +321,13 @@ public class EditDocumentController {
 
         String uname = (String) session.getAttribute("user");
 
-        if (!isUserInDocument(getUserID(uname), documentId)) {
+        isUserOrContributor(uname, documentId);
+
+       /* if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }
+        }*/
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -364,11 +368,13 @@ public class EditDocumentController {
 
         String uname = (String) session.getAttribute("user");
 
-        if (!isUserInDocument(getUserID(uname), documentId)) {
+        isUserOrContributor(uname, documentId);
+
+        /*if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }
+        }*/
         
         String getOrdinal = "select MAX(ordinal) from latexsniped WHERE document_id = ?";
         int maxOrdinal = jdbcTemplate.queryForInt(getOrdinal, new Object[]{documentId}, new int[]{Types.NUMERIC});
@@ -399,7 +405,7 @@ public class EditDocumentController {
         return mv;
     }
 
-    public boolean isUserInDocument (int userID, int documentID) {
+    private boolean isUserInDocument (int userID, int documentID) {
         String sql = "SELECT Count(*) FROM LatexDocuments where muser_id = ? and id = ?";
         int res = 0;
         try {
@@ -410,7 +416,7 @@ public class EditDocumentController {
         return res > 0;
     }
 
-    public boolean isUserContributor (int userID, int documentID) {
+    private boolean isUserContributor(int userID, int documentID) {
         String sql = "SELECT Count(*) FROM LatexDocumentContributors where contribute_muser_id = ? and document_id = ?";
         int res = 0;
         try {
@@ -420,4 +426,14 @@ public class EditDocumentController {
         }
         return res > 0;
     }
+
+    private ModelAndView isUserOrContributor (String uname, int documentId) {
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
+        return null;
+    }
+
 }
