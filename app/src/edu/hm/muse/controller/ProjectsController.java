@@ -35,7 +35,7 @@ public class ProjectsController {
     }
 
     // Load Projects
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/projects.secu", method = RequestMethod.GET)
     public ModelAndView getProjectsByUserId(HttpSession session, HttpServletRequest request,
                                             @RequestParam(value = "justLoggedIn", required = false) Integer justLoggedIn){
@@ -48,7 +48,7 @@ public class ProjectsController {
         }
 
         Cookie cookie = getCookie(request, "loggedIn");
-        //ToDo Auslagern
+//ToDo Auslagern
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, uname);
@@ -95,7 +95,7 @@ public class ProjectsController {
     }
 
     // New Document
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/newdocument.secu", method = RequestMethod.GET)
     public ModelAndView saveNewProject(
             @RequestParam(value = "documentname", required = true) String documentname,
@@ -113,7 +113,7 @@ public class ProjectsController {
             return new ModelAndView("redirect:projects.secu");
         }
 
-        //ToDo Auslagern
+//ToDo Auslagern
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
@@ -128,7 +128,7 @@ public class ProjectsController {
 
         int resContent = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, documentname, uname}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.VARCHAR});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -139,7 +139,7 @@ public class ProjectsController {
     }
 
     // New Invite Contributor
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/invitecontributor.secu", method = RequestMethod.GET)
     public ModelAndView inviteContributor(
             @RequestParam(value = "ContribteDocument", required = true) String ContribteDocument,
@@ -154,21 +154,29 @@ public class ProjectsController {
             return new ModelAndView("redirect:login.secu");
         }
 
-        //ToDo Auslagern
+//ToDo Auslagern
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
-        
+
+/*String sqlDuplicateContributeUser = "SELECT id FROM LatexDocumentContributors WHERE contribute_muser_id = ? AND document_id = ?";
+int resultDuplicateContributeUser = jdbcTemplate.queryForInt(sqlDuplicateContributeUser, new Object[] {ContributeUser, ContribteDocument}, new int[]{Types.NUMERIC, Types.NUMERIC});
+*/
         Cookie cookie = getCookie(request, "loggedIn");
 
         ModelAndView mv = new ModelAndView("project");
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
 
+/*if (resultDuplicateContributeUser != 0) {
+mv.addObject("msg", "<div id='popup'>doppelt</div>");
+return new ModelAndView("redirect:projects.secu");
+}*/
+
         String sqlContent = "INSERT INTO LatexDocumentContributors (id, owner_muser_id, contribute_muser_id, document_id) VALUES (NULL, ?, ?, ?)";
 
         int resContent = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             resContent = jdbcTemplate.update(sqlContent, new Object[] {UserIDFromSessionOverDatabase, ContributeUser, ContribteDocument}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -179,7 +187,7 @@ public class ProjectsController {
     }
 
     // Remove Contributor
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/removecontributor.secu", method = RequestMethod.GET)
     public ModelAndView removeContributorByID(
             @RequestParam(value = "contribute_id", required = true) int contribute_id,
@@ -201,7 +209,7 @@ public class ProjectsController {
 
         int res = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {contribute_id}, new int[] {Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -212,7 +220,7 @@ public class ProjectsController {
     }
 
     // New Global Sniped
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/newglobalsniped.secu", method = RequestMethod.GET)
     public ModelAndView saveNewGlobalSniped(
             @RequestParam(value = "Global_content_type", required = true) int Global_content_type,
@@ -239,7 +247,7 @@ public class ProjectsController {
 
         int resContent = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             resContent = jdbcTemplate.update(sqlInsert, new Object[]{UserIDFromSessionOverDatabase, snipedGlobalContent, Global_content_type}, new int[]{Types.NUMERIC, Types.VARCHAR, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -250,7 +258,7 @@ public class ProjectsController {
     }
 
     // Edit an Saved Global Sniped
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/editGlobalSnipeds.secu", method = RequestMethod.GET)
     public ModelAndView editSnipedBySnipedID(
             @RequestParam(value = "GlobalSniped_id", required = true) int GlobalSniped_id,
@@ -269,12 +277,12 @@ public class ProjectsController {
 
         Cookie cookie = getCookie(request, "loggedIn");
 
-        //Update the DB
+//Update the DB
         String sqlUpdate = "UPDATE LatexGlobalSniped SET content = ?, content_type = ? WHERE id = ?";
 
         int res = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {GlobalSniped_content, GlobalSniped_content_type, GlobalSniped_id}, new int[] {Types.VARCHAR, Types.NUMERIC, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -284,7 +292,7 @@ public class ProjectsController {
     }
 
     // rename document
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/renamedocument.secu", method = RequestMethod.GET)
     public ModelAndView renameDocumentById(
             @RequestParam(value = "documentId", required = true) int documentId,
@@ -309,12 +317,12 @@ public class ProjectsController {
 
         Cookie cookie = getCookie(request, "loggedIn");
 
-        //Update the DB
+//Update the DB
         String sqlUpdate = "UPDATE LatexDocuments SET documentname = ? WHERE id = ?";
 
         int res = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {documentname, documentId}, new int[]{Types.VARCHAR, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -332,7 +340,7 @@ public class ProjectsController {
     }
 
     // set document author
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/setauthor.secu", method = RequestMethod.GET)
     public ModelAndView setDocumentAuthorById(
             @RequestParam(value = "documentId", required = true) int documentId,
@@ -352,12 +360,12 @@ public class ProjectsController {
 
         Cookie cookie = getCookie(request, "loggedIn");
 
-        //Update the DB
+//Update the DB
         String sqlUpdate = "UPDATE LatexDocuments SET documentauthor = ? WHERE id = ?";
 
         int res = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {documentauthor, documentId}, new int[]{Types.VARCHAR, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -376,7 +384,7 @@ public class ProjectsController {
 
 
     // Recycle document
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/recycledocuments.secu", method = RequestMethod.GET)
     public ModelAndView recycleDocumentsByID(
             @RequestParam(value = "documentId", required = true) int documentId,
@@ -393,7 +401,7 @@ public class ProjectsController {
 
         Cookie cookie = getCookie(request, "loggedIn");
 
-        //Todo
+//Todo
         String sql_id = "SELECT trash FROM LatexDocuments WHERE id = ?";
         int CheckTrashState = jdbcTemplate.queryForInt(sql_id, new Object[] {documentId}, new int[]{Types.NUMERIC});
 
@@ -409,7 +417,7 @@ public class ProjectsController {
 
         int res = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {trashmark, documentId}, new int[] {Types.INTEGER, Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -420,7 +428,7 @@ public class ProjectsController {
     }
 
     // Move all to Attic
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/cleantrashcan.secu", method = RequestMethod.GET)
     public ModelAndView finalDeleteTrashcanByID(
             HttpSession session,
@@ -436,17 +444,17 @@ public class ProjectsController {
 
         Cookie cookie = getCookie(request, "loggedIn");
 
-        //ToDo Auslagern
+//ToDo Auslagern
         String uname = (String) session.getAttribute("user");
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
 
-        //Update the DB
+//Update the DB
         String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE trash = 1 AND muser_id = ?";
 
         int res = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[]{UserIDFromSessionOverDatabase}, new int[] {Types.INTEGER});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
@@ -457,7 +465,7 @@ public class ProjectsController {
     }
 
     // Move Document to Attic
-    // Author Maximilian Galler
+// Author Maximilian Galler
     @RequestMapping(value = "/finaldelete.secu", method = RequestMethod.GET)
     public ModelAndView finalDeleteDocumentByID(
             @RequestParam(value = "documentId", required = true) int documentId,
@@ -472,18 +480,51 @@ public class ProjectsController {
             return new ModelAndView("redirect:login.secu");
         }
 
+        String uname = (String) session.getAttribute("user");
+        String sql_id = "select ID from M_USER where muname = ?";
+        int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[]{uname}, new int[]{Types.VARCHAR});
+
+        if (!isUserInDocument(UserIDFromSessionOverDatabase, documentId)) {
+            if (!isUserContributor(UserIDFromSessionOverDatabase, documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
+
         Cookie cookie = getCookie(request, "loggedIn");
 
-        //Update the DB
+//Update the DB
         String sqlUpdate = "UPDATE LatexDocuments SET muser_id = 0 WHERE id = ?";
 
         int res = 0;
         try {
-            //execute the query and check exceptions
+//execute the query and check exceptions
             res = jdbcTemplate.update(sqlUpdate, new Object[] {documentId}, new int[] {Types.NUMERIC});
         } catch (DataAccessException e) {
             return new ModelAndView("redirect:projects.secu");
         }
         return new ModelAndView("redirect:projects.secu");
     }
+
+    public boolean isUserInDocument (int userID, int documentID) {
+        String sql = "SELECT Count(*) FROM LatexDocuments where muser_id = ? and id = ?";
+        int res = 0;
+        try {
+            res = jdbcTemplate.queryForInt(sql, userID, documentID);
+        } catch (DataAccessException e) {
+
+        }
+        return res > 0;
+    }
+
+    public boolean isUserContributor (int userID, int documentID) {
+        String sql = "SELECT Count(*) FROM LatexDocumentContributors where contribute_muser_id = ? and document_id = ?";
+        int res = 0;
+        try {
+            res = jdbcTemplate.queryForInt(sql, userID, documentID);
+        } catch (DataAccessException e) {
+
+        }
+        return res > 0;
+    }
+
 }
