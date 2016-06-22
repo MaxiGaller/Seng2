@@ -26,9 +26,12 @@ public class Logincontroller {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     CookieHelper cookieHelper;
-
     @Autowired
     SaltErstellen saltErstellen;
+    @Autowired
+    private ActiveUsers users;
+    @Autowired
+    private Token token;
 
 
     @Resource(name = "dataSource")
@@ -54,9 +57,13 @@ public class Logincontroller {
         return mv;
     }
 
+
+
+
     @RequestMapping(value = "/login.secu", method = RequestMethod.POST)
     public ModelAndView doSomeLogin(@RequestParam(value = "mname", required = false) String mname,
                                     @RequestParam(value = "mpwd", required = false) String mpwd,
+                                    @RequestParam(value = "Id", required = false) String id,
                                     HttpServletResponse response, HttpSession session,
                                     HttpServletRequest request) {
         if (null == mname || null == mpwd || mname.isEmpty() || mpwd.isEmpty()) {
@@ -72,11 +79,18 @@ public class Logincontroller {
             return new ModelAndView("redirect:login.secu");
         }
 
+        //TODO: Try Catch drum rum!!
+
         String getSalt = "select salt from M_USER where muname = ?";
         String salt = jdbcTemplate.queryForObject(getSalt, new Object[]{mname}, String.class);
 
-        String saltedPw = salt +
-                mpwd;
+        String saltedPw = salt + mpwd;
+
+        String getId = "select id from M_USER where muname = ?";
+        String ID1 = jdbcTemplate.queryForObject(getId, new Object[]{mname}, String.class);
+
+        String getName = "select muname from M_USER where muname = ?";
+        String name = jdbcTemplate.queryForObject(getName, new Object[]{mname}, String.class);
 
 
         String hpwd = HashenController.hashen256(saltedPw);
@@ -96,14 +110,19 @@ public class Logincontroller {
             int csrfTokenFromCookie = Integer.parseInt(getCookie(request, "login").getValue());
             if (csrfTokenFromSession != 0 && csrfTokenFromCookie != 0 && res > 0) {
                 if (csrfTokenFromCookie == csrfTokenFromSession) {
-                    int token = getNewToken();
                     session.setAttribute("user", mname);
+                    session.setAttribute("Id", ID1);
                     Cookie loginCookie = new Cookie("loggedIn", String.valueOf(token));
                     cookieHelper.eraseCookie(request, response, "login");
                     response.addCookie(loginCookie);
-                    session.setAttribute("usertoken", String.valueOf(token));
                     session.setAttribute("login", true);
                     session.removeAttribute("csrftoken");
+                    String sessionId = session.getId();
+                    //TODO
+                    int newToken= token.getNewToken();
+                    session.setAttribute("usertoken", newToken);
+                    users.setUser(mname, newToken);
+
                     return new ModelAndView("redirect:projects.secu?justLoggedIn=1");
                 }
             }
