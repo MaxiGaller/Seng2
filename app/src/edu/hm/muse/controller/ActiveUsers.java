@@ -15,7 +15,6 @@ public class ActiveUsers {
     Map<String, Integer> activeUserMap = new HashMap<>();
 
     public int getToken(String loginName) {
-        //ActiveUser activeUser = getActiveUser(loginName);
         int token = -1;
         token = activeUserMap.get(loginName);
         return token;
@@ -29,7 +28,4 @@ public class ActiveUsers {
     public void removeUser(String name) {
         activeUserMap.remove(name);
     }
-
-
-
 }

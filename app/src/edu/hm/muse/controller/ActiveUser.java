@@ -1,11 +1,9 @@
 package edu.hm.muse.controller;
 
-
 public class ActiveUser {
     private final User user;
     private int token;
     private String sessionId;
-
 
 
     public ActiveUser(User user, int token) {
@@ -18,7 +16,6 @@ public class ActiveUser {
         this.token = token;
         this.sessionId = sessionId;
     }
-
 
 
     public int getToken() {
@@ -36,5 +33,4 @@ public class ActiveUser {
     public String getSessionId() {
         return sessionId;
     }
-
 }

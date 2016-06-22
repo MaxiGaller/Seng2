@@ -159,18 +159,18 @@ public class ProjectsController {
         String sql_id = "select ID from M_USER where muname = ?";
         int UserIDFromSessionOverDatabase = jdbcTemplate.queryForInt(sql_id, new Object[] {uname}, new int[]{Types.VARCHAR});
         
-        String sqlDuplicateContributeUser = "SELECT id FROM LatexDocumentContributors WHERE contribute_muser_id = ? AND document_id = ?";
+        /*String sqlDuplicateContributeUser = "SELECT id FROM LatexDocumentContributors WHERE contribute_muser_id = ? AND document_id = ?";
         int resultDuplicateContributeUser = jdbcTemplate.queryForInt(sqlDuplicateContributeUser, new Object[] {ContributeUser, ContribteDocument}, new int[]{Types.NUMERIC, Types.NUMERIC});       
-
+*/
         Cookie cookie = getCookie(request, "loggedIn");
 
         ModelAndView mv = new ModelAndView("project");
         mv.addObject("isLoggedIn", cookie.getValue().equals(session.getAttribute("usertoken")));
         
-        if (resultDuplicateContributeUser != 0) {
+        /*if (resultDuplicateContributeUser != 0) {
         	mv.addObject("msg", "<div id='popup'>doppelt</div>");
         	return new ModelAndView("redirect:projects.secu");
-        }
+        }*/
 
         String sqlContent = "INSERT INTO LatexDocumentContributors (id, owner_muser_id, contribute_muser_id, document_id) VALUES (NULL, ?, ?, ?)";
 
