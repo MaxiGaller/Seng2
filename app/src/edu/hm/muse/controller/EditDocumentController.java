@@ -78,13 +78,11 @@ public class EditDocumentController {
 
         String uname = (String) session.getAttribute("user");
 
-        isUserOrContributor(uname, documentId);
-
-        /*if (!isUserInDocument(getUserID(uname), documentId)) {
+        if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }*/
+        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -132,7 +130,11 @@ public class EditDocumentController {
         }
 
         String uname = (String) session.getAttribute("user");
-        isUserOrContributor(uname, documentId);
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -173,7 +175,11 @@ public class EditDocumentController {
         }
 
         String uname = (String) session.getAttribute("user");
-        isUserOrContributor(uname, documentId);
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -241,8 +247,12 @@ public class EditDocumentController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         String uname = (String) session.getAttribute("user");
-        isUserOrContributor(uname, documentId);
-        
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
+
         int id = 0;
         try {
             id = jdbcTemplate.queryForInt("select MAX(id) from latexsniped");
@@ -327,13 +337,11 @@ public class EditDocumentController {
 
         String uname = (String) session.getAttribute("user");
 
-        isUserOrContributor(uname, documentId);
-
-       /* if (!isUserInDocument(getUserID(uname), documentId)) {
+         if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }*/
+        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -374,13 +382,11 @@ public class EditDocumentController {
 
         String uname = (String) session.getAttribute("user");
 
-        isUserOrContributor(uname, documentId);
-
-        /*if (!isUserInDocument(getUserID(uname), documentId)) {
+        if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }*/
+        }
         
         String getOrdinal = "select MAX(ordinal) from latexsniped WHERE document_id = ?";
         int maxOrdinal = jdbcTemplate.queryForInt(getOrdinal, new Object[]{documentId}, new int[]{Types.NUMERIC});

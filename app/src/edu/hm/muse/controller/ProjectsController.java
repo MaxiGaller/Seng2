@@ -266,7 +266,11 @@ public class ProjectsController {
         }
 
         String uname = (String) session.getAttribute("user");
-        isUserOrContributor(uname, GlobalSniped_id);
+        if (!isUserInDocument(getUserID(uname), GlobalSniped_id)) {
+            if (!isUserContributor(getUserID(uname), GlobalSniped_id)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -310,13 +314,13 @@ public class ProjectsController {
 
         String uname = (String) session.getAttribute("user");
 
-        isUserOrContributor(uname, documentId);
 
-        /*if (!isUserInDocument(getUserID(uname), documentId)) {
+
+        if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }*/
+        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 
@@ -364,7 +368,11 @@ public class ProjectsController {
         Cookie cookie = getCookie(request, "loggedIn");
 
         String uname = (String) session.getAttribute("user");
-        isUserOrContributor(uname, documentId);
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
 
         //Update the DB
         String sqlUpdate = "UPDATE LatexDocuments SET documentauthor = ? WHERE id = ?";
@@ -405,14 +413,20 @@ public class ProjectsController {
             return new ModelAndView("redirect:login.secu");
         }
 
+        String uname = (String) session.getAttribute("user");
+        if (!isUserInDocument(getUserID(uname), documentId)) {
+            if (!isUserContributor(getUserID(uname), documentId)) {
+                return new ModelAndView("redirect:projects.secu");
+            }
+        }
+
         Cookie cookie = getCookie(request, "loggedIn");
 
         String sql_id = "SELECT trash FROM LatexDocuments WHERE id = ?";
         int CheckTrashState = jdbcTemplate.queryForInt(sql_id, new Object[] {documentId}, new int[]{Types.NUMERIC});
 
 
-        String uname = (String) session.getAttribute("user");
-        isUserOrContributor(uname, documentId);
+
 
         int trashmark;
 
@@ -490,13 +504,11 @@ public class ProjectsController {
         //ToDo Auslagern
         String uname = (String) session.getAttribute("user");
 
-        isUserOrContributor(uname, documentId);
-
-        /*if (!isUserInDocument(getUserID(uname), documentId)) {
+        if (!isUserInDocument(getUserID(uname), documentId)) {
             if (!isUserContributor(getUserID(uname), documentId)) {
                 return new ModelAndView("redirect:projects.secu");
             }
-        }*/
+        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 
