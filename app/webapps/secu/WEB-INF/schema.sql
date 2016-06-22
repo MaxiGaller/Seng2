@@ -7,6 +7,7 @@ CREATE TABLE LatexGlobalSniped (id NUMERIC IDENTITY, muser_id NUMERIC, content V
 CREATE TABLE LatexDocuments (id NUMERIC IDENTITY, muser_id NUMERIC, documentname VARCHAR(255), documentauthor VARCHAR(999), trash NUMERIC);
 CREATE TABLE LatexType (id NUMERIC IDENTITY, type VARCHAR(255), type_opening_tag VARCHAR(255), type_closeing_tag VARCHAR(255), html_opening_tag VARCHAR(255), html_closeing_tag VARCHAR(255), accessable NUMERIC);
 CREATE TABLE LatexDocumentContributors (id NUMERIC IDENTITY, owner_muser_id NUMERIC, contribute_muser_id NUMERIC, document_id NUMERIC);
+CREATE UNIQUE INDEX duplicate_DocumentContributors ON LatexDocumentContributors (contribute_muser_id, document_id);
 
 INSERT INTO LatexDocumentContributors (id, owner_muser_id, contribute_muser_id, document_id) VALUES (NULL, '2', '3', '0');
 INSERT INTO LatexDocumentContributors (id, owner_muser_id, contribute_muser_id, document_id) VALUES (NULL, '3', '2', '3');
