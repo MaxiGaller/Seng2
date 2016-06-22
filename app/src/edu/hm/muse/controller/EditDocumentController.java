@@ -348,7 +348,7 @@ public class EditDocumentController {
 
         return mv;
     }
-
+    
     //Load Documents and Snipeds
     // Author Maximilian Galler
     private ModelAndView getProjectPage(
@@ -369,7 +369,10 @@ public class EditDocumentController {
                 return new ModelAndView("redirect:projects.secu");
             }
         }
-
+        
+        String getOrdinal = "select MAX(ordinal) from latexsniped WHERE document_id = ?";
+        int maxOrdinal = jdbcTemplate.queryForInt(getOrdinal, new Object[]{documentId}, new int[]{Types.NUMERIC});
+    	
         String sql = "SELECT * FROM LatexSniped WHERE document_id = ? AND trash = 0 ORDER BY ordinal ASC";
         List<Map<String,Object>> projectSnipeds = jdbcTemplate.queryForList(sql, documentId);
 
@@ -392,6 +395,7 @@ public class EditDocumentController {
         mv.addObject("TypesForView", contentTypes);
         mv.addObject("GlobalSnipedsForView", GlobalSnipeds);
         mv.addObject("SnipedsForView", projectSnipeds);
+        mv.addObject("maxOrdinal", maxOrdinal);
         return mv;
     }
 
