@@ -175,11 +175,6 @@ public class EditDocumentController {
         }
 
         String uname = (String) session.getAttribute("user");
-        if (!isUserInDocument(getUserID(uname), documentId)) {
-            if (!isUserContributor(getUserID(uname), documentId)) {
-                return new ModelAndView("redirect:projects.secu");
-            }
-        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 

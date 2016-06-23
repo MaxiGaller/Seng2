@@ -266,11 +266,6 @@ public class ProjectsController {
         }
 
         String uname = (String) session.getAttribute("user");
-        if (!isUserInDocument(getUserID(uname), GlobalSniped_id)) {
-            if (!isUserContributor(getUserID(uname), GlobalSniped_id)) {
-                return new ModelAndView("redirect:projects.secu");
-            }
-        }
 
         Cookie cookie = getCookie(request, "loggedIn");
 
