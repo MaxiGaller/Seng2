@@ -194,12 +194,11 @@
                         <input type="hidden" value="<c:out value="${SnipedsForView.ordinal}"/>" name="ordinal">
                         <input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
                         <input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor">
-                        <button class="button breite4 schrift3 hoehe4 grau" value="up" style="margin-left: 20px;"><span><i
+                        <button class="button breite4 schrift3 hoehe4 grau" value="up"><span><i
                                 class="fa fa-arrow-up"></i></span></button>
                     </form>
                 </c:if>
-            </td>
-            <td>
+
                 <c:if test="${SnipedsForView.ordinal != maxOrdinal}">
                     <form action="editSnipedMove.secu" method="post">
                         <input type="hidden" value="down" name="type">
@@ -209,7 +208,7 @@
                         <input type="hidden" value="<c:out value="${SnipedsForView.ordinal}"/>" name="ordinal">
                         <input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
                         <input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor">
-                        <button class="button breite4 schrift3 hoehe4 grau" value="down" style="margin-left: 20px;"><span><i
+                        <button class="button breite4 schrift3 hoehe4 grau" value="down"><span><i
                                 class="fa fa-arrow-down"></i></span></button>
                     </form>
                 </c:if>
@@ -222,7 +221,7 @@
                     <input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor">
                     <input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
                     <button class="button breite4 schrift3 hoehe4 hellRot" value="Papierkorb"
-                            style="margin-left: 20px;"><span><i class="fa fa-trash w3-large"></i></span></button>
+                            style="margin-left: 40px;"><span><i class="fa fa-trash w3-large"></i></span></button>
                 </form>
             </td>
         </c:if>
