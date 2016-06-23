@@ -14,5 +14,5 @@
     <br>
     <input class="eingabefeld" type="password" name="upwd1" placeholder="Passwort wiederholen" style="margin-left: 20px;">
     <br><br><br>
-    <button class="button schrift3 hoehe3" style="margin-left: 20px;"><span>Passwort <i class="fa fa-save"></i></span></button>
+    <button class="button schrift3 hoehe3 hellBlau" style="margin-left: 20px;"><span>Passwort <i class="fa fa-save"></i></span></button>
 </form>

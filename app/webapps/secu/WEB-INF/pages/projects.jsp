@@ -26,7 +26,7 @@
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentname}"/>" name="documentname">
 					<input type="hidden" value="<c:out value="${DocumentsForView.documentauthor}"/>" name="documentauthor">
 					<input type="hidden" value="read" name="mode">
-					<button class="button schrift3 hoehe3 grau" value="Bearbeiten"><span>Lesen Modus</span></button>
+					<button class="button schrift3 hoehe3 grau"><span>Lesen Modus</span></button>
 				</form>
 			</td>
 			<td>
@@ -82,12 +82,6 @@
 					<button class="button schrift3 hoehe3 grau" value="Bearbeiten"><span>LaTeX Modus</span></button>
 				</form>
 			</td>
-			<td>
-				<form action="removecontributor.secu" method="get">
-					<input type="hidden" value="<c:out value="${contributorDocuments.ContributorsId}"/>" name="contribute_id">
-					<button class="button breite4 schrift3 hoehe4 hellRot" value="Papierkorb"><span><i class="fa fa-trash w3-large"></i></span></button>
-				</form>
-			</td>
 		</tr>
 	</c:forEach>
 </table>
@@ -112,7 +106,7 @@
 
 <span style="margin-left: 20px; font-size: 25px;">M&uuml;lleimer</span>
 <form action="cleantrashcan.secu" method="get">
-	<button class="button breite1 schrift2 hoehe2 schwarz" value="Papierkorb leeren"><span><b>Papierkorb leeren</b></span></button>
+	<button class="button breite1 schrift2 hoehe2 schwarz" value="Papierkorb leeren" style="margin-left: 20px;"><span><b>Papierkorb leeren <i class="fa fa-trash w3-large"></i></b></span></button>
 </form>
 <br>
 <table>
@@ -189,7 +183,7 @@
 			<td>
 				<input type="hidden" value="<c:out value="${GlobalSnipedsForView.id}"/>" name="GlobalSniped_id">
 				<input type="hidden" value="<c:out value="${GlobalSnipedsForView.content_type}"/>" name="GlobalSniped_content_type">
-				<button class="button schrift3 hoehe3 grau" value="Kopieren"><span>Zu Dokument kopieren</span></button>
+				<button class="button schrift3 hoehe3 grau" value="Kopieren"><span>Zu Dok kopieren</span></button>
 			</td>
 		</form>
 		</tr>
@@ -236,7 +230,7 @@
 			<td>
 				<form action="removecontributor.secu" method="get">
 					<input type="hidden" value="<c:out value="${SavedContributors.id}"/>" name="contribute_id">
-					<div style="float: right; margin-right: 70%"><button class="button schrift3 hoehe3 hellRot" value="Entfernen"><span>Entfernen</span></button></div>
+					<div style="float: right; margin-right: 70%"><button class="button schrift3 hoehe3 hellRot" value="Entfernen"><span>Entfernen <i class="fa fa-trash w3-large"></i></span></button></div>
 				</form>
 			</td>
 		</tr>
