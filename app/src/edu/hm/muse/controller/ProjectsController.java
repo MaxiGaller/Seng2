@@ -267,6 +267,13 @@ public class ProjectsController {
 
         String uname = (String) session.getAttribute("user");
 
+        String getId = "select id from M_USER where muname = ?";
+        int userId = jdbcTemplate.queryForInt(getId, uname);
+
+        if (!hasUserGlobalSniped(userId, GlobalSniped_id)) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
@@ -542,13 +549,17 @@ public class ProjectsController {
         return res > 0;
     }
 
-    private ModelAndView isUserOrContributor (String uname, int documentId) {
-        if (!isUserInDocument(getUserID(uname), documentId)) {
-            if (!isUserContributor(getUserID(uname), documentId)) {
-                return new ModelAndView("redirect:projects.secu");
-            }
+    private boolean hasUserGlobalSniped (int userId, int documentId) {
+        String sql = "SELECT Count(*) From LatexGlobalSniped where muser_id = ? and id = ?";
+        int res = 0;
+        try {
+            res = jdbcTemplate.queryForInt(sql, userId, documentId);
+        }catch (DataAccessException e) {
+
         }
-        return null;
+
+
+        return res > 0;
     }
 
 }
