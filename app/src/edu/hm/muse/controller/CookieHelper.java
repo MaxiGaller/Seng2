@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class CookieHelper {
 
-    public void eraseCookies(HttpServletRequest req, HttpServletResponse resp) {
+    public void eraseCookiesLogout(HttpServletRequest req, HttpServletResponse resp) {
         Cookie[] cookies = req.getCookies();
         if (cookies != null)
             for (Cookie cookie : cookies) {
@@ -20,7 +20,7 @@ public class CookieHelper {
             }
     }
 
-    public void eraseCookie(HttpServletRequest req, HttpServletResponse resp, String nameOfCookie) {
+    public void eraseCookieLogin(HttpServletRequest req, HttpServletResponse resp, String nameOfCookie) {
         Cookie[] cookies = req.getCookies();
         if (cookies != null)
             for (Cookie cookie : cookies) {

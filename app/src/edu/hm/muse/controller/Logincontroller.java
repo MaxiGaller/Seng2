@@ -113,7 +113,7 @@ public class Logincontroller {
                     session.setAttribute("user", mname);
                     session.setAttribute("Id", ID1);
                     Cookie loginCookie = new Cookie("loggedIn", String.valueOf(token));
-                    cookieHelper.eraseCookie(request, response, "login");
+                    cookieHelper.eraseCookieLogin(request, response, "login");
                     response.addCookie(loginCookie);
                     session.setAttribute("login", true);
                     session.removeAttribute("csrftoken");

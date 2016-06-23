@@ -31,7 +31,7 @@ public class LogoutController {
 			@RequestParam(value = "logout", required = false) String logout,
 			HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
-		cookieHelper.eraseCookies(request, response);
+		cookieHelper.eraseCookiesLogout(request, response);
 		session.invalidate();
 
 		return new ModelAndView("redirect:login.secu");
