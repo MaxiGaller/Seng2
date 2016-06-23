@@ -4,19 +4,16 @@ import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
 
-/**
- * Created by ifw14130 on 03.06.2016.
- */
 @Component
 public class Token {
-    private final SecureRandom CSRNPG;
+    private final SecureRandom RandomNumber;
 
     public Token() {
-        CSRNPG = new SecureRandom();
+        RandomNumber = new SecureRandom();
     }
 
     public int getNewToken() {
-        return CSRNPG.nextInt();
+        return RandomNumber.nextInt();
     }
 
     @Override
@@ -26,12 +23,12 @@ public class Token {
 
         Token token = (Token) o;
 
-        return CSRNPG.equals(token.CSRNPG);
+        return RandomNumber.equals(token.RandomNumber);
 
     }
 
     @Override
     public int hashCode() {
-        return CSRNPG.hashCode();
+        return RandomNumber.hashCode();
     }
 }
