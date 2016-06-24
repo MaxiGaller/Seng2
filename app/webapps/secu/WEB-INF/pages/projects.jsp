@@ -186,6 +186,12 @@
 				<button class="button schrift3 hoehe3 grau" value="Kopieren"><span>Zu Dok kopieren</span></button>
 			</td>
 		</form>
+		<form action="deleteGlobalSniped.secu" method="get">
+			<td>
+				<input type="hidden" value="<c:out value="${GlobalSnipedsForView.id}"/>" name="GlobalSniped_id">
+				<button class="button breite4 schrift3 hoehe4 hellRot" value="Papierkorb"><span><i class="fa fa-trash w3-large"></i></span></button>
+			</td>
+		</form>
 		</tr>
 	</c:forEach>
 </table>
