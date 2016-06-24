@@ -81,11 +81,11 @@
                         <input type="hidden" value="<c:out value="${mode}"/>" name="mode">
                         <input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor">
                         <input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
-                    </form>
-                </td>
+
+
             </c:if>
             <c:if test="${mode == 'read'}">
-                <td>
+
                     <div style="margin-left: 20px;"><c:forEach items="${TypesForView}" var="TypesForView">
                         <c:if test="${TypesForView.id == SnipedsForView.content_type}">
                             ${TypesForView.html_opening_tag}
@@ -97,6 +97,7 @@
                             ${TypesForView.html_closeing_tag}
                         </c:if>
                     </c:forEach></div>
+                </form>
                 </td>
             </c:if>
             <c:if test="${mode == 'showlatex'}">
