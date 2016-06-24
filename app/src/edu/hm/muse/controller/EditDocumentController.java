@@ -84,6 +84,10 @@ public class EditDocumentController {
             }
         }
 
+        if (snipedContent.replaceAll("[A-Za-z0-9 ]", "").length() != 0) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
         Cookie cookie = getCookie(request, "loggedIn");
 
         //Update the DB
