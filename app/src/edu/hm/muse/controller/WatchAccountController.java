@@ -113,12 +113,12 @@ public class WatchAccountController {
             return new ModelAndView("redirect:login.secu");
         }
 
-       /* if (!isValidPw(upwd)) {
+         if (!isValidPw(upwd)) {
             ModelAndView mv = new ModelAndView("redirect:projects.secu");
             mv.addObject("msg", "Passwort muss Groß- Kleinbuchstaben und Sonderzeichen haben!");
             return mv;
         }
-*/
+
         if (!upwd.equals(upwd1)) {
             ModelAndView mv = new ModelAndView("register");
             mv.addObject("msg", "passen nicht!");
@@ -148,7 +148,7 @@ public class WatchAccountController {
 
 
     private boolean isValidPw(String upwd) {
-        String ePattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^+=?!])(?=\\S+$).{4,}$";
+        String ePattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^+=?!])(?=\\S+$).{6,}$";
         java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
         java.util.regex.Matcher m = p.matcher(upwd);
         return m.matches();
