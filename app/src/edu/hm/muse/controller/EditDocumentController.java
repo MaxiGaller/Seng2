@@ -191,6 +191,7 @@ public class EditDocumentController {
             mv.addObject("msg", "kleiner Fehler versuchs erneut");
             return mv;
         }
+
         id++;
 
         String getOrdinal = "select MAX(ordinal) from latexsniped WHERE document_id = ?";
@@ -203,7 +204,8 @@ public class EditDocumentController {
             mv.addObject("msg", "kleiner Fehler versuchs erneut");
             return mv;
         }
-        ordinal++;
+
+
 
         String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, 1, 0)";
 
@@ -215,6 +217,8 @@ public class EditDocumentController {
             mv.addObject("msg", "kleiner Fehler versuchs erneut");
             return mv;
         }
+
+        ordinal++;
 
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
 
