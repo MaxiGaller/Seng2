@@ -205,20 +205,21 @@ public class EditDocumentController {
             return mv;
         }
 
-
+        ordinal++;
 
         String sqlInsert = "INSERT INTO LatexSniped (id, muser_id, document_id, ordinal, content, content_type, editable, trash) VALUES (NULL, ?, ?, ?, ?, ?, 1, 0)";
 
         int res = 0;
         try {
             res = jdbcTemplate.update(sqlInsert, new Object[]{getUserID(uname), documentId, ordinal, snipedContent, content_type}, new int[]{Types.NUMERIC, Types.NUMERIC, Types.INTEGER, Types.VARCHAR, Types.NUMERIC});
+
         } catch (DataAccessException e) {
             ModelAndView mv = new ModelAndView("redirect:projects.secu");
             mv.addObject("msg", "kleiner Fehler versuchs erneut");
             return mv;
         }
 
-        ordinal++;
+
 
         ModelAndView mv = new ModelAndView("redirect:editdocument.secu");
 

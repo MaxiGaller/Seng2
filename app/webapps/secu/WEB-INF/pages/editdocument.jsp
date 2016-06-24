@@ -183,7 +183,7 @@
         </c:if>
         <c:if test="${mode == 'write'}">
             <td>
-                <c:if test="${SnipedsForView.ordinal != 0}">
+                <c:if test="${SnipedsForView.ordinal != 1}">
                     <form action="editSnipedMove.secu" method="post">
                         <input type="hidden" value="up" name="type">
                         <input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
