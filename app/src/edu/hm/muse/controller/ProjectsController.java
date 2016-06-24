@@ -233,7 +233,7 @@ public class ProjectsController {
 
         String uname = (String) session.getAttribute("user");
 
-        if (snipedGlobalContent.replaceAll("[A-Za-z0-9 ]", "").length() != 0) {
+        if (snipedGlobalContent.replaceAll("[A-Za-z0-9ßÄÖÜäöü ]", "").length() != 0) {
             return new ModelAndView("redirect:projects.secu");
         }
 
