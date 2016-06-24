@@ -233,6 +233,10 @@ public class ProjectsController {
 
         String uname = (String) session.getAttribute("user");
 
+        if (snipedGlobalContent.replaceAll("[A-Za-z0-9 ]", "").length() != 0) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
         String sqlInsert = "INSERT INTO LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, ?, ?, ?)";
 
         int resContent = 0;

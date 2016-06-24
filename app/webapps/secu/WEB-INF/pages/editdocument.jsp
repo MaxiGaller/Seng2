@@ -185,6 +185,7 @@
         </c:if>
         <c:if test="${mode == 'write'}">
             <td>
+
                 <c:if test="${SnipedsForView.ordinal != 0}">
                     <form action="editSnipedMove.secu" method="post">
                         <input type="hidden" value="up" name="type">
@@ -212,6 +213,7 @@
                                 class="fa fa-arrow-down"></i></span></button>
                     </form>
                 </c:if>
+        
             </td>
             <td>
                 <form action="deleteSniped.secu" method="get">
