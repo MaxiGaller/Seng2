@@ -73,31 +73,28 @@
             <tr>
             <c:if test="${mode == 'write'}">
                 <td>
-                    <form action="editsniped.secu" method="get">
+                <form action="editsniped.secu" method="get">
                         <span style="margin-left: 20px;"><textarea rows="4" ; cols="50" ; name="snipedContent"><c:out
                                 value="${SnipedsForView.content}"/></textarea></span>
-                        <input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
-                        <input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
-                        <input type="hidden" value="<c:out value="${mode}"/>" name="mode">
-                        <input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor">
-                        <input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
-
-
+                <input type="hidden" value="<c:out value="${SnipedsForView.id}"/>" name="snipedId">
+                <input type="hidden" value="<c:out value="${SnipedsForView.document_id}"/>" name="documentId">
+                <input type="hidden" value="<c:out value="${mode}"/>" name="mode">
+                <input type="hidden" value="<c:out value="${documentauthor}"/>" name="documentauthor">
+                <input type="hidden" value="<c:out value="${documentname}"/>" name="documentname">
             </c:if>
             <c:if test="${mode == 'read'}">
-
+                <td>
                     <div style="margin-left: 20px;"><c:forEach items="${TypesForView}" var="TypesForView">
                         <c:if test="${TypesForView.id == SnipedsForView.content_type}">
                             ${TypesForView.html_opening_tag}
                         </c:if>
                     </c:forEach>
-                    <c:out value="${SnipedsForView.content}"/>
-                    <c:forEach items="${TypesForView}" var="TypesForView">
-                        <c:if test="${TypesForView.id == SnipedsForView.content_type}">
-                            ${TypesForView.html_closeing_tag}
-                        </c:if>
-                    </c:forEach></div>
-                </form>
+                        <c:out value="${SnipedsForView.content}"/>
+                        <c:forEach items="${TypesForView}" var="TypesForView">
+                            <c:if test="${TypesForView.id == SnipedsForView.content_type}">
+                                ${TypesForView.html_closeing_tag}
+                            </c:if>
+                        </c:forEach></div>
                 </td>
             </c:if>
             <c:if test="${mode == 'showlatex'}">
@@ -107,12 +104,12 @@
                             ${TypesForView.type_opening_tag}
                         </c:if>
                     </c:forEach>
-                    <c:out value="${SnipedsForView.content}"/>
-                    <c:forEach items="${TypesForView}" var="TypesForView">
-                        <c:if test="${TypesForView.id == SnipedsForView.content_type}">
-                            ${TypesForView.type_closeing_tag}
-                        </c:if>
-                    </c:forEach></div>
+                        <c:out value="${SnipedsForView.content}"/>
+                        <c:forEach items="${TypesForView}" var="TypesForView">
+                            <c:if test="${TypesForView.id == SnipedsForView.content_type}">
+                                ${TypesForView.type_closeing_tag}
+                            </c:if>
+                        </c:forEach></div>
                 </td>
             </c:if>
             <td>
@@ -213,7 +210,6 @@
                                 class="fa fa-arrow-down"></i></span></button>
                     </form>
                 </c:if>
-        </c:if>
             </td>
             <td>
                 <form action="deleteSniped.secu" method="get">
@@ -226,6 +222,7 @@
                             style="margin-left: 40px;"><span><i class="fa fa-trash w3-large"></i></span></button>
                 </form>
             </td>
+        </c:if>
         </tr>
         <c:if test="${mode != 'showlatex'}">
             <tr>
