@@ -74,7 +74,7 @@ public class ProjectsController {
         String sqlAllContentTypes = "SELECT * FROM LatexType";
         List<Map<String,Object>> AllContentTypes = jdbcTemplate.queryForList(sqlAllContentTypes);
 
-        String sqlGlobalSnipeds = "SELECT * FROM LatexGlobalSniped WHERE muser_id = ?";
+        String sqlGlobalSnipeds = "SELECT * FROM LatexGlobalSniped WHERE muser_id = ? AND trash = 0";
         List<Map<String,Object>> GlobalSnipeds = jdbcTemplate.queryForList(sqlGlobalSnipeds, getUserID(uname));
 
         String sqlContributors = "SELECT * FROM M_USER WHERE id != ? AND id != 0";
@@ -237,7 +237,7 @@ public class ProjectsController {
             return new ModelAndView("redirect:projects.secu");
         }
 
-        String sqlInsert = "INSERT INTO LatexGlobalSniped (id, muser_id, content, content_type) VALUES (NULL, ?, ?, ?)";
+        String sqlInsert = "INSERT INTO LatexGlobalSniped (id, muser_id, content, content_type, trash) VALUES (NULL, ?, ?, ?, 0)";
 
         int resContent = 0;
         try {
@@ -249,6 +249,44 @@ public class ProjectsController {
 
         return new ModelAndView("redirect:projects.secu");
 
+    }
+    
+    // Move GLobal Sniped to Attic
+    // Author Maximilian Galler
+    @RequestMapping(value = "/deleteGlobalSniped.secu", method = RequestMethod.GET)
+    public ModelAndView DeleteGlobalSnipedByID(
+            @RequestParam(value = "GlobalSniped_id", required = true) int GlobalSniped_id,
+            HttpSession session,
+            HttpServletResponse response,
+            HttpServletRequest request){
+
+        if ((null == session) || (null == session.getAttribute("login")) || (!((Boolean) session.getAttribute("login")))) {
+            return new ModelAndView("redirect:login.secu");
+        }
+        if (loginHelper.isNotLoggedIn(request, session)) {
+            return new ModelAndView("redirect:login.secu");
+        }
+
+        String uname = (String) session.getAttribute("user");
+
+        Cookie cookie = getCookie(request, "loggedIn");
+
+        //Update the DB
+        String sqlUpdate = "UPDATE LatexGlobalSniped SET trash = 1 WHERE id = ? AND muser_id = ?";
+
+        int res = 0;
+        try {
+            //execute the query and check exceptions
+            res = jdbcTemplate.update(sqlUpdate, new Object[] {GlobalSniped_id, getUserID(uname)}, new int[] {Types.NUMERIC, Types.NUMERIC});
+        } catch (DataAccessException e) {
+            return new ModelAndView("redirect:projects.secu");
+        }
+
+        ModelAndView mv = new ModelAndView("redirect:projects.secu");
+
+        response.addCookie(cookie);
+
+        return mv;
     }
 
     // Edit an Saved Global Sniped
