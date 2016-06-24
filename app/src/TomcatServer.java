@@ -96,7 +96,7 @@ public class TomcatServer {
 
         Context ctx = tomcat.addWebapp("/secu", "secu");
 
-        
+
         tomcat.start();
         tomcat.getServer().await();
     }
