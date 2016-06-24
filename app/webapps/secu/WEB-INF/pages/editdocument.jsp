@@ -144,8 +144,9 @@
                 <c:forEach items="${GlobalSnipedsForView}" var="GlobalSnipedsForView">
                     <c:if test="${SnipedsForView.global_Sniped_id == GlobalSnipedsForView.id}">
                         <td>
-                                ${GlobalSnipedsForView.content}
+                        	<div style="margin-left: 20px;">${GlobalSnipedsForView.content}</div>
                         </td>
+                        <td></td>
                     </c:if>
                 </c:forEach>
             </c:if>
@@ -196,7 +197,8 @@
                                 class="fa fa-arrow-up"></i></span></button>
                     </form>
                 </c:if>
-
+			</td>
+			<td>
                 <c:if test="${SnipedsForView.ordinal != maxOrdinal}">
                     <form action="editSnipedMove.secu" method="post">
                         <input type="hidden" value="down" name="type">
